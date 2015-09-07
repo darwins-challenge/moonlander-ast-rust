@@ -1,5 +1,5 @@
 pub trait Evaluate {
-	fn evaluate(&self) -> Command;
+	fn evaluate(&self) -> &Command;
 }
 
 pub enum Program {
@@ -7,8 +7,10 @@ pub enum Program {
 }
 
 impl Evaluate for Program {
-	fn evaluate(&self) -> Command {
-		Command::Skip
+	fn evaluate(&self) -> &Command {
+		match *self {
+			Program::Command(ref command) => command,
+		}
 	}
 }
 
