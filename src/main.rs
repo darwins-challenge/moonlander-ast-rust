@@ -1,3 +1,9 @@
+extern crate ast;
+
 fn main() {
-    println!("Hello, world!");
+	let program: ast::Program = ast::Program::Command;
+
+	match program {
+		ast::Program::Command => println!("Found an action")
+	}
 }
