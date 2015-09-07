@@ -1,3 +1,10 @@
 pub enum Program {
-	Command,
+	Command(Command),
+}
+
+pub enum Command {
+	Skip,
+	Left,
+	Right,
+	Up
 }
