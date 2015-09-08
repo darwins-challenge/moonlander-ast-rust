@@ -4,7 +4,7 @@ use ast::Evaluate;
 
 fn main() {
 	let program: ast::Program = ast::Program::If(
-		ast::Condition::False, 
+		ast::Condition::Not(Box::new(ast::Condition::False)), 
 		Box::new(ast::Program::Command(ast::Command::Left)),
 		Box::new(ast::Program::Command(ast::Command::Right))
 	);
