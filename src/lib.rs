@@ -70,18 +70,27 @@ impl BooleanValue for Condition {
 	}
 }
 
+pub struct SensorData {
+	pub x: f32,
+	pub y: f32,
+	pub vx: f32,
+	pub vy: f32,
+	pub o: f32,
+	pub w: f32
+}
+
 pub trait Evaluate {
-	fn evaluate(&self) -> Box<&Command>;
+	fn evaluate(&self, sensor_data: SensorData) -> Box<&Command>;
 }
 
 impl Evaluate for Program {
-	fn evaluate(&self) -> Box<&Command> {
+	fn evaluate(&self, sensor_data: SensorData) -> Box<&Command> {
 		match *self {
 			Program::If(ref condition, ref true_program, ref false_program) => {
 				if (*condition).value() {
-					Box::new(*true_program.evaluate())
+					Box::new(*true_program.evaluate(sensor_data))
 				} else {
-					Box::new(*false_program.evaluate())
+					Box::new(*false_program.evaluate(sensor_data))
 				}
 			},
 			Program::Command(ref command) => Box::new(command),
