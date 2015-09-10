@@ -20,10 +20,20 @@ pub enum Condition {
 
 pub enum Expression {
 	Constant(f32),
+	Sensor(Sensor),
 	Plus(Box<Expression>, Box<Expression>),
 	Minus(Box<Expression>, Box<Expression>),
 	Multiply(Box<Expression>, Box<Expression>),
 	Divide(Box<Expression>, Box<Expression>),
+}
+
+pub enum Sensor {
+	X,
+	Y,
+	Vx,
+	Vy,
+	O,
+	W,
 }
 
 pub enum Command {
@@ -34,42 +44,57 @@ pub enum Command {
 }
 
 pub trait NumericValue {
-	fn value(&self) -> f32;
+	fn value(&self, sensor_data: SensorData) -> f32;
 }
 
 impl NumericValue for Expression {
-	fn value(&self) -> f32 {
+	fn value(&self, sensor_data: SensorData) -> f32 {
 		match *self {
-			Expression::Constant(value) => value,
-			Expression::Plus(ref left, ref right)     => left.value() + right.value(),
-			Expression::Minus(ref left, ref right)    => left.value() - right.value(),
-			Expression::Multiply(ref left, ref right) => left.value() * right.value(),
-			Expression::Divide(ref left, ref right)   => left.value() / right.value()
+			Expression::Constant(value)               => value,
+			Expression::Sensor(ref sensor)            => sensor.value(sensor_data), 
+			Expression::Plus(ref left, ref right)     => left.value(sensor_data) + right.value(sensor_data),
+			Expression::Minus(ref left, ref right)    => left.value(sensor_data) - right.value(sensor_data),
+			Expression::Multiply(ref left, ref right) => left.value(sensor_data) * right.value(sensor_data),
+			Expression::Divide(ref left, ref right)   => left.value(sensor_data) / right.value(sensor_data)
 		}
 	}
 }
 
+
+impl NumericValue for Sensor {
+	fn value(&self, sensor_data: SensorData) -> f32 {
+		match *self {
+			Sensor::X  => sensor_data.x,
+			Sensor::Y  => sensor_data.y,
+			Sensor::Vx => sensor_data.vx,
+			Sensor::Vy => sensor_data.vy,
+			Sensor::O  => sensor_data.o,
+			Sensor::W  => sensor_data.w,
+		}
+	}
+}
 pub trait BooleanValue {
-	fn value(&self) -> bool;
+	fn value(&self, sensor_data: SensorData) -> bool;
 }
 
 impl BooleanValue for Condition {
-	fn value(&self) -> bool {
+	fn value(&self, sensor_data: SensorData) -> bool {
 		match *self {
 			Condition::True                              => true,
 			Condition::False                             => false,
-			Condition::Not(ref condition)                => !(*condition).value(),
-			Condition::Or(ref left, ref right)           => (*left).value() || (*right).value(),
-			Condition::And(ref left, ref right)          => (*left).value() && (*right).value(),
-			Condition::Less(ref left, ref right)         => (*left).value() <  (*right).value(),
-			Condition::LessEqual(ref left, ref right)    => (*left).value() <= (*right).value(),
-			Condition::Equal(ref left, ref right)        => (*left).value() == (*right).value(),
-			Condition::GreaterEqual(ref left, ref right) => (*left).value() >= (*right).value(),
-			Condition::Greater(ref left, ref right)      => (*left).value() >  (*right).value(),
+			Condition::Not(ref condition)                => !(*condition).value(sensor_data),
+			Condition::Or(ref left, ref right)           => (*left).value(sensor_data) || (*right).value(sensor_data),
+			Condition::And(ref left, ref right)          => (*left).value(sensor_data) && (*right).value(sensor_data),
+			Condition::Less(ref left, ref right)         => (*left).value(sensor_data) <  (*right).value(sensor_data),
+			Condition::LessEqual(ref left, ref right)    => (*left).value(sensor_data) <= (*right).value(sensor_data),
+			Condition::Equal(ref left, ref right)        => (*left).value(sensor_data) == (*right).value(sensor_data),
+			Condition::GreaterEqual(ref left, ref right) => (*left).value(sensor_data) >= (*right).value(sensor_data),
+			Condition::Greater(ref left, ref right)      => (*left).value(sensor_data) >  (*right).value(sensor_data),
 		}
 	}
 }
 
+#[derive(Copy,Clone)]
 pub struct SensorData {
 	pub x: f32,
 	pub y: f32,
@@ -87,7 +112,7 @@ impl Evaluate for Program {
 	fn evaluate(&self, sensor_data: SensorData) -> Box<&Command> {
 		match *self {
 			Program::If(ref condition, ref true_program, ref false_program) => {
-				if (*condition).value() {
+				if (*condition).value(sensor_data) {
 					Box::new(*true_program.evaluate(sensor_data))
 				} else {
 					Box::new(*false_program.evaluate(sensor_data))
