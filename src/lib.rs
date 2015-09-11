@@ -1,3 +1,5 @@
+pub mod macros;
+
 pub enum Program {
 	If(Condition, Box<Program>, Box<Program>),
 	Command(Command),
