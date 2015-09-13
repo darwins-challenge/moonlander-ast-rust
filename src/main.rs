@@ -1,5 +1,6 @@
 #[macro_use]
 extern crate ast;
+extern crate rand;
 
 use ast::Evaluate;
 
@@ -18,4 +19,7 @@ fn main() {
 	};
 
 	println!("action is {}", message);
+
+	let option: bool = rand::random();
+	println!("option is {}", option);
 }
