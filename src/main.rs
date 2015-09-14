@@ -2,20 +2,21 @@
 extern crate ast;
 extern crate rand;
 
-use ast::data::Evaluate;
+use ast::structure::{Program,Command};
+use ast::data::{SensorData,Evaluate};
 
 fn main() {
 	let program: ast::structure::Program = iff!(less!(vx!(), multiply!(constant!(2.0), constant!(3.0))), left!(), right!());
 
-	let data: ast::data::SensorData = ast::data::SensorData { x: 37.0, y: 51.0, vx: 1.0, vy: 0.0, o: 0.0, w: 0.0 };
+	let data: SensorData = SensorData { x: 37.0, y: 51.0, vx: 1.0, vy: 0.0, o: 0.0, w: 0.0 };
 
 	let command = program.evaluate(data);
 
 	let message = match **command {
-		ast::structure::Command::Skip  => "skip",
-		ast::structure::Command::Left  => "turnLeft",
-		ast::structure::Command::Right => "turnRight",
-		ast::structure::Command::Up    => "thruster",
+		Command::Skip  => "skip",
+		Command::Left  => "turnLeft",
+		Command::Right => "turnRight",
+		Command::Up    => "thruster",
 	};
 
 	println!("action is {}", message);
