@@ -1,129 +1,129 @@
 #[macro_export]
 macro_rules! iff {
-	($condition: expr, $left: expr, $right: expr) => (ast::Program::If($condition, Box::new($left), Box::new($right)))
+	($condition: expr, $left: expr, $right: expr) => (ast::structure::Program::If($condition, Box::new($left), Box::new($right)))
 }
 
 #[macro_export]
 macro_rules! T {
-	() => (ast::Condition::True)
+	() => (ast::structure::Condition::True)
 }
 
 #[macro_export]
 macro_rules! F {
-	() => (ast::Condition::False)
+	() => (ast::structure::Condition::False)
 }
 
 #[macro_export]
 macro_rules! not {
-	($condition: expr) => (ast::Condition::Not($condition))
+	($condition: expr) => (ast::structure::Condition::Not($condition))
 }
 
 #[macro_export]
 macro_rules! or {
-	($left: expr, $right: expr) => (ast::Condition::Or(Box::new($left), Box::new($right)))
+	($left: expr, $right: expr) => (ast::structure::Condition::Or(Box::new($left), Box::new($right)))
 }
 
 #[macro_export]
 macro_rules! and {
-	($left: expr, $right: expr) => (ast::Condition::And(Box::new($left), Box::new($right)))
+	($left: expr, $right: expr) => (ast::structure::Condition::And(Box::new($left), Box::new($right)))
 }
 
 #[macro_export]
 macro_rules! less {
-	($left: expr, $right: expr) => (ast::Condition::Less(Box::new($left), Box::new($right)))
+	($left: expr, $right: expr) => (ast::structure::Condition::Less(Box::new($left), Box::new($right)))
 }
 
 #[macro_export]
 macro_rules! less_equal {
-	($left: expr, $right: expr) => (ast::Condition::LessEqual(Box::new($left), Box::new($right)))
+	($left: expr, $right: expr) => (ast::structure::Condition::LessEqual(Box::new($left), Box::new($right)))
 }
 
 #[macro_export]
 macro_rules! equal {
-	($left: expr, $right: expr) => (ast::Condition::Equal(Box::new($left), Box::new($right)))
+	($left: expr, $right: expr) => (ast::structure::Condition::Equal(Box::new($left), Box::new($right)))
 }
 
 #[macro_export]
 macro_rules! greater_equal {
-	($left: expr, $right: expr) => (ast::Condition::GreaterEqual(Box::new($left), Box::new($right)))
+	($left: expr, $right: expr) => (ast::structure::Condition::GreaterEqual(Box::new($left), Box::new($right)))
 }
 
 #[macro_export]
 macro_rules! greater {
-	($left: expr, $right: expr) => (ast::Condition::Greater(Box::new($left), Box::new($right)))
+	($left: expr, $right: expr) => (ast::structure::Condition::Greater(Box::new($left), Box::new($right)))
 }
 
 #[macro_export]
 macro_rules! constant {
-	($value: expr) => (ast::Expression::Constant($value))
+	($value: expr) => (ast::structure::Expression::Constant($value))
 }
 
 #[macro_export]
 macro_rules! x {
-	() => (ast::Expression::Sensor(ast::Sensor::X))
+	() => (ast::structure::Expression::Sensor(ast::structure::Sensor::X))
 }
 
 #[macro_export]
 macro_rules! y {
-	() => (ast::Expression::Sensor(ast::Sensor::Y))
+	() => (ast::structure::Expression::Sensor(ast::structure::Sensor::Y))
 }
 
 #[macro_export]
 macro_rules! vx {
-	() => (ast::Expression::Sensor(ast::Sensor::Vx))
+	() => (ast::structure::Expression::Sensor(ast::structure::Sensor::Vx))
 }
 
 #[macro_export]
 macro_rules! vy {
-	() => (ast::Expression::Sensor(ast::Sensor::Vy))
+	() => (ast::structure::Expression::Sensor(ast::structure::Sensor::Vy))
 }
 
 #[macro_export]
 macro_rules! o {
-	() => (ast::Expression::Sensor(ast::Sensor::O))
+	() => (ast::structure::Expression::Sensor(ast::structure::Sensor::O))
 }
 
 #[macro_export]
 macro_rules! w {
-	() => (ast::Expression::Sensor(ast::Sensor::ws))
+	() => (ast::structure::Expression::Sensor(ast::structure::Sensor::ws))
 }
 
 #[macro_export]
 macro_rules! plus {
-	($left: expr, $right: expr) => (ast::Expression::Plus(Box::new($left), Box::new($right)))
+	($left: expr, $right: expr) => (ast::structure::Expression::Plus(Box::new($left), Box::new($right)))
 }
 
 #[macro_export]
 macro_rules! minus {
-	($left: expr, $right: expr) => (ast::Expression::Minus(Box::new($left), Box::new($right)))
+	($left: expr, $right: expr) => (ast::structure::Expression::Minus(Box::new($left), Box::new($right)))
 }
 
 #[macro_export]
 macro_rules! multiply {
-	($left: expr, $right: expr) => (ast::Expression::Multiply(Box::new($left), Box::new($right)))
+	($left: expr, $right: expr) => (ast::structure::Expression::Multiply(Box::new($left), Box::new($right)))
 }
 
 #[macro_export]
 macro_rules! divide {
-	($left: expr, $right: expr) => (ast::Expression::Divide(Box::new($left), Box::new($right)))
+	($left: expr, $right: expr) => (ast::structure::Expression::Divide(Box::new($left), Box::new($right)))
 }
 
 #[macro_export]
 macro_rules! skip {
-	() => (ast::Program::Command(ast::Command::Right));
+	() => (ast::structure::Program::Command(ast::structure::Command::Right));
 }
 
 #[macro_export]
 macro_rules! left {
-	() => (ast::Program::Command(ast::Command::Left))
+	() => (ast::structure::Program::Command(ast::structure::Command::Left))
 }
 
 #[macro_export]
 macro_rules! right {
-	() => (ast::Program::Command(ast::Command::Right))
+	() => (ast::structure::Program::Command(ast::structure::Command::Right))
 }
 
 #[macro_export]
 macro_rules! up {
-	() => (ast::Program::Command(ast::Command::Up))
+	() => (ast::structure::Program::Command(ast::structure::Command::Up))
 }

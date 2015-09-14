@@ -1,4 +1,4 @@
-use super::{Program,Condition,Command,Expression,Sensor};
+use super::structure::{Program,Condition,Command,Expression,Sensor};
 
 #[derive(Copy,Clone)]
 pub struct SensorData {
