@@ -3,7 +3,6 @@ pub enum Program {
 	Command(Command),
 }
 
-
 pub enum Condition {
 	True,
 	False,
