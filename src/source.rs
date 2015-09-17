@@ -1,5 +1,6 @@
 use super::structure::{Program,Condition,Command,Expression,Sensor};
 
+/// Representation of an `ast::structure::Program`
 pub trait Source {
 	fn source(&self) -> String;
 }
