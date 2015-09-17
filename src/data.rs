@@ -1,15 +1,24 @@
 use super::structure::{Program,Condition,Command,Expression,Sensor};
 
+/// `SensorData` represents the information that is available for programs to decide what `ast::structure::Command`
+/// to execute when it is evaluated.
+///
+/// # Examples
+///
+/// ```
+/// let data = ast::data::SensorData { x: 37.0, y: 51.0, vx: 1.0, vy: 0.0, o: 0.0, w: 0.0 };
+/// ```
 #[derive(Copy,Clone)]
 pub struct SensorData {
-	pub x: f32,
-	pub y: f32,
+	pub x:  f32,
+	pub y:  f32,
 	pub vx: f32,
 	pub vy: f32,
-	pub o: f32,
-	pub w: f32
+	pub o:  f32,
+	pub w:  f32
 }
 
+/// `Evaluate` returns a specific `ast::structure::Command` to execute, depending on `ast::data::SensorData`
 pub trait Evaluate {
 	fn evaluate(&self, sensor_data: SensorData) -> Box<&Command>;
 }
@@ -29,6 +38,7 @@ impl Evaluate for Program {
 	}
 }
 
+/// The numeric value of an `ast::structure::Expression`
 pub trait NumericValue {
 	fn value(&self, sensor_data: SensorData) -> f32;
 }
@@ -46,7 +56,6 @@ impl NumericValue for Expression {
 	}
 }
 
-
 impl NumericValue for Sensor {
 	fn value(&self, sensor_data: SensorData) -> f32 {
 		match *self {
@@ -59,6 +68,8 @@ impl NumericValue for Sensor {
 		}
 	}
 }
+
+/// The truth value of an `ast::structure::Condition`
 pub trait BooleanValue {
 	fn value(&self, sensor_data: SensorData) -> bool;
 }
