@@ -23,6 +23,6 @@ fn main() {
 	println!("{}", program.source());
 	println!("action is {}", message);
 
-	let option: bool = rand::random();
-	println!("option is {}", option);
+	let generated: Program = rand::random();
+	println!("{}", generated.source());
 }
