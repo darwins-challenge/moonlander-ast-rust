@@ -1,6 +1,9 @@
 #[macro_use]
 extern crate ast;
 extern crate rand;
+extern crate rustc_serialize;
+
+use rustc_serialize::json;
 
 use ast::structure::{Program,Command};
 use ast::data::{SensorData,Evaluate};
@@ -21,6 +24,7 @@ fn main() {
 	};
 
 	println!("{}", program.source());
+	println!("{}", json::encode(&program).unwrap());
 	println!("action is {}", message);
 
 	let generated: Program = rand::random();
