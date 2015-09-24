@@ -16,6 +16,7 @@
 /// );
 /// ```
 ///
+#[derive(RustcDecodable,RustcEncodable)]
 pub enum Program {
 	If(Condition, Box<Program>, Box<Program>),
 	Command(Command),
@@ -43,6 +44,7 @@ pub enum Program {
 ///   ))
 /// );
 /// ```
+#[derive(RustcDecodable,RustcEncodable)]
 pub enum Condition {
 	True,
 	False,
@@ -74,6 +76,7 @@ pub enum Condition {
 ///   Box::new(ast::structure::Expression::Sensor(ast::structure::Sensor::Vx))
 /// );
 /// ```
+#[derive(RustcDecodable,RustcEncodable)]
 pub enum Expression {
 	Constant(f32),
 	Sensor(Sensor),
@@ -96,6 +99,7 @@ pub enum Expression {
 ///
 /// let sensor: ast::structure::Sensor = ast::structure::Sensor::Vy;
 /// ```
+#[derive(RustcDecodable,RustcEncodable)]
 pub enum Sensor {
 	X,
 	Y,
@@ -116,6 +120,7 @@ pub enum Sensor {
 ///
 /// let command: ast::structure::Command = ast::structure::Command::Skip;
 /// ```
+#[derive(RustcDecodable,RustcEncodable)]
 pub enum Command {
 	Skip,
 	Left,
