@@ -27,6 +27,6 @@ fn main() {
 	println!("{}", json::encode(&program).unwrap());
 	println!("action is {}", message);
 
-	let generated: Program = rand::random();
-	println!("{}", generated.source());
+	// let generated: Program = rand::random();
+	// println!("{}", generated.source());
 }
