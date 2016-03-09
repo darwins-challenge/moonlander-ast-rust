@@ -1,5 +1,7 @@
 extern crate rand;
 
+pub use self::rand::Rng;
+
 use super::structure::{Program,Condition,Command,Expression,Sensor};
 
 impl rand::Rand for Program {
@@ -68,4 +70,15 @@ impl rand::Rand for Sensor {
 			_ => panic!(),
 		}
 	}
+}
+
+#[macro_export]
+macro_rules! pick {
+    ($total: expr, $( $lower: expr, $upper: expr, $expression: expr),+) => {{
+        let mut rng = rand::thread_rng();
+		    match rng.gen_range(0, $total) {
+            $( i @ $lower...$upper if i < $upper => $expression,)+
+			      _ => panic!(),
+		    }
+    }}
 }
