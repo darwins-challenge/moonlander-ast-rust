@@ -4,6 +4,17 @@ pub use self::rand::Rng;
 
 use super::structure::{Program,Condition,Command,Expression,Sensor};
 
+#[macro_export]
+macro_rules! pick {
+    ($total: expr, $( $lower: expr, $upper: expr, $expression: expr),+) => {{
+        let mut rng = rand::thread_rng();
+		    match rng.gen_range(0, $total) {
+            $( i @ $lower...$upper if i < $upper => $expression,)+
+			      _ => panic!(),
+		    }
+    }}
+}
+
 impl rand::Rand for Program {
 	fn rand<R: rand::Rng>(rng: &mut R) -> Self {
 		match rng.gen_range(0, 2) {
@@ -70,15 +81,4 @@ impl rand::Rand for Sensor {
 			_ => panic!(),
 		}
 	}
-}
-
-#[macro_export]
-macro_rules! pick {
-    ($total: expr, $( $lower: expr, $upper: expr, $expression: expr),+) => {{
-        let mut rng = rand::thread_rng();
-		    match rng.gen_range(0, $total) {
-            $( i @ $lower...$upper if i < $upper => $expression,)+
-			      _ => panic!(),
-		    }
-    }}
 }
