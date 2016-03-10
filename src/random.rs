@@ -5,7 +5,7 @@ pub use self::rand::Rng;
 use super::structure::{Program,Condition,Command,Expression,Sensor};
 
 #[macro_export]
-macro_rules! pick {
+macro_rules! pickWeighted {
     ($total: expr, $( $lower: expr, $upper: expr, $expression: expr),+) => {{
         let mut rng = rand::thread_rng();
 		    match rng.gen_range(0, $total) {
