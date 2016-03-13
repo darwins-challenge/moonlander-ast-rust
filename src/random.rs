@@ -33,9 +33,9 @@ impl rand::Rand for Program {
 impl rand::Rand for Condition {
 	  fn rand<R: rand::Rng>(rng: &mut R) -> Self {
         pick![
-            1, Condition::True,
-			      1, Condition::False,
-			      1, Condition::Not(Box::new(Condition::rand(rng))),
+            8, Condition::True,
+			      8, Condition::False,
+			      2, Condition::Not(Box::new(Condition::rand(rng))),
 			      1, Condition::Or(Box::new(Condition::rand(rng)), Box::new(Condition::rand(rng))),
 			      1, Condition::And(Box::new(Condition::rand(rng)), Box::new(Condition::rand(rng))),
 			      1, Condition::Less(Box::new(Expression::rand(rng)), Box::new(Expression::rand(rng))),
@@ -56,8 +56,8 @@ impl rand::Rand for Command {
 impl rand::Rand for Expression {
 	  fn rand<R: rand::Rng>(rng: &mut R) -> Self {
         pick![
-            1, Expression::Constant(rng.next_f32()),
-            1, Expression::Sensor(Sensor::rand(rng)),
+            5, Expression::Constant(rng.next_f32()),
+            5, Expression::Sensor(Sensor::rand(rng)),
             1, Expression::Plus(Box::new(Expression::rand(rng)), Box::new(Expression::rand(rng))),
             1, Expression::Minus(Box::new(Expression::rand(rng)), Box::new(Expression::rand(rng))),
             1, Expression::Multiply(Box::new(Expression::rand(rng)), Box::new(Expression::rand(rng))),
