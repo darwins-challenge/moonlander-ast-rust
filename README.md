@@ -1,5 +1,5 @@
 # moonlander-ast-rust [![Build Status](https://travis-ci.org/darwins-challenge/moonlander-ast-rust.svg?branch=master)](https://travis-ci.org/darwins-challenge/moonlander-ast-rust)
-Code to create, manipulate and evaluate abstract syntax tree for the moonlander control code in Rust.
+Code to create, manipulate and evaluate abstract syntax trees for the moonlander control code in Rust.
 
 Learn more about this crate via the [documentation][].
 
