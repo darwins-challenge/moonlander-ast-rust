@@ -12,8 +12,3 @@ license = "MIT"
 [dependencies]
 rand = "0.3"
 rustc-serialize = "0.3"
-
-[[bin]]
-doc=false
-name="command"
-path="src/main.rs"

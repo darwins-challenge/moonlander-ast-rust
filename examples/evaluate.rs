@@ -4,11 +4,9 @@ extern crate rand;
 extern crate rustc_serialize;
 
 pub use rand::Rng;
-use rustc_serialize::json;
 
 use ast::structure::{Program,Command};
 use ast::data::{SensorData,Evaluate};
-use ast::source::Source;
 
 fn main() {
 	  let program: Program = iff!(less!(vx!(),multiply!(constant!(2.0000),constant!(3.0000))),left!(),right!());
@@ -19,15 +17,10 @@ fn main() {
 
 	  let message = match **command {
 		    Command::Skip  => "skip",
-		    Command::Left  => "turnLeft",
-		    Command::Right => "turnRight",
-		    Command::Up    => "thruster",
+		    Command::Left  => "left",
+		    Command::Right => "right",
+		    Command::Up    => "up",
 	  };
 
-	  println!("{}", program.source());
-	  println!("{}", json::encode(&program).unwrap());
-	  println!("action is {}", message);
-
-    let generated: Program = rand::random();
-	  println!("{}", generated.source());
+	  println!("message is {}", message);
 }
