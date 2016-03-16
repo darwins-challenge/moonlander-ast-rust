@@ -2,6 +2,12 @@
 name = "ast"
 version = "0.1.0"
 authors = ["dvberkel <daan.v.berkel.1980@gmail.com>"]
+description = "Code to create, manipulate and evaluate abstract syntax trees for the moonlander control code in Rust."
+documentation = "http://darwins-challenge.github.io/moonlander-ast-rust/"
+repository = "https://github.com/darwins-challenge/moonlander-ast-rust"
+readme = "README.md"
+keywords = ["genetic programming", "moon lander"]
+license = "MIT"
 
 [dependencies]
 rand = "0.3"
