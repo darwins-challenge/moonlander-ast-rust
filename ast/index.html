@@ -46,7 +46,7 @@
             <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                 [<span class='inner'>&#x2212;</span>]
             </a>
-        </span><a id='src-0' class='srclink' href='../src/ast/lib.rs.html#1-19' title='goto source code'>[src]</a></span></h1>
+        </span><a id='src-0' class='srclink' href='../src/ast/src/lib.rs.html#1-19' title='goto source code'>[src]</a></span></h1>
 <div class='docblock'><p>This crate explores <a href="https://en.wikipedia.org/wiki/Genetic_programming">genetic
 programming</a>. Genetic
 programming is</p>
@@ -67,7 +67,8 @@ found <a href="http://moonlander.seb.ly/">here</a>.</p>
                         <td><a class='mod' href='data/index.html'
                                title='ast::data'>data</a></td>
                         <td class='docblock short'>
-                             
+                             <p>The <code>data</code> model is responsible for creation and evaluation of data in the
+moon lander domain.</p>
                         </td>
                     </tr>
                 
@@ -91,7 +92,11 @@ found <a href="http://moonlander.seb.ly/">here</a>.</p>
                         <td><a class='mod' href='structure/index.html'
                                title='ast::structure'>structure</a></td>
                         <td class='docblock short'>
-                             
+                             <p>The <code>structure</code> is the abstract syntax tree for the moon lander control
+code. It is the hearth of the crate. Creating a <code>Program</code> by hand is a little
+bit tedious. The tedium is a little bit relieved with the introduction of
+<a href="../index.html#macros">macros</a>, the possibility to read from and write to
+JSON and to generate a <a href="../random/index.html">random program</a>.</p>
                         </td>
                     </tr>
                 </table><h2 id='macros' class='section-header'><a href="#macros">Macros</a></h2>
@@ -354,7 +359,7 @@ found <a href="http://moonlander.seb.ly/">here</a>.</p>
 
                 <p>
                     Search functions by type signature (e.g.
-                    <code>vec -> usize</code>)
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
                 </p>
             </div>
         </div>
