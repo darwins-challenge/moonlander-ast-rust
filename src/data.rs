@@ -1,3 +1,11 @@
+//! The `data` model is responsible for creation and evaluation of data in the
+//! moon lander domain.
+//!
+//! The center piece is [`ast::data::SensorData`](struct.SensorData.html) that
+//! gets evaluated by a
+//! [`ast::structure::Program`](../structure/enum.Program.html) to produce a
+//! [`ast::structure::Command`](../structure/enum.Command.html).
+
 use super::structure::{Program,Condition,Command,Expression,Sensor};
 
 /// `SensorData` represents the information that is available for programs to decide what `ast::structure::Command`
