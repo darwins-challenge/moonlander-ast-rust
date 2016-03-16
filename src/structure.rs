@@ -1,3 +1,9 @@
+//! The `structure` is the abstract syntax tree for the moon lander control
+//! code. It is the hearth of the crate. Creating a `Program` by hand is a little
+//! bit tedious. The tedium is a little bit relieved with the introduction of
+//! [macros](../index.html#macros), the possibility to read from and write to
+//! JSON and to generate a [random program](../random/index.html).
+
 /// The `Program` enum is the root of the abstract syntax tree.
 ///
 /// `Program` is either a single `Command` or an `If`-statement.
