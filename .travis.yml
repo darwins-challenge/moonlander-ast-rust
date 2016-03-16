@@ -8,3 +8,9 @@ script:
   - cargo build --verbose
   - cargo test --verbose
   - cargo doc
+after_success: |
+  [ $TRAVIS_BRANCH = master ] &&
+  bash deploy-documentation.sh
+env:
+  global:
+    - secure: HeOIAhQ+MCs0RVa1zYp2ScfZ60klH+qheBgqUQ2+s2Zf8mg+MKkxgPSxe7Ymp18WIeeE2pc+LntVvj4Y+0jPOKgCn3Ly0pbhqz4Et5gIAubtcQ6iGKV3NV3P7zNAANQ8Te/UWf1cwKg2XZSeKnSsXF6Zt06t96xn0uGDA+fZT8S265NRHDBWfwxg8Knia9S7oQzEilisHOCxTbjcp5Rm9h6YTmcE7xc1XSVjgvhadQhSXjcrVJtueWsCLO0ncsIcdry0FThaQ2o542EyAwsJ8PcFEZLGMWWmQBlvv/Oo9eeKQrCHU5edCF0D6BgRtEzzPc/wVUDbkLCYgmfirdd+3BdN9JD5A+YZuDFwYTuEqIi8+TuT6pnELIAwZePKK0EQyP4gSHZx+cPoSSLEE0rCcnCgvv5YoXp/PCDLMDq961j4NhDjqLeABcmXLeR5CjgJFQNg+vjUFgh/oqkLdMuoe14to78GjFdvBAusR1cn0PWpCzTvFcq4E4Q2TUiLgY4q7Y1+6G5GIMEZV02jCH8AF95E6WrmvCDdZJ9zqc1uQlaAm3Fo0EvE08hHue8Y6vJmz2+iN34XDvRWeU/3nA0UYp0v5Ps89UXPzMAvAURvE5EgWgk1GRFUdx/iN1SiK4J+AXNg7pKtC/+6/Qs9WWKAb7980W7Th6fmHCZgJ4Xj78s=
