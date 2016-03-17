@@ -46,8 +46,30 @@
             <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                 [<span class='inner'>&#x2212;</span>]
             </a>
-        </span><a id='src-634' class='srclink' href='../../src/ast/src/random.rs.html#1-73' title='goto source code'>[src]</a></span></h1>
-<h2 id='traits' class='section-header'><a href="#traits">Traits</a></h2>
+        </span><a id='src-634' class='srclink' href='../../src/ast/src/random.rs.html#1-98' title='goto source code'>[src]</a></span></h1>
+<div class='docblock'><p>The <code>random</code> module creates random <code>ast::structure::Program</code>.</p>
+
+<p>It implements <code>rand::Rand</code> for all important structures. It does this by
+making use of a macro <code>pick</code> that can choose an expression according to
+weight.</p>
+
+<h1 id='examples' class='section-header'><a href='#examples'>Examples</a></h1>
+<pre class='rust rust-example-rendered'>
+<span class='attribute'>#[<span class='ident'>macro_use</span>]</span>
+<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>ast</span>;
+<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>rand</span>;
+<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>rustc_serialize</span>;
+
+<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>rand</span>::<span class='ident'>Rng</span>;
+
+<span class='kw'>use</span> <span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Program</span>;
+<span class='kw'>use</span> <span class='ident'>ast</span>::<span class='ident'>source</span>::<span class='ident'>Source</span>;
+
+<span class='kw'>fn</span> <span class='ident'>main</span>() {
+    <span class='kw'>let</span> <span class='ident'>generated</span>: <span class='ident'>Program</span> <span class='op'>=</span> <span class='ident'>rand</span>::<span class='ident'>random</span>();
+    <span class='macro'>println</span><span class='macro'>!</span>(<span class='string'>&quot;{}&quot;</span>, <span class='ident'>generated</span>.<span class='ident'>source</span>());
+}</pre>
+</div><h2 id='traits' class='section-header'><a href="#traits">Traits</a></h2>
 <table>
                     <tr class=' module-item'>
                         <td><a class='trait' href='trait.Rng.html'
