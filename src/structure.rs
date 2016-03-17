@@ -1,5 +1,7 @@
 //! The `structure` is the abstract syntax tree for the moon lander control
-//! code. It is the hearth of the crate. Creating a `Program` by hand is a little
+//! code.
+//!
+//! It is the hearth of the crate. Creating a `Program` by hand is a little
 //! bit tedious. The tedium is a little bit relieved with the introduction of
 //! [macros](../index.html#macros), the possibility to read from and write to
 //! JSON and to generate a [random program](../random/index.html).
