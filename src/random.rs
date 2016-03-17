@@ -1,3 +1,28 @@
+//! The `random` module creates random `ast::structure::Program`.
+//!
+//! It implements `rand::Rand` for all important structures. It does this by
+//! making use of a macro `pick` that can choose an expression according to
+//! weight.
+//!
+//! # Examples
+//!
+//! ```
+//! #[macro_use]
+//! extern crate ast;
+//! extern crate rand;
+//! extern crate rustc_serialize;
+//!
+//! pub use rand::Rng;
+//!
+//! use ast::structure::Program;
+//! use ast::source::Source;
+//!
+//! fn main() {
+//!     let generated: Program = rand::random();
+//!     println!("{}", generated.source());
+//! }
+//! ```
+
 extern crate rand;
 
 pub use self::rand::Rng;
