@@ -1,3 +1,7 @@
+//! The `source` module provides a representation of `ast::structure::Program`s
+//!
+//! It defines a trait `Source` that sources a `ast::structure::Program` to a `String`. 
+
 use super::structure::{Program,Condition,Command,Expression,Sensor};
 
 /// Representation of an `ast::structure::Program`
