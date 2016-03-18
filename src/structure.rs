@@ -20,7 +20,7 @@
 /// let program: ast::structure::Program = ast::structure::Program::If(
 ///	  ast::structure::Condition::True,
 ///   Box::new(ast::structure::Program::Command(ast::structure::Command::Skip)),
-///   Box::new(ast::structure::Program::Command(ast::structure::Command::Up))
+///   Box::new(ast::structure::Program::Command(ast::structure::Command::Thrust))
 /// );
 /// ```
 ///
@@ -133,5 +133,5 @@ pub enum Command {
 	Skip,
 	Left,
 	Right,
-	Up
+	Thrust
 }

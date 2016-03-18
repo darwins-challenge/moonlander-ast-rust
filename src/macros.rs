@@ -124,6 +124,6 @@ macro_rules! right {
 }
 
 #[macro_export]
-macro_rules! up {
-	() => (ast::structure::Program::Command(ast::structure::Command::Up))
+macro_rules! thrust {
+	() => (ast::structure::Program::Command(ast::structure::Command::Thrust))
 }

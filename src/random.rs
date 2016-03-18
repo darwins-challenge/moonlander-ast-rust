@@ -76,7 +76,7 @@ impl rand::Rand for Condition {
 
 impl rand::Rand for Command {
 	fn rand<R: rand::Rng>(_: &mut R) -> Self {
-		  pick![1, Command::Skip, 1, Command::Left, 1, Command::Right, 1, Command::Up]
+		  pick![1, Command::Skip, 1, Command::Left, 1, Command::Right, 1, Command::Thrust]
   }
 }
 

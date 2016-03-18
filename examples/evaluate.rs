@@ -16,10 +16,10 @@ fn main() {
 	  let command = program.evaluate(data);
 
 	  let message = match **command {
-		    Command::Skip  => "skip",
-		    Command::Left  => "left",
-		    Command::Right => "right",
-		    Command::Up    => "up",
+		    Command::Skip   => "skip",
+		    Command::Left   => "left",
+		    Command::Right  => "right",
+		    Command::Thrust => "thrust",
 	  };
 
 	  println!("message is {}", message);

@@ -65,10 +65,10 @@ impl Source for Sensor {
 impl Source for Command {
 	fn source(&self) -> String {
 		match *self {
-			Command::Skip  => format!("skip!()"),
-			Command::Left  => format!("left!()"),
-			Command::Right => format!("right!()"),
-			Command::Up    => format!("up!()"),
+			Command::Skip   => format!("skip!()"),
+			Command::Left   => format!("left!()"),
+			Command::Right  => format!("right!()"),
+			Command::Thrust => format!("thrust!()"),
 		}
 	}
 }
@@ -133,6 +133,6 @@ mod tests {
 	      assert_eq!("skip!()",  Command::Skip.source());
 	      assert_eq!("left!()",  Command::Left.source());
 	      assert_eq!("right!()", Command::Right.source());
-	      assert_eq!("up!()",    Command::Up.source());
+	      assert_eq!("thrust!()",    Command::Thrust.source());
     }
 }
