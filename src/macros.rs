@@ -110,7 +110,7 @@ macro_rules! divide {
 
 #[macro_export]
 macro_rules! skip {
-	() => (ast::structure::Program::Command(ast::structure::Command::Right));
+	() => (ast::structure::Program::Command(ast::structure::Command::Skip));
 }
 
 #[macro_export]
