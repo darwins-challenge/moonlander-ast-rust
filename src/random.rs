@@ -29,6 +29,8 @@ pub use self::rand::Rng;
 
 use super::structure::{Program,Condition,Command,Expression,Sensor};
 
+/// The `pick` macro allows to randomly select one expression from a sequence of
+/// expressions according to associated weights.
 #[macro_export]
 macro_rules! pick {
     ($( $weight: expr, $expression: expr),+) => {{
