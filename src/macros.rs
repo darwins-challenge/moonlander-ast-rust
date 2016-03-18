@@ -85,7 +85,7 @@ macro_rules! o {
 
 #[macro_export]
 macro_rules! w {
-	() => (ast::structure::Expression::Sensor(ast::structure::Sensor::ws))
+	() => (ast::structure::Expression::Sensor(ast::structure::Sensor::W))
 }
 
 #[macro_export]
