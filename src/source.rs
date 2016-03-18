@@ -53,7 +53,7 @@ impl Source for Sensor {
 	fn source(&self) -> String {
 		match *self {
 			Sensor::X  => format!("x!()"),
-			Sensor::Y  => format!("u!()"),
+			Sensor::Y  => format!("y!()"),
 			Sensor::Vx => format!("vx!()"),
 			Sensor::Vy => format!("vy!()"),
 			Sensor::O  => format!("o!()"),
@@ -121,7 +121,7 @@ mod tests {
     #[test]
     fn should_correctly_source_sensors() {
 	      assert_eq!("x!()",  Sensor::X.source());
-	      assert_eq!("u!()",  Sensor::Y.source());
+	      assert_eq!("y!()",  Sensor::Y.source());
 	      assert_eq!("vx!()", Sensor::Vx.source());
 	      assert_eq!("vy!()", Sensor::Vy.source());
 	      assert_eq!("o!()",  Sensor::O.source());

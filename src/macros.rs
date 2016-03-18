@@ -15,7 +15,7 @@ macro_rules! F {
 
 #[macro_export]
 macro_rules! not {
-	($condition: expr) => (ast::structure::Condition::Not($condition))
+	($condition: expr) => (ast::structure::Condition::Not(Box::new($condition)))
 }
 
 #[macro_export]
