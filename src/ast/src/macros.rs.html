@@ -9,8 +9,8 @@
 
     <title>macros.rs.html -- source</title>
 
-    <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
-    <link rel="stylesheet" type="text/css" href="../../main.css">
+    <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../../main.css">
 
     
     
@@ -188,7 +188,7 @@
 
 <span class='attribute'>#[<span class='ident'>macro_export</span>]</span>
 <span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>not</span> {
-	(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>condition</span>: <span class='ident'>expr</span>) <span class='op'>=&gt;</span> (<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Condition</span>::<span class='ident'>Not</span>(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>condition</span>))
+	(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>condition</span>: <span class='ident'>expr</span>) <span class='op'>=&gt;</span> (<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Condition</span>::<span class='ident'>Not</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>condition</span>)))
 }
 
 <span class='attribute'>#[<span class='ident'>macro_export</span>]</span>
@@ -258,7 +258,7 @@
 
 <span class='attribute'>#[<span class='ident'>macro_export</span>]</span>
 <span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>w</span> {
-	() <span class='op'>=&gt;</span> (<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Expression</span>::<span class='ident'>Sensor</span>(<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Sensor</span>::<span class='ident'>ws</span>))
+	() <span class='op'>=&gt;</span> (<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Expression</span>::<span class='ident'>Sensor</span>(<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Sensor</span>::<span class='ident'>W</span>))
 }
 
 <span class='attribute'>#[<span class='ident'>macro_export</span>]</span>
@@ -283,7 +283,7 @@
 
 <span class='attribute'>#[<span class='ident'>macro_export</span>]</span>
 <span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>skip</span> {
-	() <span class='op'>=&gt;</span> (<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Program</span>::<span class='ident'>Command</span>(<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Command</span>::<span class='ident'>Right</span>));
+	() <span class='op'>=&gt;</span> (<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Program</span>::<span class='ident'>Command</span>(<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Command</span>::<span class='ident'>Skip</span>));
 }
 
 <span class='attribute'>#[<span class='ident'>macro_export</span>]</span>
@@ -297,9 +297,10 @@
 }
 
 <span class='attribute'>#[<span class='ident'>macro_export</span>]</span>
-<span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>up</span> {
-	() <span class='op'>=&gt;</span> (<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Program</span>::<span class='ident'>Command</span>(<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Command</span>::<span class='ident'>Up</span>))
-}</pre>
+<span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>thrust</span> {
+	() <span class='op'>=&gt;</span> (<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Program</span>::<span class='ident'>Command</span>(<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Command</span>::<span class='ident'>Thrust</span>))
+}
+</pre>
 </section>
     <section id='search' class="content hidden"></section>
 
@@ -343,7 +344,7 @@
 
                 <p>
                     Search functions by type signature (e.g.
-                    <code>vec -> usize</code>)
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
                 </p>
             </div>
         </div>
@@ -352,13 +353,13 @@
     
 
     <script>
-        window.rootPath = "../../";
+        window.rootPath = "../../../";
         window.currentCrate = "ast";
         window.playgroundUrl = "";
     </script>
-    <script src="../../jquery.js"></script>
-    <script src="../../main.js"></script>
+    <script src="../../../jquery.js"></script>
+    <script src="../../../main.js"></script>
     
-    <script defer src="../../search-index.js"></script>
+    <script defer src="../../../search-index.js"></script>
 </body>
 </html>
