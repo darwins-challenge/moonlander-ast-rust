@@ -14,16 +14,19 @@ use super::structure::{Program,Condition,Command,Expression,Sensor};
 /// # Examples
 ///
 /// ```
-/// let data = ast::data::SensorData { x: 37.0, y: 51.0, vx: 1.0, vy: 0.0, o: 0.0, w: 0.0 };
+/// let data = ast::data::SensorData { x: 37.0, y: 51.0, vx: 1.0, vy: 0.0, o: 0.0, w: 0.0, crashed: false, landed: false, thrusting: false };
 /// ```
 #[derive(Copy,Clone)]
 pub struct SensorData {
-	pub x:  f32,
-	pub y:  f32,
-	pub vx: f32,
-	pub vy: f32,
-	pub o:  f32,
-	pub w:  f32
+	  pub x:  f32,
+	  pub y:  f32,
+	  pub vx: f32,
+	  pub vy: f32,
+	  pub o:  f32,
+	  pub w:  f32,
+    pub crashed: bool,
+    pub landed: bool,
+    pub thrusting: bool,
 }
 
 /// `Evaluate` returns a specific `ast::structure::Command` to execute, depending on `ast::data::SensorData`
