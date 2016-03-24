@@ -16,7 +16,7 @@ pub struct World {
     pub tolerance: f32
 }
 
-pub fn next(sensor_data: &mut SensorData, program: Program, world: World) {
+pub fn next(sensor_data: &mut SensorData, program: &Program, world: &World) {
     if sensor_data.crashed || sensor_data.landed { return; }
     let command = program.evaluate(*sensor_data);
 
@@ -73,7 +73,7 @@ mod tests {
         let program = Program::Command(Command::Skip);
         let world = World { angular_increment: 0.1, gravitational_constant: -0.5, thrust_constant: 0.6, tolerance: 0.0001 };
 
-        next(&mut sensor_data, program, world);
+        next(&mut sensor_data, &program, &world);
 
         assert!(sensor_data.landed);
     }
@@ -84,7 +84,7 @@ mod tests {
         let program = Program::Command(Command::Thrust);
         let world = World { angular_increment: 0.1, gravitational_constant: -0.5, thrust_constant: 0.6, tolerance: 0.0001 };
 
-        next(&mut sensor_data, program, world);
+        next(&mut sensor_data, &program, &world);
 
         assert!(sensor_data.vx < 0.0);
     }
@@ -95,7 +95,7 @@ mod tests {
         let program = Program::Command(Command::Skip);
         let world = World { angular_increment: 0.1, gravitational_constant: -0.5, thrust_constant: 0.6, tolerance: 0.0001 };
 
-        next(&mut sensor_data, program, world);
+        next(&mut sensor_data, &program, &world);
 
         assert!(sensor_data.x > 0.0);
         assert!(sensor_data.y > 0.0);
@@ -107,7 +107,7 @@ mod tests {
         let program = Program::Command(Command::Skip);
         let world = World { angular_increment: 0.1, gravitational_constant: -0.5, thrust_constant: 0.6, tolerance: 0.0001 };
 
-        next(&mut sensor_data, program, world);
+        next(&mut sensor_data, &program, &world);
 
         assert!(sensor_data.o > 0.0);
     }
@@ -118,7 +118,7 @@ mod tests {
         let program = Program::Command(Command::Left);
         let world = World { angular_increment: 0.1, gravitational_constant: -0.5, thrust_constant: 0.6, tolerance: 0.0001 };
 
-        next(&mut sensor_data, program, world);
+        next(&mut sensor_data, &program, &world);
 
         assert!(sensor_data.w > 0.0);
     }
@@ -129,7 +129,7 @@ mod tests {
         let program = Program::Command(Command::Right);
         let world = World { angular_increment: 0.1, gravitational_constant: -0.5, thrust_constant: 0.6, tolerance: 0.0001  };
 
-        next(&mut sensor_data, program, world);
+        next(&mut sensor_data, &program, &world);
 
         assert!(sensor_data.w < 0.0);
     }
@@ -140,7 +140,7 @@ mod tests {
         let program = Program::Command(Command::Thrust);
         let world = World { angular_increment: 0.1, gravitational_constant: -0.5, thrust_constant: 0.6, tolerance: 0.0001  };
 
-        next(&mut sensor_data, program, world);
+        next(&mut sensor_data, &program, &world);
 
         assert!(sensor_data.thrusting);
     }
@@ -151,7 +151,7 @@ mod tests {
         let program = Program::Command(Command::Skip);
         let world = World { angular_increment: 0.1, gravitational_constant: -0.5, thrust_constant: 0.6, tolerance: 0.0001  };
 
-        next(&mut sensor_data, program, world);
+        next(&mut sensor_data, &program, &world);
 
         assert!(!sensor_data.thrusting);
     }
