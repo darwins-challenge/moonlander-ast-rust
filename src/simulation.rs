@@ -9,11 +9,52 @@ fn abs(x: f32) -> f32 {
     }
 }
 
+#[derive(Clone,Copy)]
 pub struct World {
     pub angular_increment: f32,
     pub gravitational_constant: f32,
     pub thrust_constant: f32,
     pub tolerance: f32
+}
+
+impl World {
+    /// Creates a builder for `World`. it should be used in the following sense:
+    ///
+    /// ```
+    /// let world = ast::simulation::World::new().build();
+    /// ```
+    pub fn new() -> World {
+        World {
+            angular_increment: 0.1,
+            gravitational_constant: -0.5,
+            thrust_constant: 0.6,
+            tolerance: 0.01
+        }
+    }
+
+    pub fn with_angular_increment<'a>(&'a mut self, angular_increment: f32) -> &'a mut World {
+        self.angular_increment = angular_increment;
+        self
+    }
+
+    pub fn with_gravitational_constant<'a>(&'a mut self, gravitational_constant: f32) -> &'a mut World {
+        self.gravitational_constant = gravitational_constant;
+        self
+    }
+
+    pub fn with_thrust_constant<'a>(&'a mut self, thrust_constant: f32) -> &'a mut World {
+        self.thrust_constant = thrust_constant;
+        self
+    }
+
+    pub fn with_tolerance<'a>(&'a mut self, tolerance: f32) -> &'a mut World {
+        self.tolerance = tolerance;
+        self
+    }
+
+    pub fn build<'a>(&'a mut self) -> World {
+        *self
+    }
 }
 
 pub fn next(sensor_data: &mut SensorData, program: &Program, world: &World) {
@@ -71,7 +112,7 @@ mod tests {
     fn next_should_land_if_all_motion_is_stopped_and_near_horizon() {
         let mut sensor_data: SensorData = SensorData::new().with_vy(0.5).build();
         let program = Program::Command(Command::Skip);
-        let world = World { angular_increment: 0.1, gravitational_constant: -0.5, thrust_constant: 0.6, tolerance: 0.0001 };
+        let world = World::new().build();
 
         next(&mut sensor_data, &program, &world);
 
@@ -82,7 +123,7 @@ mod tests {
     fn next_should_increment_velocity_with_thrust_constant() {
         let mut sensor_data: SensorData = SensorData::new().with_o(-f32::consts::PI).build();
         let program = Program::Command(Command::Thrust);
-        let world = World { angular_increment: 0.1, gravitational_constant: -0.5, thrust_constant: 0.6, tolerance: 0.0001 };
+        let world = World::new().build();
 
         next(&mut sensor_data, &program, &world);
 
@@ -93,7 +134,7 @@ mod tests {
     fn next_should_increment_position_with_velocity() {
         let mut sensor_data: SensorData = SensorData::new().with_vx(1.0).with_vy(1.0).build();
         let program = Program::Command(Command::Skip);
-        let world = World { angular_increment: 0.1, gravitational_constant: -0.5, thrust_constant: 0.6, tolerance: 0.0001 };
+        let world = World::new().build();
 
         next(&mut sensor_data, &program, &world);
 
@@ -105,7 +146,7 @@ mod tests {
     fn next_should_increment_orientation_with_angular_velocity() {
         let mut sensor_data: SensorData = SensorData::new().with_w(1.0).build();
         let program = Program::Command(Command::Skip);
-        let world = World { angular_increment: 0.1, gravitational_constant: -0.5, thrust_constant: 0.6, tolerance: 0.0001 };
+        let world = World::new().build();
 
         next(&mut sensor_data, &program, &world);
 
@@ -116,7 +157,7 @@ mod tests {
     fn next_should_increment_angular_velocity_when_command_is_left() {
         let mut sensor_data: SensorData = SensorData::new().build();
         let program = Program::Command(Command::Left);
-        let world = World { angular_increment: 0.1, gravitational_constant: -0.5, thrust_constant: 0.6, tolerance: 0.0001 };
+        let world = World::new().build();
 
         next(&mut sensor_data, &program, &world);
 
@@ -127,7 +168,7 @@ mod tests {
     fn next_should_decrement_angular_velocity_when_command_is_right() {
         let mut sensor_data: SensorData = SensorData::new().build();
         let program = Program::Command(Command::Right);
-        let world = World { angular_increment: 0.1, gravitational_constant: -0.5, thrust_constant: 0.6, tolerance: 0.0001  };
+        let world = World::new().build();
 
         next(&mut sensor_data, &program, &world);
 
@@ -138,7 +179,7 @@ mod tests {
     fn next_should_signal_thursting_when_command_is_thrust() {
         let mut sensor_data: SensorData = SensorData::new().build();
         let program = Program::Command(Command::Thrust);
-        let world = World { angular_increment: 0.1, gravitational_constant: -0.5, thrust_constant: 0.6, tolerance: 0.0001  };
+        let world = World::new().build();
 
         next(&mut sensor_data, &program, &world);
 
@@ -149,7 +190,7 @@ mod tests {
     fn next_should_not_signal_thursting_when_command_is_other_then_thrust() {
         let mut sensor_data: SensorData = SensorData::new().build();
         let program = Program::Command(Command::Skip);
-        let world = World { angular_increment: 0.1, gravitational_constant: -0.5, thrust_constant: 0.6, tolerance: 0.0001  };
+        let world = World::new().build();
 
         next(&mut sensor_data, &program, &world);
 
