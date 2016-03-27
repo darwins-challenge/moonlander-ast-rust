@@ -4,13 +4,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="API documentation for the Rust `source` mod in crate `ast`.">
-    <meta name="keywords" content="rust, rustlang, rust-lang, source">
+    <meta name="description" content="API documentation for the Rust `fuel!` macro in crate `ast`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, fuel!">
 
-    <title>ast::source - Rust</title>
+    <title>ast::fuel! - Rust</title>
 
-    <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
-    <link rel="stylesheet" type="text/css" href="../../main.css">
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
 
     
     
@@ -27,7 +27,7 @@
 
     <nav class="sidebar">
         
-        <p class='location'><a href='../index.html'>ast</a></p><script>window.sidebarCurrent = {name: 'source', ty: 'mod', relpath: '../'};</script><script defer src="../sidebar-items.js"></script>
+        <p class='location'><a href='index.html'>ast</a></p><script>window.sidebarCurrent = {name: 'fuel!', ty: 'macro', relpath: ''};</script><script defer src="sidebar-items.js"></script>
     </nav>
 
     <nav class="sub">
@@ -41,26 +41,17 @@
         </form>
     </nav>
 
-    <section id='main' class="content mod">
-<h1 class='fqn'><span class='in-band'>Module <a href='../index.html'>ast</a>::<wbr><a class='mod' href=''>source</a></span><span class='out-of-band'><span id='render-detail'>
+    <section id='main' class="content macro">
+<h1 class='fqn'><span class='in-band'><a href='index.html'>ast</a>::<wbr><a class='macro' href=''>fuel!</a></span><span class='out-of-band'><span id='render-detail'>
             <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                 [<span class='inner'>&#x2212;</span>]
             </a>
-        </span><a id='src-585' class='srclink' href='../../src/ast/source.rs.html#1-140' title='goto source code'>[src]</a></span></h1>
-<div class='docblock'><p>The <code>source</code> module provides a representation of <code>ast::structure::Program</code>s</p>
-
-<p>It defines a trait <code>Source</code> that sources a <code>ast::structure::Program</code> to a <code>String</code>. </p>
-</div><h2 id='traits' class='section-header'><a href="#traits">Traits</a></h2>
-<table>
-                    <tr class=' module-item'>
-                        <td><a class='trait' href='trait.Source.html'
-                               title='ast::source::Source'>Source</a></td>
-                        <td class='docblock short'>
-                             <p>Representation of an <code>ast::structure::Program</code></p>
-
-                        </td>
-                    </tr>
-                </table></section>
+        </span><a id='src-818' class='srclink' href='../src/ast/macros.rs.html#92-94' title='goto source code'>[src]</a></span></h1>
+<pre class='rust macro'>
+<span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>fuel</span> {
+    () <span class='op'>=&gt;</span> { ... };
+}</pre>
+</section>
     <section id='search' class="content hidden"></section>
 
     <section class="footer"></section>
@@ -112,13 +103,13 @@
     
 
     <script>
-        window.rootPath = "../../";
+        window.rootPath = "../";
         window.currentCrate = "ast";
         window.playgroundUrl = "";
     </script>
-    <script src="../../jquery.js"></script>
-    <script src="../../main.js"></script>
+    <script src="../jquery.js"></script>
+    <script src="../main.js"></script>
     
-    <script defer src="../../search-index.js"></script>
+    <script defer src="../search-index.js"></script>
 </body>
 </html>

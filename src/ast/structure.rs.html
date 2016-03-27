@@ -178,6 +178,7 @@
 <span id="135">135</span>
 <span id="136">136</span>
 <span id="137">137</span>
+<span id="138">138</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! The `structure` is the abstract syntax tree for the moon lander control</span>
 <span class='doccomment'>//! code.</span>
@@ -290,12 +291,13 @@
 <span class='doccomment'>/// ```</span>
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>RustcDecodable</span>,<span class='ident'>RustcEncodable</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>enum</span> <span class='ident'>Sensor</span> {
-	<span class='ident'>X</span>,
-	<span class='ident'>Y</span>,
-	<span class='ident'>Vx</span>,
-	<span class='ident'>Vy</span>,
-	<span class='ident'>O</span>,
-	<span class='ident'>W</span>,
+	  <span class='ident'>X</span>,
+	  <span class='ident'>Y</span>,
+	  <span class='ident'>Vx</span>,
+	  <span class='ident'>Vy</span>,
+	  <span class='ident'>O</span>,
+	  <span class='ident'>W</span>,
+    <span class='ident'>Fuel</span>,
 }
 
 <span class='doccomment'>/// The `Command` enum is used as an argument to `ast::structure::Program::Command`</span>

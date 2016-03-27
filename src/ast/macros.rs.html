@@ -170,6 +170,11 @@
 <span id="127">127</span>
 <span id="128">128</span>
 <span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
 </pre><pre class='rust '>
 <span class='attribute'>#[<span class='ident'>macro_export</span>]</span>
 <span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>iff</span> {
@@ -259,6 +264,11 @@
 <span class='attribute'>#[<span class='ident'>macro_export</span>]</span>
 <span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>w</span> {
 	() <span class='op'>=&gt;</span> (<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Expression</span>::<span class='ident'>Sensor</span>(<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Sensor</span>::<span class='ident'>W</span>))
+}
+
+<span class='attribute'>#[<span class='ident'>macro_export</span>]</span>
+<span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>fuel</span> {
+    () <span class='op'>=&gt;</span> (<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Expression</span>::<span class='ident'>Sensor</span>(<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Sensor</span>::<span class='ident'>Fuel</span>))
 }
 
 <span class='attribute'>#[<span class='ident'>macro_export</span>]</span>
