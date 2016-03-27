@@ -15,6 +15,7 @@ fn main() {
         vy: 0.0,
         o: 0.0,
         w: 0.0,
+        fuel: 1.0,
         crashed: false,
         landed: false,
         thrusting: false

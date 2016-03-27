@@ -50,16 +50,17 @@ impl Source for Expression {
 }
 
 impl Source for Sensor {
-	fn source(&self) -> String {
-		match *self {
-			Sensor::X  => format!("x!()"),
-			Sensor::Y  => format!("y!()"),
-			Sensor::Vx => format!("vx!()"),
-			Sensor::Vy => format!("vy!()"),
-			Sensor::O  => format!("o!()"),
-			Sensor::W  => format!("w!()"),
-		}
-	}
+	  fn source(&self) -> String {
+		    match *self {
+			      Sensor::X  => format!("x!()"),
+			      Sensor::Y  => format!("y!()"),
+			      Sensor::Vx => format!("vx!()"),
+			      Sensor::Vy => format!("vy!()"),
+			      Sensor::O  => format!("o!()"),
+			      Sensor::W  => format!("w!()"),
+            Sensor::Fuel => format!("fuel!()"),
+		    }
+	  }
 }
 
 impl Source for Command {
@@ -125,7 +126,8 @@ mod tests {
 	      assert_eq!("vx!()", Sensor::Vx.source());
 	      assert_eq!("vy!()", Sensor::Vy.source());
 	      assert_eq!("o!()",  Sensor::O.source());
-	      assert_eq!("w!()",  Sensor::W.source());
+		    assert_eq!("w!()",  Sensor::W.source());
+        assert_eq!("fuel!()",  Sensor::Fuel.source());
     }
 
     #[test]

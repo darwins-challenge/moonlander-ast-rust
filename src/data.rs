@@ -14,7 +14,7 @@ use super::structure::{Program,Condition,Command,Expression,Sensor};
 /// # Examples
 ///
 /// ```
-/// let data = ast::data::SensorData { x: 37.0, y: 51.0, vx: 1.0, vy: 0.0, o: 0.0, w: 0.0, crashed: false, landed: false, thrusting: false };
+/// let data = ast::data::SensorData { x: 37.0, y: 51.0, vx: 1.0, vy: 0.0, o: 0.0, w: 0.0, fuel: 1.0, crashed: false, landed: false, thrusting: false };
 /// ```
 #[derive(Copy,Clone)]
 pub struct SensorData {
@@ -24,6 +24,7 @@ pub struct SensorData {
 	  pub vy: f32,
 	  pub o:  f32,
 	  pub w:  f32,
+    pub fuel: f32,
     pub crashed: bool,
     pub landed: bool,
     pub thrusting: bool,
@@ -68,16 +69,17 @@ impl NumericValue for Expression {
 }
 
 impl NumericValue for Sensor {
-	fn value(&self, sensor_data: SensorData) -> f32 {
-		match *self {
-			Sensor::X  => sensor_data.x,
-			Sensor::Y  => sensor_data.y,
-			Sensor::Vx => sensor_data.vx,
-			Sensor::Vy => sensor_data.vy,
-			Sensor::O  => sensor_data.o,
-			Sensor::W  => sensor_data.w,
-		}
-	}
+	  fn value(&self, sensor_data: SensorData) -> f32 {
+		    match *self {
+			      Sensor::X    => sensor_data.x,
+			      Sensor::Y    => sensor_data.y,
+			      Sensor::Vx   => sensor_data.vx,
+			      Sensor::Vy   => sensor_data.vy,
+			      Sensor::O    => sensor_data.o,
+			      Sensor::W    => sensor_data.w,
+            Sensor::Fuel => sensor_data.fuel,
+		    }
+	  }
 }
 
 /// The truth value of an `ast::structure::Condition`

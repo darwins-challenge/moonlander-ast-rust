@@ -89,6 +89,11 @@ macro_rules! w {
 }
 
 #[macro_export]
+macro_rules! fuel {
+    () => (ast::structure::Expression::Sensor(ast::structure::Sensor::Fuel))
+}
+
+#[macro_export]
 macro_rules! plus {
 	($left: expr, $right: expr) => (ast::structure::Expression::Plus(Box::new($left), Box::new($right)))
 }
