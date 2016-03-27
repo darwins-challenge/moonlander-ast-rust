@@ -14,7 +14,8 @@ pub struct World {
     pub angular_increment: f32,
     pub gravitational_constant: f32,
     pub thrust_constant: f32,
-    pub tolerance: f32
+    pub tolerance: f32,
+    pub fuel_consumption: f32,
 }
 
 impl World {
@@ -28,7 +29,8 @@ impl World {
             angular_increment: 0.1,
             gravitational_constant: -0.5,
             thrust_constant: 0.6,
-            tolerance: 0.01
+            tolerance: 0.01,
+            fuel_consumption: 0.01,
         }
     }
 
@@ -52,6 +54,11 @@ impl World {
         self
     }
 
+    pub fn with_fuel_consumption<'a>(&'a mut self, fuel_consumption: f32) -> &'a mut World {
+        self.fuel_consumption = fuel_consumption;
+        self
+    }
+
     pub fn build<'a>(&'a mut self) -> World {
         *self
     }
@@ -70,7 +77,7 @@ pub fn next(sensor_data: &mut SensorData, program: &Program, world: &World) {
     sensor_data.o += sensor_data.w;
 
     let thrust_multiplier: f32 = match **command {
-        Command::Thrust => 1.0,
+        Command::Thrust => { if sensor_data.fuel > 0.0 { 1.0 } else { 0.0 } },
         _               => 0.0
     };
     let acceleration = thrust_multiplier * world.thrust_constant;
@@ -80,6 +87,12 @@ pub fn next(sensor_data: &mut SensorData, program: &Program, world: &World) {
     sensor_data.vy += ay;
     sensor_data.x += sensor_data.vx;
     sensor_data.y += sensor_data.vy;
+
+    sensor_data.fuel -= match **command {
+        Command::Thrust => world.fuel_consumption,
+        _               => 0.0
+    };
+    sensor_data.fuel = if sensor_data.fuel > 0.0 { sensor_data.fuel } else { 0.0 };
 
     sensor_data.crashed = sensor_data.y < -world.tolerance ||
         (abs(sensor_data.y) < world.tolerance &&
@@ -195,5 +208,40 @@ mod tests {
         next(&mut sensor_data, &program, &world);
 
         assert!(!sensor_data.thrusting);
+    }
+
+    #[test]
+    fn next_should_consume_fuel_when_thrusting() {
+        let mut sensor_data: SensorData = SensorData::new().with_fuel(1.0).build();
+        let program = Program::Command(Command::Thrust);
+        let world = World::new().with_fuel_consumption(0.01).build();
+
+        next(&mut sensor_data, &program, &world);
+
+        println!("{}", sensor_data.fuel);
+        assert!(sensor_data.fuel < 1.0);
+    }
+
+    #[test]
+    fn next_should_not_consume_more_fuel_when_out() {
+        let mut sensor_data: SensorData = SensorData::new().with_fuel(0.0).build();
+        let program = Program::Command(Command::Thrust);
+        let world = World::new().with_fuel_consumption(0.01).build();
+
+        next(&mut sensor_data, &program, &world);
+
+        println!("{}", sensor_data.fuel);
+        assert!(sensor_data.fuel == 0.0);
+    }
+
+   #[test]
+    fn next_should_not_change_velocity_when_fuel_is_out_when_thrusting() {
+        let mut sensor_data: SensorData = SensorData::new().with_vx(0.0).with_o(f32::consts::PI/2.0).with_fuel(0.0).build();
+        let program = Program::Command(Command::Thrust);
+        let world = World::new().build();
+
+        next(&mut sensor_data, &program, &world);
+
+        assert!(sensor_data.vx == 0.0);
     }
 }
