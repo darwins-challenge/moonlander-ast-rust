@@ -8,18 +8,7 @@ use ast::source::Source;
 
 fn main() {
     let program: Program = rand::random();
-    let mut sensor_data: SensorData = SensorData {
-        x: 0.0,
-        y: 100.0,
-        vx: 0.0,
-        vy: 0.0,
-        o: 0.0,
-        w: 0.0,
-        fuel: 1.0,
-        crashed: false,
-        landed: false,
-        thrusting: false
-    };
+    let mut sensor_data: SensorData = SensorData::new().with_y(100.0).build();
     let world: World = World {
         angular_increment: 0.1,
         gravitational_constant: -0.5,

@@ -30,6 +30,82 @@ pub struct SensorData {
     pub thrusting: bool,
 }
 
+impl SensorData {
+    /// Creates a builder for `SensorData`. It should be used in the following sense:
+    ///
+    /// ```
+    /// let sensor_data: SensorData = SensorData::new().with_y(100.0).build();
+    /// ```
+    pub fn new () -> SensorData {
+        SensorData {
+            x:         0.0,
+            y:         0.0,
+            vx:        0.0,
+            vy:        0.0,
+            o:         0.0,
+            w:         0.0,
+            fuel:      1.0,
+            crashed:   false,
+            landed:    false,
+            thrusting: false,
+        }
+    }
+
+    pub fn with_x<'a>(&'a mut self, x: f32) -> &'a mut SensorData {
+        self.x = x;
+        self
+    }
+
+    pub fn with_y<'a>(&'a mut self, y: f32) -> &'a mut SensorData {
+        self.y = y;
+        self
+    }
+
+    pub fn with_vx<'a>(&'a mut self, vx: f32) -> &'a mut SensorData {
+        self.vx = vx;
+        self
+    }
+
+    pub fn with_vy<'a>(&'a mut self, vy: f32) -> &'a mut SensorData {
+        self.vy = vy;
+        self
+    }
+
+    pub fn with_o<'a>(&'a mut self, o: f32) -> &'a mut SensorData {
+        self.o = o;
+        self
+    }
+
+    pub fn with_w<'a>(&'a mut self, w: f32) -> &'a mut SensorData {
+        self.w = w;
+        self
+    }
+
+    pub fn with_fuel<'a>(&'a mut self, fuel: f32) -> &'a mut SensorData {
+        self.fuel = fuel;
+        self
+    }
+
+    pub fn crashed<'a>(&'a mut self) -> &'a mut SensorData {
+        self.crashed = true;
+        self
+    }
+
+    pub fn landed<'a>(&'a mut self) -> &'a mut SensorData {
+        self.crashed = true;
+        self
+    }
+
+    pub fn thrusting<'a>(&'a mut self) -> &'a mut SensorData {
+        self.thrusting = true;
+        self
+    }
+
+    pub fn build<'a>(&'a self) -> SensorData {
+        *self
+    }
+}
+
 /// `Evaluate` returns a specific `ast::structure::Command` to execute, depending on `ast::data::SensorData`
 pub trait Evaluate {
 	fn evaluate(&self, sensor_data: SensorData) -> Box<&Command>;
