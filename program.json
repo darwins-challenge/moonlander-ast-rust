@@ -1,0 +1,1 @@
+{"variant":"If","fields":[{"variant":"Less","fields":[{"variant":"Sensor","fields":["Vx"]},{"variant":"Multiply","fields":[{"variant":"Constant","fields":[2.0]},{"variant":"Constant","fields":[3.0]}]}]},{"variant":"Command","fields":["Left"]},{"variant":"Command","fields":["Right"]}]}
