@@ -10,7 +10,7 @@ use ast::structure::{Program,Command};
 use ast::data::{SensorData,Evaluate};
 
 fn main() {
-    let path = Path::new("program.json");
+    let path = Path::new("resources/program.json");
     let display = path.display();
 
     let mut file = match File::open(&path) {
