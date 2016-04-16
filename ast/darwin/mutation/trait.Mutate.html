@@ -4,13 +4,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="API documentation for the Rust `greater_equal!` macro in crate `ast`.">
-    <meta name="keywords" content="rust, rustlang, rust-lang, greater_equal!">
+    <meta name="description" content="API documentation for the Rust `Mutate` trait in crate `ast`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, Mutate">
 
-    <title>ast::greater_equal! - Rust</title>
+    <title>ast::darwin::mutation::Mutate - Rust</title>
 
-    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
-    <link rel="stylesheet" type="text/css" href="../main.css">
+    <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../../main.css">
     
 
     
@@ -28,7 +28,7 @@
 
     <nav class="sidebar">
         
-        <p class='location'><a href='index.html'>ast</a></p><script>window.sidebarCurrent = {name: 'greater_equal!', ty: 'macro', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+        <p class='location'><a href='../../index.html'>ast</a>::<wbr><a href='../index.html'>darwin</a>::<wbr><a href='index.html'>mutation</a></p><script>window.sidebarCurrent = {name: 'Mutate', ty: 'trait', relpath: ''};</script><script defer src="sidebar-items.js"></script>
     </nav>
 
     <nav class="sub">
@@ -42,17 +42,26 @@
         </form>
     </nav>
 
-    <section id='main' class="content macro">
-<h1 class='fqn'><span class='in-band'><a href='index.html'>ast</a>::<wbr><a class='macro' href=''>greater_equal!</a></span><span class='out-of-band'><span id='render-detail'>
+    <section id='main' class="content trait">
+<h1 class='fqn'><span class='in-band'>Trait <a href='../../index.html'>ast</a>::<wbr><a href='../index.html'>darwin</a>::<wbr><a href='index.html'>mutation</a>::<wbr><a class='trait' href=''>Mutate</a></span><span class='out-of-band'><span id='render-detail'>
                    <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                        [<span class='inner'>&#x2212;</span>]
                    </a>
-               </span><a id='src-816' class='srclink' href='../src/ast/src/macros.rs.html#47-49' title='goto source code'>[src]</a></span></h1>
-<pre class='rust macro'>
-<span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>greater_equal</span> {
-    (<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>left</span>: <span class='ident'>expr</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>right</span>: <span class='ident'>expr</span>) <span class='op'>=&gt;</span> { ... };
-}</pre>
-</section>
+               </span><a id='src-804' class='srclink' href='../../../src/ast/src/darwin/mutation.rs.html#5-7' title='goto source code'>[src]</a></span></h1>
+<pre class='rust trait'>pub trait Mutate {
+    fn <a href='#tymethod.mutate' class='fnname'>mutate</a>(&amp;self) -&gt; Self;
+}</pre><div class='docblock'><p>The <code>mutate</code> trait returns a mutation version of a type that implements it.</p>
+
+<p>Implementer are should try to create persisted data-structures</p>
+</div>
+            <h2 id='required-methods'>Required Methods</h2>
+            <div class='methods'>
+        <h3 id='tymethod.mutate' class='method stab '><code>fn <a href='#tymethod.mutate' class='fnname'>mutate</a>(&amp;self) -&gt; Self</code></h3></div>
+        <h2 id='implementors'>Implementors</h2>
+        <ul class='item-list' id='implementors-list'>
+    </ul><script type="text/javascript" async
+                         src="../../../implementors/ast/darwin/mutation/trait.Mutate.js">
+                 </script></section>
     <section id='search' class="content hidden"></section>
 
     <section class="footer"></section>
@@ -104,13 +113,13 @@
     
 
     <script>
-        window.rootPath = "../";
+        window.rootPath = "../../../";
         window.currentCrate = "ast";
         window.playgroundUrl = "";
     </script>
-    <script src="../jquery.js"></script>
-    <script src="../main.js"></script>
+    <script src="../../../jquery.js"></script>
+    <script src="../../../main.js"></script>
     
-    <script defer src="../search-index.js"></script>
+    <script defer src="../../../search-index.js"></script>
 </body>
 </html>
