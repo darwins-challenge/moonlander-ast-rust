@@ -11,7 +11,6 @@
 
     <link rel="stylesheet" type="text/css" href="../../../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../../../main.css">
-    
 
     
     
@@ -77,13 +76,35 @@
 <span id="33">33</span>
 <span id="34">34</span>
 <span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
 </pre><pre class='rust '>
 <span class='doccomment'>/// The `mutate` trait returns a mutation version of a type that implements it.</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// Implementer are should try to create persisted data-structures</span>
 
+<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>rand</span>;
+
+<span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>super</span>::<span class='ident'>structure</span>::{<span class='ident'>Command</span>};
+
 <span class='kw'>pub</span> <span class='kw'>trait</span> <span class='ident'>Mutate</span> {
     <span class='kw'>fn</span> <span class='ident'>mutate</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='kw'>Self</span>;
+}
+
+<span class='kw'>impl</span> <span class='ident'>Mutate</span> <span class='kw'>for</span> <span class='ident'>Command</span> {
+    <span class='kw'>fn</span> <span class='ident'>mutate</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>Command</span> {
+        <span class='kw'>let</span> <span class='ident'>mutation</span>: <span class='ident'>Command</span> <span class='op'>=</span> <span class='ident'>rand</span>::<span class='ident'>random</span>();
+        <span class='ident'>mutation</span>
+    }
 }
 
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>test</span>)]</span>

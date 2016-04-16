@@ -1,1 +1,1 @@
-initSidebarItems({"trait":[["Mutate","The `mutate` trait returns a mutation version of a type that implements it."]]});
+initSidebarItems({"trait":[["Mutate",""]]});
