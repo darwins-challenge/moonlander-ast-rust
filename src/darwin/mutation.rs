@@ -2,8 +2,19 @@
 ///
 /// Implementer are should try to create persisted data-structures
 
+extern crate rand;
+
+use super::super::structure::{Command};
+
 pub trait Mutate {
     fn mutate(&self) -> Self;
+}
+
+impl Mutate for Command {
+    fn mutate(&self) -> Command {
+        let mutation: Command = rand::random();
+        mutation
+    }
 }
 
 #[cfg(test)]
