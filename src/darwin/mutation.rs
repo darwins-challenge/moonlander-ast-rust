@@ -4,10 +4,17 @@
 
 extern crate rand;
 
-use super::super::structure::{Command};
+use super::super::structure::{Sensor,Command};
 
 pub trait Mutate {
     fn mutate(&self) -> Self;
+}
+
+impl Mutate for Sensor {
+    fn mutate(&self) -> Sensor {
+        let mutation: Sensor = rand::random();
+        mutation
+    }
 }
 
 impl Mutate for Command {
