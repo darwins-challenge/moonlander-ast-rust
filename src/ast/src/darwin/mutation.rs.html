@@ -11,7 +11,6 @@
 
     <link rel="stylesheet" type="text/css" href="../../../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../../../main.css">
-    
 
     
     
@@ -88,6 +87,13 @@
 <span id="44">44</span>
 <span id="45">45</span>
 <span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
 </pre><pre class='rust '>
 <span class='doccomment'>/// The `mutate` trait returns a mutation version of a type that implements it.</span>
 <span class='doccomment'>///</span>
@@ -95,10 +101,17 @@
 
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>rand</span>;
 
-<span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>super</span>::<span class='ident'>structure</span>::{<span class='ident'>Command</span>};
+<span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>super</span>::<span class='ident'>structure</span>::{<span class='ident'>Sensor</span>,<span class='ident'>Command</span>};
 
 <span class='kw'>pub</span> <span class='kw'>trait</span> <span class='ident'>Mutate</span> {
     <span class='kw'>fn</span> <span class='ident'>mutate</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='kw'>Self</span>;
+}
+
+<span class='kw'>impl</span> <span class='ident'>Mutate</span> <span class='kw'>for</span> <span class='ident'>Sensor</span> {
+    <span class='kw'>fn</span> <span class='ident'>mutate</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>Sensor</span> {
+        <span class='kw'>let</span> <span class='ident'>mutation</span>: <span class='ident'>Sensor</span> <span class='op'>=</span> <span class='ident'>rand</span>::<span class='ident'>random</span>();
+        <span class='ident'>mutation</span>
+    }
 }
 
 <span class='kw'>impl</span> <span class='ident'>Mutate</span> <span class='kw'>for</span> <span class='ident'>Command</span> {
