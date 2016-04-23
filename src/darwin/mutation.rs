@@ -1,6 +1,6 @@
 /// The `mutate` trait returns a mutation version of a type that implements it.
 ///
-/// Implementer are should try to create persisted data-structures
+/// Implementer should try to create persisted data-structures
 
 extern crate rand;
 
