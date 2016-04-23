@@ -242,14 +242,14 @@
 <span class='doccomment'>/// ```</span>
 <span class='doccomment'>/// let data = ast::data::SensorData { x: 37.0, y: 51.0, vx: 1.0, vy: 0.0, o: 0.0, w: 0.0, fuel: 1.0, crashed: false, landed: false, thrusting: false };</span>
 <span class='doccomment'>/// ```</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Copy</span>,<span class='ident'>Clone</span>)]</span>
+<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Copy</span>,<span class='ident'>Clone</span>,<span class='ident'>RustcEncodable</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>SensorData</span> {
-	  <span class='kw'>pub</span> <span class='ident'>x</span>:  <span class='ident'>f32</span>,
-	  <span class='kw'>pub</span> <span class='ident'>y</span>:  <span class='ident'>f32</span>,
-	  <span class='kw'>pub</span> <span class='ident'>vx</span>: <span class='ident'>f32</span>,
-	  <span class='kw'>pub</span> <span class='ident'>vy</span>: <span class='ident'>f32</span>,
-	  <span class='kw'>pub</span> <span class='ident'>o</span>:  <span class='ident'>f32</span>,
-	  <span class='kw'>pub</span> <span class='ident'>w</span>:  <span class='ident'>f32</span>,
+    <span class='kw'>pub</span> <span class='ident'>x</span>:  <span class='ident'>f32</span>,
+    <span class='kw'>pub</span> <span class='ident'>y</span>:  <span class='ident'>f32</span>,
+    <span class='kw'>pub</span> <span class='ident'>vx</span>: <span class='ident'>f32</span>,
+    <span class='kw'>pub</span> <span class='ident'>vy</span>: <span class='ident'>f32</span>,
+    <span class='kw'>pub</span> <span class='ident'>o</span>:  <span class='ident'>f32</span>,
+    <span class='kw'>pub</span> <span class='ident'>w</span>:  <span class='ident'>f32</span>,
     <span class='kw'>pub</span> <span class='ident'>fuel</span>: <span class='ident'>f32</span>,
     <span class='kw'>pub</span> <span class='ident'>crashed</span>: <span class='ident'>bool</span>,
     <span class='kw'>pub</span> <span class='ident'>landed</span>: <span class='ident'>bool</span>,

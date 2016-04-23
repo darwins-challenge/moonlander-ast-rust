@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["BucketCollector","A simple visitor that collects references to all node types in a list of references"]],"trait":[["Visitable",""],["Visitor",""]]});
