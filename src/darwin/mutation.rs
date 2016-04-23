@@ -30,12 +30,8 @@ impl Mutate for Program {
         let mutate_type: MutateType = rand::random();
         match mutate_type {
             MutateType::ThisLevel => {
-                match *self {
-                    _ => {
-                        let mutation: Program = rand::random();
-                        mutation
-                    }
-                }
+                let mutation: Program = rand::random();
+                mutation
             },
             MutateType::NextLevel => {
                 match *self {
@@ -72,12 +68,8 @@ impl Mutate for Condition {
         let mutate_type: MutateType = rand::random();
         match mutate_type {
             MutateType::ThisLevel => {
-                match *self {
-                    _ => {
-                        let mutation: Condition = rand::random();
-                        mutation
-                    },
-                }
+                let mutation: Condition = rand::random();
+                mutation
             },
             MutateType::NextLevel => {
                 match *self {
@@ -168,12 +160,8 @@ impl Mutate for Expression {
         let mutate_type: MutateType = rand::random();
         match mutate_type {
             MutateType::ThisLevel => {
-                match *self {
-                    _ => {
-                        let mutation: Expression = rand::random();
-                        mutation
-                    },
-                }
+                let mutation: Expression = rand::random();
+                mutation
             },
             MutateType::NextLevel => {
                 match *self {
@@ -280,6 +268,5 @@ mod tests {
 
         let sensor: Expression = Expression::Sensor(Sensor::Vx);
         sensor.mutate();
-        
     }
 }
