@@ -4,10 +4,27 @@
 
 extern crate rand;
 
-use super::super::structure::{Sensor,Command};
+use super::super::structure::{Expression,Sensor,Command};
 
 pub trait Mutate {
     fn mutate(&self) -> Self;
+}
+
+enum MutateType {
+    ThisLevel,
+    NextLevel,
+}
+
+impl Mutate for Expression {
+    fn mutate(&self) -> Expression {
+        match *self {
+            Expression::Constant(_) => {
+                let mutation: f32 = rand::random();
+                Expression::Constant(mutation)
+            },
+            _ => panic!(),
+        }
+    }
 }
 
 impl Mutate for Sensor {
@@ -27,6 +44,7 @@ impl Mutate for Command {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use structure::{Expression};
 
     #[derive(PartialEq,Debug)]
     enum Dummy {
@@ -49,5 +67,12 @@ mod tests {
         let mutation = original.mutate();
 
         assert_eq!(mutation, Dummy::B);
+    }
+
+    #[test]
+    fn should_mutate_expression_without_panicing() {
+        let constant: Expression = Expression::Constant(0.0);
+        constant.mutate();
+        
     }
 }
