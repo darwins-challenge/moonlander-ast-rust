@@ -24,7 +24,7 @@
 /// );
 /// ```
 ///
-#[derive(RustcDecodable,RustcEncodable)]
+#[derive(RustcDecodable,RustcEncodable,Clone)]
 pub enum Program {
 	If(Condition, Box<Program>, Box<Program>),
 	Command(Command),
@@ -52,7 +52,7 @@ pub enum Program {
 ///   ))
 /// );
 /// ```
-#[derive(RustcDecodable,RustcEncodable)]
+#[derive(RustcDecodable,RustcEncodable,Clone)]
 pub enum Condition {
 	True,
 	False,
@@ -84,21 +84,21 @@ pub enum Condition {
 ///   Box::new(ast::structure::Expression::Sensor(ast::structure::Sensor::Vx))
 /// );
 /// ```
-#[derive(RustcDecodable,RustcEncodable)]
+#[derive(RustcDecodable,RustcEncodable,Clone)]
 pub enum Expression {
-	Constant(f32),
-	Sensor(Sensor),
-	Plus(Box<Expression>, Box<Expression>),
-	Minus(Box<Expression>, Box<Expression>),
-	Multiply(Box<Expression>, Box<Expression>),
-	Divide(Box<Expression>, Box<Expression>),
+	  Constant(f32),
+	  Sensor(Sensor),
+	  Plus(Box<Expression>, Box<Expression>),
+	  Minus(Box<Expression>, Box<Expression>),
+	  Multiply(Box<Expression>, Box<Expression>),
+	  Divide(Box<Expression>, Box<Expression>),
 }
 
 /// The `Sensor` enum is used in `ast::Structure::Expression` as input to calculations.
 ///
 /// It is a specific part of `ast::data::SensorData`.
 ///
-/// You can find syntactic sugar to create `Sensor`s more easily in [macros](../index.html#macros)
+/// You can find syntactic sugar to create `ensor`s more easily in [macros](../index.html#macros)
 ///
 /// # Examples
 ///
@@ -107,7 +107,7 @@ pub enum Expression {
 ///
 /// let sensor: ast::structure::Sensor = ast::structure::Sensor::Vy;
 /// ```
-#[derive(RustcDecodable,RustcEncodable)]
+#[derive(RustcDecodable,RustcEncodable,Clone)]
 pub enum Sensor {
 	  X,
 	  Y,
@@ -129,7 +129,7 @@ pub enum Sensor {
 ///
 /// let command: ast::structure::Command = ast::structure::Command::Skip;
 /// ```
-#[derive(RustcDecodable,RustcEncodable)]
+#[derive(RustcDecodable,RustcEncodable,Clone)]
 pub enum Command {
 	Skip,
 	Left,
