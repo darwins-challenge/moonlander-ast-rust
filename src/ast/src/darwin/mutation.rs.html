@@ -11,6 +11,7 @@
 
     <link rel="stylesheet" type="text/css" href="../../../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../../../main.css">
+    
 
     
     
@@ -313,19 +314,6 @@
 <span id="270">270</span>
 <span id="271">271</span>
 <span id="272">272</span>
-<span id="273">273</span>
-<span id="274">274</span>
-<span id="275">275</span>
-<span id="276">276</span>
-<span id="277">277</span>
-<span id="278">278</span>
-<span id="279">279</span>
-<span id="280">280</span>
-<span id="281">281</span>
-<span id="282">282</span>
-<span id="283">283</span>
-<span id="284">284</span>
-<span id="285">285</span>
 </pre><pre class='rust '>
 <span class='doccomment'>/// The `mutate` trait returns a mutation version of a type that implements it.</span>
 <span class='doccomment'>///</span>
@@ -359,12 +347,8 @@
         <span class='kw'>let</span> <span class='ident'>mutate_type</span>: <span class='ident'>MutateType</span> <span class='op'>=</span> <span class='ident'>rand</span>::<span class='ident'>random</span>();
         <span class='kw'>match</span> <span class='ident'>mutate_type</span> {
             <span class='ident'>MutateType</span>::<span class='ident'>ThisLevel</span> <span class='op'>=&gt;</span> {
-                <span class='kw'>match</span> <span class='op'>*</span><span class='self'>self</span> {
-                    _ <span class='op'>=&gt;</span> {
-                        <span class='kw'>let</span> <span class='ident'>mutation</span>: <span class='ident'>Program</span> <span class='op'>=</span> <span class='ident'>rand</span>::<span class='ident'>random</span>();
-                        <span class='ident'>mutation</span>
-                    }
-                }
+                <span class='kw'>let</span> <span class='ident'>mutation</span>: <span class='ident'>Program</span> <span class='op'>=</span> <span class='ident'>rand</span>::<span class='ident'>random</span>();
+                <span class='ident'>mutation</span>
             },
             <span class='ident'>MutateType</span>::<span class='ident'>NextLevel</span> <span class='op'>=&gt;</span> {
                 <span class='kw'>match</span> <span class='op'>*</span><span class='self'>self</span> {
@@ -401,12 +385,8 @@
         <span class='kw'>let</span> <span class='ident'>mutate_type</span>: <span class='ident'>MutateType</span> <span class='op'>=</span> <span class='ident'>rand</span>::<span class='ident'>random</span>();
         <span class='kw'>match</span> <span class='ident'>mutate_type</span> {
             <span class='ident'>MutateType</span>::<span class='ident'>ThisLevel</span> <span class='op'>=&gt;</span> {
-                <span class='kw'>match</span> <span class='op'>*</span><span class='self'>self</span> {
-                    _ <span class='op'>=&gt;</span> {
-                        <span class='kw'>let</span> <span class='ident'>mutation</span>: <span class='ident'>Condition</span> <span class='op'>=</span> <span class='ident'>rand</span>::<span class='ident'>random</span>();
-                        <span class='ident'>mutation</span>
-                    },
-                }
+                <span class='kw'>let</span> <span class='ident'>mutation</span>: <span class='ident'>Condition</span> <span class='op'>=</span> <span class='ident'>rand</span>::<span class='ident'>random</span>();
+                <span class='ident'>mutation</span>
             },
             <span class='ident'>MutateType</span>::<span class='ident'>NextLevel</span> <span class='op'>=&gt;</span> {
                 <span class='kw'>match</span> <span class='op'>*</span><span class='self'>self</span> {
@@ -497,12 +477,8 @@
         <span class='kw'>let</span> <span class='ident'>mutate_type</span>: <span class='ident'>MutateType</span> <span class='op'>=</span> <span class='ident'>rand</span>::<span class='ident'>random</span>();
         <span class='kw'>match</span> <span class='ident'>mutate_type</span> {
             <span class='ident'>MutateType</span>::<span class='ident'>ThisLevel</span> <span class='op'>=&gt;</span> {
-                <span class='kw'>match</span> <span class='op'>*</span><span class='self'>self</span> {
-                    _ <span class='op'>=&gt;</span> {
-                        <span class='kw'>let</span> <span class='ident'>mutation</span>: <span class='ident'>Expression</span> <span class='op'>=</span> <span class='ident'>rand</span>::<span class='ident'>random</span>();
-                        <span class='ident'>mutation</span>
-                    },
-                }
+                <span class='kw'>let</span> <span class='ident'>mutation</span>: <span class='ident'>Expression</span> <span class='op'>=</span> <span class='ident'>rand</span>::<span class='ident'>random</span>();
+                <span class='ident'>mutation</span>
             },
             <span class='ident'>MutateType</span>::<span class='ident'>NextLevel</span> <span class='op'>=&gt;</span> {
                 <span class='kw'>match</span> <span class='op'>*</span><span class='self'>self</span> {
@@ -609,7 +585,6 @@
 
         <span class='kw'>let</span> <span class='ident'>sensor</span>: <span class='ident'>Expression</span> <span class='op'>=</span> <span class='ident'>Expression</span>::<span class='ident'>Sensor</span>(<span class='ident'>Sensor</span>::<span class='ident'>Vx</span>);
         <span class='ident'>sensor</span>.<span class='ident'>mutate</span>();
-        
     }
 }
 </pre>
