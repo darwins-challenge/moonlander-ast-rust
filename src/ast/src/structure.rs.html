@@ -11,7 +11,6 @@
 
     <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../../main.css">
-    
 
     
     
@@ -207,7 +206,7 @@
 <span class='doccomment'>/// );</span>
 <span class='doccomment'>/// ```</span>
 <span class='doccomment'>///</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>RustcDecodable</span>,<span class='ident'>RustcEncodable</span>)]</span>
+<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>RustcDecodable</span>,<span class='ident'>RustcEncodable</span>,<span class='ident'>Clone</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>enum</span> <span class='ident'>Program</span> {
 	<span class='ident'>If</span>(<span class='ident'>Condition</span>, <span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Program</span><span class='op'>&gt;</span>, <span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Program</span><span class='op'>&gt;</span>),
 	<span class='ident'>Command</span>(<span class='ident'>Command</span>),
@@ -235,7 +234,7 @@
 <span class='doccomment'>///   ))</span>
 <span class='doccomment'>/// );</span>
 <span class='doccomment'>/// ```</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>RustcDecodable</span>,<span class='ident'>RustcEncodable</span>)]</span>
+<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>RustcDecodable</span>,<span class='ident'>RustcEncodable</span>,<span class='ident'>Clone</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>enum</span> <span class='ident'>Condition</span> {
 	<span class='ident'>True</span>,
 	<span class='ident'>False</span>,
@@ -267,21 +266,21 @@
 <span class='doccomment'>///   Box::new(ast::structure::Expression::Sensor(ast::structure::Sensor::Vx))</span>
 <span class='doccomment'>/// );</span>
 <span class='doccomment'>/// ```</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>RustcDecodable</span>,<span class='ident'>RustcEncodable</span>)]</span>
+<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>RustcDecodable</span>,<span class='ident'>RustcEncodable</span>,<span class='ident'>Clone</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>enum</span> <span class='ident'>Expression</span> {
-	<span class='ident'>Constant</span>(<span class='ident'>f32</span>),
-	<span class='ident'>Sensor</span>(<span class='ident'>Sensor</span>),
-	<span class='ident'>Plus</span>(<span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Expression</span><span class='op'>&gt;</span>, <span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Expression</span><span class='op'>&gt;</span>),
-	<span class='ident'>Minus</span>(<span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Expression</span><span class='op'>&gt;</span>, <span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Expression</span><span class='op'>&gt;</span>),
-	<span class='ident'>Multiply</span>(<span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Expression</span><span class='op'>&gt;</span>, <span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Expression</span><span class='op'>&gt;</span>),
-	<span class='ident'>Divide</span>(<span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Expression</span><span class='op'>&gt;</span>, <span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Expression</span><span class='op'>&gt;</span>),
+	  <span class='ident'>Constant</span>(<span class='ident'>f32</span>),
+	  <span class='ident'>Sensor</span>(<span class='ident'>Sensor</span>),
+	  <span class='ident'>Plus</span>(<span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Expression</span><span class='op'>&gt;</span>, <span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Expression</span><span class='op'>&gt;</span>),
+	  <span class='ident'>Minus</span>(<span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Expression</span><span class='op'>&gt;</span>, <span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Expression</span><span class='op'>&gt;</span>),
+	  <span class='ident'>Multiply</span>(<span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Expression</span><span class='op'>&gt;</span>, <span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Expression</span><span class='op'>&gt;</span>),
+	  <span class='ident'>Divide</span>(<span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Expression</span><span class='op'>&gt;</span>, <span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Expression</span><span class='op'>&gt;</span>),
 }
 
 <span class='doccomment'>/// The `Sensor` enum is used in `ast::Structure::Expression` as input to calculations.</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// It is a specific part of `ast::data::SensorData`.</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>/// You can find syntactic sugar to create `Sensor`s more easily in [macros](../index.html#macros)</span>
+<span class='doccomment'>/// You can find syntactic sugar to create `ensor`s more easily in [macros](../index.html#macros)</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// # Examples</span>
 <span class='doccomment'>///</span>
@@ -290,7 +289,7 @@
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// let sensor: ast::structure::Sensor = ast::structure::Sensor::Vy;</span>
 <span class='doccomment'>/// ```</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>RustcDecodable</span>,<span class='ident'>RustcEncodable</span>)]</span>
+<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>RustcDecodable</span>,<span class='ident'>RustcEncodable</span>,<span class='ident'>Clone</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>enum</span> <span class='ident'>Sensor</span> {
 	  <span class='ident'>X</span>,
 	  <span class='ident'>Y</span>,
@@ -312,7 +311,7 @@
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// let command: ast::structure::Command = ast::structure::Command::Skip;</span>
 <span class='doccomment'>/// ```</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>RustcDecodable</span>,<span class='ident'>RustcEncodable</span>)]</span>
+<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>RustcDecodable</span>,<span class='ident'>RustcEncodable</span>,<span class='ident'>Clone</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>enum</span> <span class='ident'>Command</span> {
 	<span class='ident'>Skip</span>,
 	<span class='ident'>Left</span>,

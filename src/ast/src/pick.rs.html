@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `src/lib.rs`.">
+    <meta name="description" content="Source to the Rust file `src/pick.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
-    <title>lib.rs.html -- source</title>
+    <title>pick.rs.html -- source</title>
 
     <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../../main.css">
@@ -62,32 +62,28 @@
 <span id="19">19</span>
 <span id="20">20</span>
 <span id="21">21</span>
-<span id="22">22</span>
-<span id="23">23</span>
 </pre><pre class='rust '>
-<span class='doccomment'>//! This crate explores [genetic</span>
-<span class='doccomment'>//! programming](https://en.wikipedia.org/wiki/Genetic_programming). Genetic</span>
-<span class='doccomment'>//! programming is</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//! &gt; a technique whereby computer programs are encoded as a set of genes that</span>
-<span class='doccomment'>//! &gt; are then modified (evolved) using an evolutionary algorithm.</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//! The problem we are trying to tackle with genetic programming is that of</span>
-<span class='doccomment'>//! landing a [moon lander](https://en.wikipedia.org/wiki/Lunar_lander). I.e.</span>
-<span class='doccomment'>//! land a moon lander safely on the surface of a moon without user</span>
-<span class='doccomment'>//! intervention. A nice interactive game that gives a feel for the problem can be</span>
-<span class='doccomment'>//! found [here](http://moonlander.seb.ly/).</span>
+<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>rand</span>;
 
-<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>rustc_serialize</span>;
-<span class='attribute'>#[<span class='ident'>macro_use</span>]</span>
-<span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>pick</span>;
-<span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>macros</span>;
-<span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>structure</span>;
-<span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>data</span>;
-<span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>source</span>;
-<span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>random</span>;
-<span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>simulation</span>;
-<span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>darwin</span>;
+<span class='doccomment'>/// The `pick` macro allows to randomly select one expression from a sequence of</span>
+<span class='doccomment'>/// expressions according to associated weights.</span>
+<span class='attribute'>#[<span class='ident'>macro_export</span>]</span>
+<span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>pick</span> {
+    ($( <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>weight</span>: <span class='ident'>expr</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>expression</span>: <span class='ident'>expr</span>),<span class='op'>+</span>) <span class='op'>=&gt;</span> {{
+        <span class='kw'>let</span> <span class='ident'>total</span> <span class='op'>=</span> <span class='number'>0</span> $(<span class='op'>+</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>weight</span>)<span class='op'>+</span>;
+        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>bound</span> <span class='op'>=</span> <span class='number'>0</span>;
+
+        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>rng</span> <span class='op'>=</span> <span class='ident'>rand</span>::<span class='ident'>thread_rng</span>();
+        <span class='kw'>let</span> <span class='ident'>random_number</span> <span class='op'>=</span> <span class='ident'>rng</span>.<span class='ident'>gen_range</span>(<span class='number'>0</span>, <span class='ident'>total</span>);
+        <span class='kw'>let</span> <span class='ident'>result</span> <span class='op'>=</span> $( <span class='kw'>if</span> <span class='ident'>bound</span> <span class='op'>&lt;=</span> <span class='ident'>random_number</span> <span class='op'>&amp;&amp;</span> <span class='ident'>random_number</span> <span class='op'>&lt;</span> { <span class='ident'>bound</span> <span class='op'>+=</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>weight</span>; <span class='ident'>bound</span> } {
+            <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>expression</span>
+        } <span class='kw'>else</span> )<span class='op'>+</span> {
+           <span class='macro'>panic</span><span class='macro'>!</span>();
+        };
+        <span class='ident'>result</span>
+    }}
+}
+
 </pre>
 </section>
     <section id='search' class="content hidden"></section>
