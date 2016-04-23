@@ -12,6 +12,8 @@
 //! found [here](http://moonlander.seb.ly/).
 
 extern crate rustc_serialize;
+#[macro_use]
+pub mod pick;
 pub mod macros;
 pub mod structure;
 pub mod data;
