@@ -11,6 +11,7 @@
 
     <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../../main.css">
+    
 
     
     
@@ -200,16 +201,16 @@
 <span class='doccomment'>/// extern crate ast;</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// let program: ast::structure::Program = ast::structure::Program::If(</span>
-<span class='doccomment'>///	  ast::structure::Condition::True,</span>
-<span class='doccomment'>///   Box::new(ast::structure::Program::Command(ast::structure::Command::Skip)),</span>
-<span class='doccomment'>///   Box::new(ast::structure::Program::Command(ast::structure::Command::Thrust))</span>
+<span class='doccomment'>///	  Box::new(ast::structure::Condition::True),</span>
+<span class='doccomment'>///   Box::new(ast::structure::Program::Command(Box::new(ast::structure::Command::Skip))),</span>
+<span class='doccomment'>///   Box::new(ast::structure::Program::Command(Box::new(ast::structure::Command::Thrust)))</span>
 <span class='doccomment'>/// );</span>
 <span class='doccomment'>/// ```</span>
 <span class='doccomment'>///</span>
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>RustcDecodable</span>,<span class='ident'>RustcEncodable</span>,<span class='ident'>Clone</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>enum</span> <span class='ident'>Program</span> {
-	<span class='ident'>If</span>(<span class='ident'>Condition</span>, <span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Program</span><span class='op'>&gt;</span>, <span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Program</span><span class='op'>&gt;</span>),
-	<span class='ident'>Command</span>(<span class='ident'>Command</span>),
+	<span class='ident'>If</span>(<span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Condition</span><span class='op'>&gt;</span>, <span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Program</span><span class='op'>&gt;</span>, <span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Program</span><span class='op'>&gt;</span>),
+	<span class='ident'>Command</span>(<span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Command</span><span class='op'>&gt;</span>),
 }
 
 <span class='doccomment'>/// The `Condition` enum is used as the condition in a `ast::Program::If`</span>
@@ -263,13 +264,13 @@
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// let expression: ast::structure::Expression = ast::structure::Expression::Plus(</span>
 <span class='doccomment'>///   Box::new(ast::structure::Expression::Constant(42.0)),</span>
-<span class='doccomment'>///   Box::new(ast::structure::Expression::Sensor(ast::structure::Sensor::Vx))</span>
+<span class='doccomment'>///   Box::new(ast::structure::Expression::Sensor(Box::new(ast::structure::Sensor::Vx)))</span>
 <span class='doccomment'>/// );</span>
 <span class='doccomment'>/// ```</span>
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>RustcDecodable</span>,<span class='ident'>RustcEncodable</span>,<span class='ident'>Clone</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>enum</span> <span class='ident'>Expression</span> {
 	  <span class='ident'>Constant</span>(<span class='ident'>f32</span>),
-	  <span class='ident'>Sensor</span>(<span class='ident'>Sensor</span>),
+	  <span class='ident'>Sensor</span>(<span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Sensor</span><span class='op'>&gt;</span>),
 	  <span class='ident'>Plus</span>(<span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Expression</span><span class='op'>&gt;</span>, <span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Expression</span><span class='op'>&gt;</span>),
 	  <span class='ident'>Minus</span>(<span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Expression</span><span class='op'>&gt;</span>, <span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Expression</span><span class='op'>&gt;</span>),
 	  <span class='ident'>Multiply</span>(<span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Expression</span><span class='op'>&gt;</span>, <span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Expression</span><span class='op'>&gt;</span>),

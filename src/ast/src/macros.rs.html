@@ -11,6 +11,7 @@
 
     <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../../main.css">
+    
 
     
     
@@ -178,7 +179,7 @@
 </pre><pre class='rust '>
 <span class='attribute'>#[<span class='ident'>macro_export</span>]</span>
 <span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>iff</span> {
-	(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>condition</span>: <span class='ident'>expr</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>left</span>: <span class='ident'>expr</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>right</span>: <span class='ident'>expr</span>) <span class='op'>=&gt;</span> (<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Program</span>::<span class='ident'>If</span>(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>condition</span>, <span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>left</span>), <span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>right</span>)))
+	(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>condition</span>: <span class='ident'>expr</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>left</span>: <span class='ident'>expr</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>right</span>: <span class='ident'>expr</span>) <span class='op'>=&gt;</span> (<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Program</span>::<span class='ident'>If</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>condition</span>), <span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>left</span>), <span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>right</span>)))
 }
 
 <span class='attribute'>#[<span class='ident'>macro_export</span>]</span>
@@ -238,37 +239,37 @@
 
 <span class='attribute'>#[<span class='ident'>macro_export</span>]</span>
 <span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>x</span> {
-	() <span class='op'>=&gt;</span> (<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Expression</span>::<span class='ident'>Sensor</span>(<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Sensor</span>::<span class='ident'>X</span>))
+	() <span class='op'>=&gt;</span> (<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Expression</span>::<span class='ident'>Sensor</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Sensor</span>::<span class='ident'>X</span>)))
 }
 
 <span class='attribute'>#[<span class='ident'>macro_export</span>]</span>
 <span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>y</span> {
-	() <span class='op'>=&gt;</span> (<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Expression</span>::<span class='ident'>Sensor</span>(<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Sensor</span>::<span class='ident'>Y</span>))
+	() <span class='op'>=&gt;</span> (<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Expression</span>::<span class='ident'>Sensor</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Sensor</span>::<span class='ident'>Y</span>)))
 }
 
 <span class='attribute'>#[<span class='ident'>macro_export</span>]</span>
 <span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>vx</span> {
-	() <span class='op'>=&gt;</span> (<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Expression</span>::<span class='ident'>Sensor</span>(<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Sensor</span>::<span class='ident'>Vx</span>))
+	() <span class='op'>=&gt;</span> (<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Expression</span>::<span class='ident'>Sensor</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Sensor</span>::<span class='ident'>Vx</span>)))
 }
 
 <span class='attribute'>#[<span class='ident'>macro_export</span>]</span>
 <span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>vy</span> {
-	() <span class='op'>=&gt;</span> (<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Expression</span>::<span class='ident'>Sensor</span>(<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Sensor</span>::<span class='ident'>Vy</span>))
+	() <span class='op'>=&gt;</span> (<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Expression</span>::<span class='ident'>Sensor</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Sensor</span>::<span class='ident'>Vy</span>)))
 }
 
 <span class='attribute'>#[<span class='ident'>macro_export</span>]</span>
 <span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>o</span> {
-	() <span class='op'>=&gt;</span> (<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Expression</span>::<span class='ident'>Sensor</span>(<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Sensor</span>::<span class='ident'>O</span>))
+	() <span class='op'>=&gt;</span> (<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Expression</span>::<span class='ident'>Sensor</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Sensor</span>::<span class='ident'>O</span>)))
 }
 
 <span class='attribute'>#[<span class='ident'>macro_export</span>]</span>
 <span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>w</span> {
-	() <span class='op'>=&gt;</span> (<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Expression</span>::<span class='ident'>Sensor</span>(<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Sensor</span>::<span class='ident'>W</span>))
+	() <span class='op'>=&gt;</span> (<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Expression</span>::<span class='ident'>Sensor</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Sensor</span>::<span class='ident'>W</span>)))
 }
 
 <span class='attribute'>#[<span class='ident'>macro_export</span>]</span>
 <span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>fuel</span> {
-    () <span class='op'>=&gt;</span> (<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Expression</span>::<span class='ident'>Sensor</span>(<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Sensor</span>::<span class='ident'>Fuel</span>))
+    () <span class='op'>=&gt;</span> (<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Expression</span>::<span class='ident'>Sensor</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Sensor</span>::<span class='ident'>Fuel</span>)))
 }
 
 <span class='attribute'>#[<span class='ident'>macro_export</span>]</span>
@@ -293,22 +294,22 @@
 
 <span class='attribute'>#[<span class='ident'>macro_export</span>]</span>
 <span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>skip</span> {
-	() <span class='op'>=&gt;</span> (<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Program</span>::<span class='ident'>Command</span>(<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Command</span>::<span class='ident'>Skip</span>));
+	() <span class='op'>=&gt;</span> (<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Program</span>::<span class='ident'>Command</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Command</span>::<span class='ident'>Skip</span>)))
 }
 
 <span class='attribute'>#[<span class='ident'>macro_export</span>]</span>
 <span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>left</span> {
-	() <span class='op'>=&gt;</span> (<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Program</span>::<span class='ident'>Command</span>(<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Command</span>::<span class='ident'>Left</span>))
+	() <span class='op'>=&gt;</span> (<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Program</span>::<span class='ident'>Command</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Command</span>::<span class='ident'>Left</span>)))
 }
 
 <span class='attribute'>#[<span class='ident'>macro_export</span>]</span>
 <span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>right</span> {
-	() <span class='op'>=&gt;</span> (<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Program</span>::<span class='ident'>Command</span>(<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Command</span>::<span class='ident'>Right</span>))
+	() <span class='op'>=&gt;</span> (<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Program</span>::<span class='ident'>Command</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Command</span>::<span class='ident'>Right</span>)))
 }
 
 <span class='attribute'>#[<span class='ident'>macro_export</span>]</span>
 <span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>thrust</span> {
-	() <span class='op'>=&gt;</span> (<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Program</span>::<span class='ident'>Command</span>(<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Command</span>::<span class='ident'>Thrust</span>))
+	() <span class='op'>=&gt;</span> (<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Program</span>::<span class='ident'>Command</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>ast</span>::<span class='ident'>structure</span>::<span class='ident'>Command</span>::<span class='ident'>Thrust</span>)))
 }
 </pre>
 </section>

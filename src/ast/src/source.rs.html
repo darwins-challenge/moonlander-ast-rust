@@ -11,6 +11,7 @@
 
     <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../../main.css">
+    
 
     
     
@@ -266,8 +267,8 @@
     <span class='attribute'>#[<span class='ident'>test</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>should_correctly_source_programs</span>() {
 	      <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='string'>&quot;iff!(T!(),skip!(),left!())&quot;</span>,
-		               <span class='ident'>Program</span>::<span class='ident'>If</span>(<span class='ident'>Condition</span>::<span class='ident'>True</span>, <span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>Program</span>::<span class='ident'>Command</span>(<span class='ident'>Command</span>::<span class='ident'>Skip</span>)), <span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>Program</span>::<span class='ident'>Command</span>(<span class='ident'>Command</span>::<span class='ident'>Left</span>))).<span class='ident'>source</span>());
-	      <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='string'>&quot;skip!()&quot;</span>, <span class='ident'>Program</span>::<span class='ident'>Command</span>(<span class='ident'>Command</span>::<span class='ident'>Skip</span>).<span class='ident'>source</span>());
+		               <span class='ident'>Program</span>::<span class='ident'>If</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>Condition</span>::<span class='ident'>True</span>), <span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>Program</span>::<span class='ident'>Command</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>Command</span>::<span class='ident'>Skip</span>))), <span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>Program</span>::<span class='ident'>Command</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>Command</span>::<span class='ident'>Left</span>)))).<span class='ident'>source</span>());
+	      <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='string'>&quot;skip!()&quot;</span>, <span class='ident'>Program</span>::<span class='ident'>Command</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>Command</span>::<span class='ident'>Skip</span>)).<span class='ident'>source</span>());
     }
 
     <span class='attribute'>#[<span class='ident'>test</span>]</span>
@@ -292,9 +293,9 @@
     <span class='attribute'>#[<span class='ident'>test</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>should_correctly_source_expressions</span>() {
 	      <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='string'>&quot;constant!(1.0000)&quot;</span>, <span class='ident'>Expression</span>::<span class='ident'>Constant</span>(<span class='number'>1.0</span>).<span class='ident'>source</span>());
-	      <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='string'>&quot;vx!()&quot;</span>, <span class='ident'>Expression</span>::<span class='ident'>Sensor</span>(<span class='ident'>Sensor</span>::<span class='ident'>Vx</span>).<span class='ident'>source</span>());
+	      <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='string'>&quot;vx!()&quot;</span>, <span class='ident'>Expression</span>::<span class='ident'>Sensor</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>Sensor</span>::<span class='ident'>Vx</span>)).<span class='ident'>source</span>());
 	      <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='string'>&quot;plus!(constant!(1.0000),vy!())&quot;</span>,
-		               <span class='ident'>Expression</span>::<span class='ident'>Plus</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>Expression</span>::<span class='ident'>Constant</span>(<span class='number'>1.0</span>)),<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>Expression</span>::<span class='ident'>Sensor</span>(<span class='ident'>Sensor</span>::<span class='ident'>Vy</span>))).<span class='ident'>source</span>());
+		               <span class='ident'>Expression</span>::<span class='ident'>Plus</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>Expression</span>::<span class='ident'>Constant</span>(<span class='number'>1.0</span>)),<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>Expression</span>::<span class='ident'>Sensor</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>Sensor</span>::<span class='ident'>Vy</span>)))).<span class='ident'>source</span>());
 	      <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='string'>&quot;minus!(constant!(1.0000),constant!(2.0000))&quot;</span>,
 		               <span class='ident'>Expression</span>::<span class='ident'>Minus</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>Expression</span>::<span class='ident'>Constant</span>(<span class='number'>1.0</span>)),<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>Expression</span>::<span class='ident'>Constant</span>(<span class='number'>2.0</span>))).<span class='ident'>source</span>());
 	      <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='string'>&quot;multiply!(constant!(1.0000),constant!(2.0000))&quot;</span>,
