@@ -316,6 +316,7 @@
 <span id="272">272</span>
 <span id="273">273</span>
 <span id="274">274</span>
+<span id="275">275</span>
 </pre><pre class='rust '>
 <span class='doccomment'>/// The `mutate` trait returns a mutation version of a type that implements it.</span>
 <span class='doccomment'>///</span>
@@ -324,6 +325,7 @@
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>rand</span>;
 
 <span class='kw'>use</span> <span class='self'>self</span>::<span class='ident'>rand</span>::<span class='ident'>Rng</span>;
+<span class='kw'>use</span> <span class='self'>self</span>::<span class='ident'>rand</span>::<span class='ident'>Rand</span>;
 <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>super</span>::<span class='ident'>structure</span>::{<span class='ident'>Program</span>,<span class='ident'>Condition</span>,<span class='ident'>Expression</span>,<span class='ident'>Sensor</span>,<span class='ident'>Command</span>};
 
 <span class='kw'>pub</span> <span class='kw'>trait</span> <span class='ident'>Mutate</span> {
@@ -346,10 +348,10 @@
 
 <span class='kw'>impl</span> <span class='ident'>Mutate</span> <span class='kw'>for</span> <span class='ident'>Program</span> {
     <span class='kw'>fn</span> <span class='ident'>mutate</span><span class='op'>&lt;</span><span class='ident'>R</span>: <span class='ident'>rand</span>::<span class='ident'>Rng</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>rng</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>R</span>) <span class='op'>-&gt;</span> <span class='ident'>Program</span> {
-        <span class='kw'>let</span> <span class='ident'>mutate_type</span>: <span class='ident'>MutateType</span> <span class='op'>=</span> <span class='ident'>rand</span>::<span class='ident'>random</span>();
+        <span class='kw'>let</span> <span class='ident'>mutate_type</span>: <span class='ident'>MutateType</span> <span class='op'>=</span> <span class='ident'>MutateType</span>::<span class='ident'>rand</span>(<span class='ident'>rng</span>);
         <span class='kw'>match</span> <span class='ident'>mutate_type</span> {
             <span class='ident'>MutateType</span>::<span class='ident'>ThisLevel</span> <span class='op'>=&gt;</span> {
-                <span class='kw'>let</span> <span class='ident'>mutation</span>: <span class='ident'>Program</span> <span class='op'>=</span> <span class='ident'>rand</span>::<span class='ident'>random</span>();
+                <span class='kw'>let</span> <span class='ident'>mutation</span>: <span class='ident'>Program</span> <span class='op'>=</span> <span class='ident'>Program</span>::<span class='ident'>rand</span>(<span class='ident'>rng</span>);
                 <span class='ident'>mutation</span>
             },
             <span class='ident'>MutateType</span>::<span class='ident'>NextLevel</span> <span class='op'>=&gt;</span> {
@@ -375,7 +377,7 @@
                         <span class='kw'>let</span> <span class='ident'>mutation</span>: <span class='ident'>Command</span> <span class='op'>=</span> <span class='ident'>command</span>.<span class='ident'>mutate</span>(<span class='ident'>rng</span>);
                         <span class='ident'>Program</span>::<span class='ident'>Command</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>mutation</span>))
                     }
-                } 
+                }
             },
         }
     }
@@ -383,10 +385,10 @@
 
 <span class='kw'>impl</span> <span class='ident'>Mutate</span> <span class='kw'>for</span> <span class='ident'>Condition</span> {
     <span class='kw'>fn</span> <span class='ident'>mutate</span><span class='op'>&lt;</span><span class='ident'>R</span>: <span class='ident'>rand</span>::<span class='ident'>Rng</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>rng</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>R</span>) <span class='op'>-&gt;</span> <span class='ident'>Condition</span> {
-        <span class='kw'>let</span> <span class='ident'>mutate_type</span>: <span class='ident'>MutateType</span> <span class='op'>=</span> <span class='ident'>rand</span>::<span class='ident'>random</span>();
+        <span class='kw'>let</span> <span class='ident'>mutate_type</span>: <span class='ident'>MutateType</span> <span class='op'>=</span> <span class='ident'>MutateType</span>::<span class='ident'>rand</span>(<span class='ident'>rng</span>);
         <span class='kw'>match</span> <span class='ident'>mutate_type</span> {
             <span class='ident'>MutateType</span>::<span class='ident'>ThisLevel</span> <span class='op'>=&gt;</span> {
-                <span class='kw'>let</span> <span class='ident'>mutation</span>: <span class='ident'>Condition</span> <span class='op'>=</span> <span class='ident'>rand</span>::<span class='ident'>random</span>();
+                <span class='kw'>let</span> <span class='ident'>mutation</span>: <span class='ident'>Condition</span> <span class='op'>=</span> <span class='ident'>Condition</span>::<span class='ident'>rand</span>(<span class='ident'>rng</span>);
                 <span class='ident'>mutation</span>
             },
             <span class='ident'>MutateType</span>::<span class='ident'>NextLevel</span> <span class='op'>=&gt;</span> {
@@ -398,7 +400,7 @@
                         <span class='ident'>Condition</span>::<span class='ident'>Not</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>mutation</span>))
                     },
                     <span class='ident'>Condition</span>::<span class='ident'>Or</span>(<span class='kw-2'>ref</span> <span class='ident'>left</span>, <span class='kw-2'>ref</span> <span class='ident'>right</span>) <span class='op'>=&gt;</span> {
-                        <span class='kw'>let</span> <span class='ident'>mutate_left</span>: <span class='ident'>bool</span> <span class='op'>=</span> <span class='ident'>rand</span>::<span class='ident'>random</span>();
+                        <span class='kw'>let</span> <span class='ident'>mutate_left</span>: <span class='ident'>bool</span> <span class='op'>=</span> <span class='ident'>bool</span>::<span class='ident'>rand</span>(<span class='ident'>rng</span>);
                         <span class='kw'>if</span> <span class='ident'>mutate_left</span> {
                             <span class='kw'>let</span> <span class='ident'>mutation</span>: <span class='ident'>Condition</span> <span class='op'>=</span> <span class='ident'>left</span>.<span class='ident'>mutate</span>(<span class='ident'>rng</span>);
                             <span class='ident'>Condition</span>::<span class='ident'>Or</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>mutation</span>), <span class='ident'>right</span>.<span class='ident'>clone</span>())
@@ -408,7 +410,7 @@
                         }
                     },
                     <span class='ident'>Condition</span>::<span class='ident'>And</span>(<span class='kw-2'>ref</span> <span class='ident'>left</span>, <span class='kw-2'>ref</span> <span class='ident'>right</span>) <span class='op'>=&gt;</span> {
-                        <span class='kw'>let</span> <span class='ident'>mutate_left</span>: <span class='ident'>bool</span> <span class='op'>=</span> <span class='ident'>rand</span>::<span class='ident'>random</span>();
+                        <span class='kw'>let</span> <span class='ident'>mutate_left</span>: <span class='ident'>bool</span> <span class='op'>=</span> <span class='ident'>bool</span>::<span class='ident'>rand</span>(<span class='ident'>rng</span>);
                         <span class='kw'>if</span> <span class='ident'>mutate_left</span> {
                             <span class='kw'>let</span> <span class='ident'>mutation</span>: <span class='ident'>Condition</span> <span class='op'>=</span> <span class='ident'>left</span>.<span class='ident'>mutate</span>(<span class='ident'>rng</span>);
                             <span class='ident'>Condition</span>::<span class='ident'>And</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>mutation</span>), <span class='ident'>right</span>.<span class='ident'>clone</span>())
@@ -418,7 +420,7 @@
                         }
                     },
                     <span class='ident'>Condition</span>::<span class='ident'>Less</span>(<span class='kw-2'>ref</span> <span class='ident'>left</span>, <span class='kw-2'>ref</span> <span class='ident'>right</span>) <span class='op'>=&gt;</span> {
-                        <span class='kw'>let</span> <span class='ident'>mutate_left</span>: <span class='ident'>bool</span> <span class='op'>=</span> <span class='ident'>rand</span>::<span class='ident'>random</span>();
+                        <span class='kw'>let</span> <span class='ident'>mutate_left</span>: <span class='ident'>bool</span> <span class='op'>=</span> <span class='ident'>bool</span>::<span class='ident'>rand</span>(<span class='ident'>rng</span>);
                         <span class='kw'>if</span> <span class='ident'>mutate_left</span> {
                             <span class='kw'>let</span> <span class='ident'>mutation</span>: <span class='ident'>Expression</span> <span class='op'>=</span> <span class='ident'>left</span>.<span class='ident'>mutate</span>(<span class='ident'>rng</span>);
                             <span class='ident'>Condition</span>::<span class='ident'>Less</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>mutation</span>), <span class='ident'>right</span>.<span class='ident'>clone</span>())
@@ -428,7 +430,7 @@
                         }
                     },
                     <span class='ident'>Condition</span>::<span class='ident'>LessEqual</span>(<span class='kw-2'>ref</span> <span class='ident'>left</span>, <span class='kw-2'>ref</span> <span class='ident'>right</span>) <span class='op'>=&gt;</span> {
-                        <span class='kw'>let</span> <span class='ident'>mutate_left</span>: <span class='ident'>bool</span> <span class='op'>=</span> <span class='ident'>rand</span>::<span class='ident'>random</span>();
+                        <span class='kw'>let</span> <span class='ident'>mutate_left</span>: <span class='ident'>bool</span> <span class='op'>=</span> <span class='ident'>bool</span>::<span class='ident'>rand</span>(<span class='ident'>rng</span>);
                         <span class='kw'>if</span> <span class='ident'>mutate_left</span> {
                             <span class='kw'>let</span> <span class='ident'>mutation</span>: <span class='ident'>Expression</span> <span class='op'>=</span> <span class='ident'>left</span>.<span class='ident'>mutate</span>(<span class='ident'>rng</span>);
                             <span class='ident'>Condition</span>::<span class='ident'>LessEqual</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>mutation</span>), <span class='ident'>right</span>.<span class='ident'>clone</span>())
@@ -438,7 +440,7 @@
                         }
                     },
                     <span class='ident'>Condition</span>::<span class='ident'>Equal</span>(<span class='kw-2'>ref</span> <span class='ident'>left</span>, <span class='kw-2'>ref</span> <span class='ident'>right</span>) <span class='op'>=&gt;</span> {
-                        <span class='kw'>let</span> <span class='ident'>mutate_left</span>: <span class='ident'>bool</span> <span class='op'>=</span> <span class='ident'>rand</span>::<span class='ident'>random</span>();
+                        <span class='kw'>let</span> <span class='ident'>mutate_left</span>: <span class='ident'>bool</span> <span class='op'>=</span> <span class='ident'>bool</span>::<span class='ident'>rand</span>(<span class='ident'>rng</span>);
                         <span class='kw'>if</span> <span class='ident'>mutate_left</span> {
                             <span class='kw'>let</span> <span class='ident'>mutation</span>: <span class='ident'>Expression</span> <span class='op'>=</span> <span class='ident'>left</span>.<span class='ident'>mutate</span>(<span class='ident'>rng</span>);
                             <span class='ident'>Condition</span>::<span class='ident'>Equal</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>mutation</span>), <span class='ident'>right</span>.<span class='ident'>clone</span>())
@@ -448,7 +450,7 @@
                         }
                     },
                     <span class='ident'>Condition</span>::<span class='ident'>GreaterEqual</span>(<span class='kw-2'>ref</span> <span class='ident'>left</span>, <span class='kw-2'>ref</span> <span class='ident'>right</span>) <span class='op'>=&gt;</span> {
-                        <span class='kw'>let</span> <span class='ident'>mutate_left</span>: <span class='ident'>bool</span> <span class='op'>=</span> <span class='ident'>rand</span>::<span class='ident'>random</span>();
+                        <span class='kw'>let</span> <span class='ident'>mutate_left</span>: <span class='ident'>bool</span> <span class='op'>=</span> <span class='ident'>bool</span>::<span class='ident'>rand</span>(<span class='ident'>rng</span>);
                         <span class='kw'>if</span> <span class='ident'>mutate_left</span> {
                             <span class='kw'>let</span> <span class='ident'>mutation</span>: <span class='ident'>Expression</span> <span class='op'>=</span> <span class='ident'>left</span>.<span class='ident'>mutate</span>(<span class='ident'>rng</span>);
                             <span class='ident'>Condition</span>::<span class='ident'>GreaterEqual</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>mutation</span>), <span class='ident'>right</span>.<span class='ident'>clone</span>())
@@ -458,7 +460,8 @@
                         }
                     },
                     <span class='ident'>Condition</span>::<span class='ident'>Greater</span>(<span class='kw-2'>ref</span> <span class='ident'>left</span>, <span class='kw-2'>ref</span> <span class='ident'>right</span>) <span class='op'>=&gt;</span> {
-                        <span class='kw'>let</span> <span class='ident'>mutate_left</span>: <span class='ident'>bool</span> <span class='op'>=</span> <span class='ident'>rand</span>::<span class='ident'>random</span>();
+                        <span class='kw'>let</span> <span class='ident'>mutate_left</span>: <span class='ident'>bool</span> <span class='op'>=</span> <span class='ident'>bool</span>::<span class='ident'>rand</span>(<span class='ident'>rng</span>);
+
                         <span class='kw'>if</span> <span class='ident'>mutate_left</span> {
                             <span class='kw'>let</span> <span class='ident'>mutation</span>: <span class='ident'>Expression</span> <span class='op'>=</span> <span class='ident'>left</span>.<span class='ident'>mutate</span>(<span class='ident'>rng</span>);
                             <span class='ident'>Condition</span>::<span class='ident'>Greater</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>mutation</span>), <span class='ident'>right</span>.<span class='ident'>clone</span>())
@@ -475,16 +478,16 @@
 
 <span class='kw'>impl</span> <span class='ident'>Mutate</span> <span class='kw'>for</span> <span class='ident'>Expression</span> {
     <span class='kw'>fn</span> <span class='ident'>mutate</span><span class='op'>&lt;</span><span class='ident'>R</span>: <span class='ident'>rand</span>::<span class='ident'>Rng</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>rng</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>R</span>) <span class='op'>-&gt;</span> <span class='ident'>Expression</span> {
-        <span class='kw'>let</span> <span class='ident'>mutate_type</span>: <span class='ident'>MutateType</span> <span class='op'>=</span> <span class='ident'>rand</span>::<span class='ident'>random</span>();
+        <span class='kw'>let</span> <span class='ident'>mutate_type</span>: <span class='ident'>MutateType</span> <span class='op'>=</span> <span class='ident'>MutateType</span>::<span class='ident'>rand</span>(<span class='ident'>rng</span>);
         <span class='kw'>match</span> <span class='ident'>mutate_type</span> {
             <span class='ident'>MutateType</span>::<span class='ident'>ThisLevel</span> <span class='op'>=&gt;</span> {
-                <span class='kw'>let</span> <span class='ident'>mutation</span>: <span class='ident'>Expression</span> <span class='op'>=</span> <span class='ident'>rand</span>::<span class='ident'>random</span>();
+                <span class='kw'>let</span> <span class='ident'>mutation</span>: <span class='ident'>Expression</span> <span class='op'>=</span> <span class='ident'>Expression</span>::<span class='ident'>rand</span>(<span class='ident'>rng</span>);
                 <span class='ident'>mutation</span>
             },
             <span class='ident'>MutateType</span>::<span class='ident'>NextLevel</span> <span class='op'>=&gt;</span> {
                 <span class='kw'>match</span> <span class='op'>*</span><span class='self'>self</span> {
                     <span class='ident'>Expression</span>::<span class='ident'>Constant</span>(_) <span class='op'>=&gt;</span> {
-                        <span class='kw'>let</span> <span class='ident'>mutation</span>: <span class='ident'>f32</span> <span class='op'>=</span> <span class='ident'>rand</span>::<span class='ident'>random</span>();
+                        <span class='kw'>let</span> <span class='ident'>mutation</span>: <span class='ident'>f32</span> <span class='op'>=</span> <span class='ident'>f32</span>::<span class='ident'>rand</span>(<span class='ident'>rng</span>);
                         <span class='ident'>Expression</span>::<span class='ident'>Constant</span>(<span class='ident'>mutation</span>)
                     },
                     <span class='ident'>Expression</span>::<span class='ident'>Sensor</span>(<span class='kw-2'>ref</span> <span class='ident'>sensor</span>) <span class='op'>=&gt;</span> {
@@ -492,7 +495,7 @@
                         <span class='ident'>Expression</span>::<span class='ident'>Sensor</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>mutation</span>))
                     },
                     <span class='ident'>Expression</span>::<span class='ident'>Plus</span>(<span class='kw-2'>ref</span> <span class='ident'>left</span>, <span class='kw-2'>ref</span> <span class='ident'>right</span>) <span class='op'>=&gt;</span> {
-                        <span class='kw'>let</span> <span class='ident'>mutate_left</span>: <span class='ident'>bool</span> <span class='op'>=</span> <span class='ident'>rand</span>::<span class='ident'>random</span>();
+                        <span class='kw'>let</span> <span class='ident'>mutate_left</span>: <span class='ident'>bool</span> <span class='op'>=</span> <span class='ident'>bool</span>::<span class='ident'>rand</span>(<span class='ident'>rng</span>);
                         <span class='kw'>if</span> <span class='ident'>mutate_left</span> {
                             <span class='kw'>let</span> <span class='ident'>mutation</span>: <span class='ident'>Expression</span> <span class='op'>=</span> <span class='ident'>left</span>.<span class='ident'>mutate</span>(<span class='ident'>rng</span>);
                             <span class='ident'>Expression</span>::<span class='ident'>Plus</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>mutation</span>), <span class='ident'>right</span>.<span class='ident'>clone</span>())
@@ -502,7 +505,7 @@
                         }
                     },
                     <span class='ident'>Expression</span>::<span class='ident'>Minus</span>(<span class='kw-2'>ref</span> <span class='ident'>left</span>, <span class='kw-2'>ref</span> <span class='ident'>right</span>) <span class='op'>=&gt;</span> {
-                        <span class='kw'>let</span> <span class='ident'>mutate_left</span>: <span class='ident'>bool</span> <span class='op'>=</span> <span class='ident'>rand</span>::<span class='ident'>random</span>();
+                        <span class='kw'>let</span> <span class='ident'>mutate_left</span>: <span class='ident'>bool</span> <span class='op'>=</span> <span class='ident'>bool</span>::<span class='ident'>rand</span>(<span class='ident'>rng</span>);
                         <span class='kw'>if</span> <span class='ident'>mutate_left</span> {
                             <span class='kw'>let</span> <span class='ident'>mutation</span>: <span class='ident'>Expression</span> <span class='op'>=</span> <span class='ident'>left</span>.<span class='ident'>mutate</span>(<span class='ident'>rng</span>);
                             <span class='ident'>Expression</span>::<span class='ident'>Minus</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>mutation</span>), <span class='ident'>right</span>.<span class='ident'>clone</span>())
@@ -512,7 +515,7 @@
                         }
                     },
                     <span class='ident'>Expression</span>::<span class='ident'>Multiply</span>(<span class='kw-2'>ref</span> <span class='ident'>left</span>, <span class='kw-2'>ref</span> <span class='ident'>right</span>) <span class='op'>=&gt;</span> {
-                        <span class='kw'>let</span> <span class='ident'>mutate_left</span>: <span class='ident'>bool</span> <span class='op'>=</span> <span class='ident'>rand</span>::<span class='ident'>random</span>();
+                        <span class='kw'>let</span> <span class='ident'>mutate_left</span>: <span class='ident'>bool</span> <span class='op'>=</span> <span class='ident'>bool</span>::<span class='ident'>rand</span>(<span class='ident'>rng</span>);
                         <span class='kw'>if</span> <span class='ident'>mutate_left</span> {
                             <span class='kw'>let</span> <span class='ident'>mutation</span>: <span class='ident'>Expression</span> <span class='op'>=</span> <span class='ident'>left</span>.<span class='ident'>mutate</span>(<span class='ident'>rng</span>);
                             <span class='ident'>Expression</span>::<span class='ident'>Multiply</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>mutation</span>), <span class='ident'>right</span>.<span class='ident'>clone</span>())
@@ -522,7 +525,7 @@
                         }
                     },
                     <span class='ident'>Expression</span>::<span class='ident'>Divide</span>(<span class='kw-2'>ref</span> <span class='ident'>left</span>, <span class='kw-2'>ref</span> <span class='ident'>right</span>) <span class='op'>=&gt;</span> {
-                        <span class='kw'>let</span> <span class='ident'>mutate_left</span>: <span class='ident'>bool</span> <span class='op'>=</span> <span class='ident'>rand</span>::<span class='ident'>random</span>();
+                        <span class='kw'>let</span> <span class='ident'>mutate_left</span>: <span class='ident'>bool</span> <span class='op'>=</span> <span class='ident'>bool</span>::<span class='ident'>rand</span>(<span class='ident'>rng</span>);
                         <span class='kw'>if</span> <span class='ident'>mutate_left</span> {
                             <span class='kw'>let</span> <span class='ident'>mutation</span>: <span class='ident'>Expression</span> <span class='op'>=</span> <span class='ident'>left</span>.<span class='ident'>mutate</span>(<span class='ident'>rng</span>);
                             <span class='ident'>Expression</span>::<span class='ident'>Divide</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>mutation</span>), <span class='ident'>right</span>.<span class='ident'>clone</span>())
@@ -539,14 +542,14 @@
 
 <span class='kw'>impl</span> <span class='ident'>Mutate</span> <span class='kw'>for</span> <span class='ident'>Sensor</span> {
     <span class='kw'>fn</span> <span class='ident'>mutate</span><span class='op'>&lt;</span><span class='ident'>R</span>: <span class='ident'>rand</span>::<span class='ident'>Rng</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>rng</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>R</span>) <span class='op'>-&gt;</span> <span class='ident'>Sensor</span> {
-        <span class='kw'>let</span> <span class='ident'>mutation</span>: <span class='ident'>Sensor</span> <span class='op'>=</span> <span class='ident'>rand</span>::<span class='ident'>random</span>();
+        <span class='kw'>let</span> <span class='ident'>mutation</span>: <span class='ident'>Sensor</span> <span class='op'>=</span> <span class='ident'>Sensor</span>::<span class='ident'>rand</span>(<span class='ident'>rng</span>);
         <span class='ident'>mutation</span>
     }
 }
 
 <span class='kw'>impl</span> <span class='ident'>Mutate</span> <span class='kw'>for</span> <span class='ident'>Command</span> {
     <span class='kw'>fn</span> <span class='ident'>mutate</span><span class='op'>&lt;</span><span class='ident'>R</span>: <span class='ident'>rand</span>::<span class='ident'>Rng</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>rng</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>R</span>) <span class='op'>-&gt;</span> <span class='ident'>Command</span> {
-        <span class='kw'>let</span> <span class='ident'>mutation</span>: <span class='ident'>Command</span> <span class='op'>=</span> <span class='ident'>rand</span>::<span class='ident'>random</span>();
+        <span class='kw'>let</span> <span class='ident'>mutation</span>: <span class='ident'>Command</span> <span class='op'>=</span> <span class='ident'>Command</span>::<span class='ident'>rand</span>(<span class='ident'>rng</span>);
         <span class='ident'>mutation</span>
     }
 }
@@ -554,7 +557,6 @@
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>test</span>)]</span>
 <span class='kw'>mod</span> <span class='ident'>tests</span> {
     <span class='kw'>use</span> <span class='ident'>super</span>::<span class='op'>*</span>;
-    <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>rand</span>::<span class='ident'>Rng</span>;
     <span class='kw'>use</span> <span class='ident'>structure</span>::{<span class='ident'>Expression</span>,<span class='ident'>Sensor</span>};
 
     <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>PartialEq</span>,<span class='ident'>Debug</span>)]</span>
@@ -563,7 +565,7 @@
     }
 
     <span class='kw'>impl</span> <span class='ident'>super</span>::<span class='ident'>Mutate</span> <span class='kw'>for</span> <span class='ident'>Dummy</span> {
-        <span class='kw'>fn</span> <span class='ident'>mutate</span><span class='op'>&lt;</span><span class='ident'>R</span>: <span class='ident'>super</span>::<span class='ident'>rand</span>::<span class='ident'>Rng</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>rng</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>R</span>) <span class='op'>-&gt;</span> <span class='ident'>Dummy</span> {
+        <span class='kw'>fn</span> <span class='ident'>mutate</span><span class='op'>&lt;</span><span class='ident'>R</span>: <span class='ident'>super</span>::<span class='ident'>rand</span>::<span class='ident'>Rng</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, _: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>R</span>) <span class='op'>-&gt;</span> <span class='ident'>Dummy</span> {
             <span class='kw'>match</span> <span class='op'>*</span><span class='self'>self</span> {
                 <span class='ident'>Dummy</span>::<span class='ident'>A</span> <span class='op'>=&gt;</span> <span class='ident'>Dummy</span>::<span class='ident'>B</span>,
                 <span class='ident'>Dummy</span>::<span class='ident'>B</span> <span class='op'>=&gt;</span> <span class='ident'>Dummy</span>::<span class='ident'>A</span>
