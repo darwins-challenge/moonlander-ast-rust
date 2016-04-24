@@ -5,6 +5,7 @@
 extern crate rand;
 
 use self::rand::Rng;
+use self::rand::Rand;
 use super::super::structure::{Program,Condition,Expression,Sensor,Command};
 
 pub trait Mutate {
@@ -27,10 +28,10 @@ impl rand::Rand for MutateType {
 
 impl Mutate for Program {
     fn mutate<R: rand::Rng>(&self, rng: &mut R) -> Program {
-        let mutate_type: MutateType = rand::random();
+        let mutate_type: MutateType = MutateType::rand(rng);
         match mutate_type {
             MutateType::ThisLevel => {
-                let mutation: Program = rand::random();
+                let mutation: Program = Program::rand(rng);
                 mutation
             },
             MutateType::NextLevel => {
@@ -56,7 +57,7 @@ impl Mutate for Program {
                         let mutation: Command = command.mutate(rng);
                         Program::Command(Box::new(mutation))
                     }
-                } 
+                }
             },
         }
     }
@@ -64,10 +65,10 @@ impl Mutate for Program {
 
 impl Mutate for Condition {
     fn mutate<R: rand::Rng>(&self, rng: &mut R) -> Condition {
-        let mutate_type: MutateType = rand::random();
+        let mutate_type: MutateType = MutateType::rand(rng);
         match mutate_type {
             MutateType::ThisLevel => {
-                let mutation: Condition = rand::random();
+                let mutation: Condition = Condition::rand(rng);
                 mutation
             },
             MutateType::NextLevel => {
@@ -79,7 +80,7 @@ impl Mutate for Condition {
                         Condition::Not(Box::new(mutation))
                     },
                     Condition::Or(ref left, ref right) => {
-                        let mutate_left: bool = rand::random();
+                        let mutate_left: bool = bool::rand(rng);
                         if mutate_left {
                             let mutation: Condition = left.mutate(rng);
                             Condition::Or(Box::new(mutation), right.clone())
@@ -89,7 +90,7 @@ impl Mutate for Condition {
                         }
                     },
                     Condition::And(ref left, ref right) => {
-                        let mutate_left: bool = rand::random();
+                        let mutate_left: bool = bool::rand(rng);
                         if mutate_left {
                             let mutation: Condition = left.mutate(rng);
                             Condition::And(Box::new(mutation), right.clone())
@@ -99,7 +100,7 @@ impl Mutate for Condition {
                         }
                     },
                     Condition::Less(ref left, ref right) => {
-                        let mutate_left: bool = rand::random();
+                        let mutate_left: bool = bool::rand(rng);
                         if mutate_left {
                             let mutation: Expression = left.mutate(rng);
                             Condition::Less(Box::new(mutation), right.clone())
@@ -109,7 +110,7 @@ impl Mutate for Condition {
                         }
                     },
                     Condition::LessEqual(ref left, ref right) => {
-                        let mutate_left: bool = rand::random();
+                        let mutate_left: bool = bool::rand(rng);
                         if mutate_left {
                             let mutation: Expression = left.mutate(rng);
                             Condition::LessEqual(Box::new(mutation), right.clone())
@@ -119,7 +120,7 @@ impl Mutate for Condition {
                         }
                     },
                     Condition::Equal(ref left, ref right) => {
-                        let mutate_left: bool = rand::random();
+                        let mutate_left: bool = bool::rand(rng);
                         if mutate_left {
                             let mutation: Expression = left.mutate(rng);
                             Condition::Equal(Box::new(mutation), right.clone())
@@ -129,7 +130,7 @@ impl Mutate for Condition {
                         }
                     },
                     Condition::GreaterEqual(ref left, ref right) => {
-                        let mutate_left: bool = rand::random();
+                        let mutate_left: bool = bool::rand(rng);
                         if mutate_left {
                             let mutation: Expression = left.mutate(rng);
                             Condition::GreaterEqual(Box::new(mutation), right.clone())
@@ -139,7 +140,8 @@ impl Mutate for Condition {
                         }
                     },
                     Condition::Greater(ref left, ref right) => {
-                        let mutate_left: bool = rand::random();
+                        let mutate_left: bool = bool::rand(rng);
+
                         if mutate_left {
                             let mutation: Expression = left.mutate(rng);
                             Condition::Greater(Box::new(mutation), right.clone())
@@ -156,16 +158,16 @@ impl Mutate for Condition {
 
 impl Mutate for Expression {
     fn mutate<R: rand::Rng>(&self, rng: &mut R) -> Expression {
-        let mutate_type: MutateType = rand::random();
+        let mutate_type: MutateType = MutateType::rand(rng);
         match mutate_type {
             MutateType::ThisLevel => {
-                let mutation: Expression = rand::random();
+                let mutation: Expression = Expression::rand(rng);
                 mutation
             },
             MutateType::NextLevel => {
                 match *self {
                     Expression::Constant(_) => {
-                        let mutation: f32 = rand::random();
+                        let mutation: f32 = f32::rand(rng);
                         Expression::Constant(mutation)
                     },
                     Expression::Sensor(ref sensor) => {
@@ -173,7 +175,7 @@ impl Mutate for Expression {
                         Expression::Sensor(Box::new(mutation))
                     },
                     Expression::Plus(ref left, ref right) => {
-                        let mutate_left: bool = rand::random();
+                        let mutate_left: bool = bool::rand(rng);
                         if mutate_left {
                             let mutation: Expression = left.mutate(rng);
                             Expression::Plus(Box::new(mutation), right.clone())
@@ -183,7 +185,7 @@ impl Mutate for Expression {
                         }
                     },
                     Expression::Minus(ref left, ref right) => {
-                        let mutate_left: bool = rand::random();
+                        let mutate_left: bool = bool::rand(rng);
                         if mutate_left {
                             let mutation: Expression = left.mutate(rng);
                             Expression::Minus(Box::new(mutation), right.clone())
@@ -193,7 +195,7 @@ impl Mutate for Expression {
                         }
                     },
                     Expression::Multiply(ref left, ref right) => {
-                        let mutate_left: bool = rand::random();
+                        let mutate_left: bool = bool::rand(rng);
                         if mutate_left {
                             let mutation: Expression = left.mutate(rng);
                             Expression::Multiply(Box::new(mutation), right.clone())
@@ -203,7 +205,7 @@ impl Mutate for Expression {
                         }
                     },
                     Expression::Divide(ref left, ref right) => {
-                        let mutate_left: bool = rand::random();
+                        let mutate_left: bool = bool::rand(rng);
                         if mutate_left {
                             let mutation: Expression = left.mutate(rng);
                             Expression::Divide(Box::new(mutation), right.clone())
@@ -220,14 +222,14 @@ impl Mutate for Expression {
 
 impl Mutate for Sensor {
     fn mutate<R: rand::Rng>(&self, rng: &mut R) -> Sensor {
-        let mutation: Sensor = rand::random();
+        let mutation: Sensor = Sensor::rand(rng);
         mutation
     }
 }
 
 impl Mutate for Command {
     fn mutate<R: rand::Rng>(&self, rng: &mut R) -> Command {
-        let mutation: Command = rand::random();
+        let mutation: Command = Command::rand(rng);
         mutation
     }
 }
@@ -235,7 +237,6 @@ impl Mutate for Command {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use super::rand::Rng;
     use structure::{Expression,Sensor};
 
     #[derive(PartialEq,Debug)]
@@ -244,7 +245,7 @@ mod tests {
     }
 
     impl super::Mutate for Dummy {
-        fn mutate<R: super::rand::Rng>(&self, rng: &mut R) -> Dummy {
+        fn mutate<R: super::rand::Rng>(&self, _: &mut R) -> Dummy {
             match *self {
                 Dummy::A => Dummy::B,
                 Dummy::B => Dummy::A
