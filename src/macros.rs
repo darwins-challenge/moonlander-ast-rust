@@ -1,6 +1,6 @@
 #[macro_export]
 macro_rules! iff {
-	($condition: expr, $left: expr, $right: expr) => (ast::structure::Program::If($condition, Box::new($left), Box::new($right)))
+	($condition: expr, $left: expr, $right: expr) => (ast::structure::Program::If(Box::new($condition), Box::new($left), Box::new($right)))
 }
 
 #[macro_export]
@@ -60,37 +60,37 @@ macro_rules! constant {
 
 #[macro_export]
 macro_rules! x {
-	() => (ast::structure::Expression::Sensor(ast::structure::Sensor::X))
+	() => (ast::structure::Expression::Sensor(Box::new(ast::structure::Sensor::X)))
 }
 
 #[macro_export]
 macro_rules! y {
-	() => (ast::structure::Expression::Sensor(ast::structure::Sensor::Y))
+	() => (ast::structure::Expression::Sensor(Box::new(ast::structure::Sensor::Y)))
 }
 
 #[macro_export]
 macro_rules! vx {
-	() => (ast::structure::Expression::Sensor(ast::structure::Sensor::Vx))
+	() => (ast::structure::Expression::Sensor(Box::new(ast::structure::Sensor::Vx)))
 }
 
 #[macro_export]
 macro_rules! vy {
-	() => (ast::structure::Expression::Sensor(ast::structure::Sensor::Vy))
+	() => (ast::structure::Expression::Sensor(Box::new(ast::structure::Sensor::Vy)))
 }
 
 #[macro_export]
 macro_rules! o {
-	() => (ast::structure::Expression::Sensor(ast::structure::Sensor::O))
+	() => (ast::structure::Expression::Sensor(Box::new(ast::structure::Sensor::O)))
 }
 
 #[macro_export]
 macro_rules! w {
-	() => (ast::structure::Expression::Sensor(ast::structure::Sensor::W))
+	() => (ast::structure::Expression::Sensor(Box::new(ast::structure::Sensor::W)))
 }
 
 #[macro_export]
 macro_rules! fuel {
-    () => (ast::structure::Expression::Sensor(ast::structure::Sensor::Fuel))
+    () => (ast::structure::Expression::Sensor(Box::new(ast::structure::Sensor::Fuel)))
 }
 
 #[macro_export]
@@ -115,20 +115,20 @@ macro_rules! divide {
 
 #[macro_export]
 macro_rules! skip {
-	() => (ast::structure::Program::Command(ast::structure::Command::Skip));
+	() => (ast::structure::Program::Command(Box::new(ast::structure::Command::Skip)))
 }
 
 #[macro_export]
 macro_rules! left {
-	() => (ast::structure::Program::Command(ast::structure::Command::Left))
+	() => (ast::structure::Program::Command(Box::new(ast::structure::Command::Left)))
 }
 
 #[macro_export]
 macro_rules! right {
-	() => (ast::structure::Program::Command(ast::structure::Command::Right))
+	() => (ast::structure::Program::Command(Box::new(ast::structure::Command::Right)))
 }
 
 #[macro_export]
 macro_rules! thrust {
-	() => (ast::structure::Program::Command(ast::structure::Command::Thrust))
+	() => (ast::structure::Program::Command(Box::new(ast::structure::Command::Thrust)))
 }

@@ -18,16 +18,16 @@
 /// extern crate ast;
 ///
 /// let program: ast::structure::Program = ast::structure::Program::If(
-///	  ast::structure::Condition::True,
-///   Box::new(ast::structure::Program::Command(ast::structure::Command::Skip)),
-///   Box::new(ast::structure::Program::Command(ast::structure::Command::Thrust))
+///	  Box::new(ast::structure::Condition::True),
+///   Box::new(ast::structure::Program::Command(Box::new(ast::structure::Command::Skip))),
+///   Box::new(ast::structure::Program::Command(Box::new(ast::structure::Command::Thrust)))
 /// );
 /// ```
 ///
 #[derive(RustcDecodable,RustcEncodable,Clone)]
 pub enum Program {
-	If(Condition, Box<Program>, Box<Program>),
-	Command(Command),
+	If(Box<Condition>, Box<Program>, Box<Program>),
+	Command(Box<Command>),
 }
 
 /// The `Condition` enum is used as the condition in a `ast::Program::If`
@@ -81,13 +81,13 @@ pub enum Condition {
 ///
 /// let expression: ast::structure::Expression = ast::structure::Expression::Plus(
 ///   Box::new(ast::structure::Expression::Constant(42.0)),
-///   Box::new(ast::structure::Expression::Sensor(ast::structure::Sensor::Vx))
+///   Box::new(ast::structure::Expression::Sensor(Box::new(ast::structure::Sensor::Vx)))
 /// );
 /// ```
 #[derive(RustcDecodable,RustcEncodable,Clone)]
 pub enum Expression {
 	  Constant(f32),
-	  Sensor(Sensor),
+	  Sensor(Box<Sensor>),
 	  Plus(Box<Expression>, Box<Expression>),
 	  Minus(Box<Expression>, Box<Expression>),
 	  Multiply(Box<Expression>, Box<Expression>),

@@ -39,7 +39,7 @@ impl Mutate for Program {
                         match rng.gen_range(0, 3) {
                             0 => { /* mutate condition */
                                       let mutation: Condition = condition.mutate(rng);
-                                      Program::If(mutation, left.clone(), right.clone())
+                                      Program::If(Box::new(mutation), left.clone(), right.clone())
                             },
                             1 => { /* mutate left */
                                       let mutation: Program = left.mutate(rng);
@@ -54,7 +54,7 @@ impl Mutate for Program {
                     },
                     Program::Command(ref command) => {
                         let mutation: Command = command.mutate(rng);
-                        Program::Command(mutation)
+                        Program::Command(Box::new(mutation))
                     }
                 } 
             },
@@ -170,7 +170,7 @@ impl Mutate for Expression {
                     },
                     Expression::Sensor(ref sensor) => {
                         let mutation: Sensor = sensor.mutate(rng);
-                        Expression::Sensor(mutation)
+                        Expression::Sensor(Box::new(mutation))
                     },
                     Expression::Plus(ref left, ref right) => {
                         let mutate_left: bool = rand::random();
@@ -268,7 +268,7 @@ mod tests {
         let constant: Expression = Expression::Constant(0.0);
         constant.mutate(&mut rng);
 
-        let sensor: Expression = Expression::Sensor(Sensor::Vx);
+        let sensor: Expression = Expression::Sensor(Box::new(Sensor::Vx));
         sensor.mutate(&mut rng);
     }
 }

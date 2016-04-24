@@ -124,7 +124,7 @@ mod tests {
     #[test]
     fn next_should_land_if_all_motion_is_stopped_and_near_horizon() {
         let mut sensor_data: SensorData = SensorData::new().with_vy(0.5).build();
-        let program = Program::Command(Command::Skip);
+        let program = Program::Command(Box::new(Command::Skip));
         let world = World::new().build();
 
         next(&mut sensor_data, &program, &world);
@@ -135,7 +135,7 @@ mod tests {
    #[test]
     fn next_should_increment_velocity_with_thrust_constant() {
         let mut sensor_data: SensorData = SensorData::new().with_o(-f32::consts::PI).build();
-        let program = Program::Command(Command::Thrust);
+        let program = Program::Command(Box::new(Command::Thrust));
         let world = World::new().build();
 
         next(&mut sensor_data, &program, &world);
@@ -146,7 +146,7 @@ mod tests {
     #[test]
     fn next_should_increment_position_with_velocity() {
         let mut sensor_data: SensorData = SensorData::new().with_vx(1.0).with_vy(1.0).build();
-        let program = Program::Command(Command::Skip);
+        let program = Program::Command(Box::new(Command::Skip));
         let world = World::new().build();
 
         next(&mut sensor_data, &program, &world);
@@ -158,7 +158,7 @@ mod tests {
     #[test]
     fn next_should_increment_orientation_with_angular_velocity() {
         let mut sensor_data: SensorData = SensorData::new().with_w(1.0).build();
-        let program = Program::Command(Command::Skip);
+        let program = Program::Command(Box::new(Command::Skip));
         let world = World::new().build();
 
         next(&mut sensor_data, &program, &world);
@@ -169,7 +169,7 @@ mod tests {
    #[test]
     fn next_should_increment_angular_velocity_when_command_is_left() {
         let mut sensor_data: SensorData = SensorData::new().build();
-        let program = Program::Command(Command::Left);
+        let program = Program::Command(Box::new(Command::Left));
         let world = World::new().build();
 
         next(&mut sensor_data, &program, &world);
@@ -180,7 +180,7 @@ mod tests {
     #[test]
     fn next_should_decrement_angular_velocity_when_command_is_right() {
         let mut sensor_data: SensorData = SensorData::new().build();
-        let program = Program::Command(Command::Right);
+        let program = Program::Command(Box::new(Command::Right));
         let world = World::new().build();
 
         next(&mut sensor_data, &program, &world);
@@ -191,7 +191,7 @@ mod tests {
     #[test]
     fn next_should_signal_thursting_when_command_is_thrust() {
         let mut sensor_data: SensorData = SensorData::new().build();
-        let program = Program::Command(Command::Thrust);
+        let program = Program::Command(Box::new(Command::Thrust));
         let world = World::new().build();
 
         next(&mut sensor_data, &program, &world);
@@ -202,7 +202,7 @@ mod tests {
     #[test]
     fn next_should_not_signal_thursting_when_command_is_other_then_thrust() {
         let mut sensor_data: SensorData = SensorData::new().build();
-        let program = Program::Command(Command::Skip);
+        let program = Program::Command(Box::new(Command::Skip));
         let world = World::new().build();
 
         next(&mut sensor_data, &program, &world);
@@ -213,7 +213,7 @@ mod tests {
     #[test]
     fn next_should_consume_fuel_when_thrusting() {
         let mut sensor_data: SensorData = SensorData::new().with_fuel(1.0).build();
-        let program = Program::Command(Command::Thrust);
+        let program = Program::Command(Box::new(Command::Thrust));
         let world = World::new().with_fuel_consumption(0.01).build();
 
         next(&mut sensor_data, &program, &world);
@@ -225,7 +225,7 @@ mod tests {
     #[test]
     fn next_should_not_consume_more_fuel_when_out() {
         let mut sensor_data: SensorData = SensorData::new().with_fuel(0.0).build();
-        let program = Program::Command(Command::Thrust);
+        let program = Program::Command(Box::new(Command::Thrust));
         let world = World::new().with_fuel_consumption(0.01).build();
 
         next(&mut sensor_data, &program, &world);
@@ -237,7 +237,7 @@ mod tests {
    #[test]
     fn next_should_not_change_velocity_when_fuel_is_out_when_thrusting() {
         let mut sensor_data: SensorData = SensorData::new().with_vx(0.0).with_o(f32::consts::PI/2.0).with_fuel(0.0).build();
-        let program = Program::Command(Command::Thrust);
+        let program = Program::Command(Box::new(Command::Thrust));
         let world = World::new().build();
 
         next(&mut sensor_data, &program, &world);

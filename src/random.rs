@@ -32,8 +32,8 @@ use super::structure::{Program,Condition,Command,Expression,Sensor};
 impl rand::Rand for Program {
 	  fn rand<R: rand::Rng>(rng: &mut R) -> Self {
         pick![
-            1, Program::If(Condition::rand(rng), Box::new(Program::rand(rng)), Box::new(Program::rand(rng))),
-            1, Program::Command(Command::rand(rng))
+            1, Program::If(Box::new(Condition::rand(rng)), Box::new(Program::rand(rng)), Box::new(Program::rand(rng))),
+            1, Program::Command(Box::new(Command::rand(rng)))
         ]
 	  }
 }
@@ -65,7 +65,7 @@ impl rand::Rand for Expression {
 	  fn rand<R: rand::Rng>(rng: &mut R) -> Self {
         pick![
             5, Expression::Constant(rng.next_f32()),
-            5, Expression::Sensor(Sensor::rand(rng)),
+            5, Expression::Sensor(Box::new(Sensor::rand(rng))),
             1, Expression::Plus(Box::new(Expression::rand(rng)), Box::new(Expression::rand(rng))),
             1, Expression::Minus(Box::new(Expression::rand(rng)), Box::new(Expression::rand(rng))),
             1, Expression::Multiply(Box::new(Expression::rand(rng)), Box::new(Expression::rand(rng))),

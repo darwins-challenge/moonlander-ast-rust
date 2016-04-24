@@ -82,8 +82,8 @@ mod tests {
     #[test]
     fn should_correctly_source_programs() {
 	      assert_eq!("iff!(T!(),skip!(),left!())",
-		               Program::If(Condition::True, Box::new(Program::Command(Command::Skip)), Box::new(Program::Command(Command::Left))).source());
-	      assert_eq!("skip!()", Program::Command(Command::Skip).source());
+		               Program::If(Box::new(Condition::True), Box::new(Program::Command(Box::new(Command::Skip))), Box::new(Program::Command(Box::new(Command::Left)))).source());
+	      assert_eq!("skip!()", Program::Command(Box::new(Command::Skip)).source());
     }
 
     #[test]
@@ -108,9 +108,9 @@ mod tests {
     #[test]
     fn should_correctly_source_expressions() {
 	      assert_eq!("constant!(1.0000)", Expression::Constant(1.0).source());
-	      assert_eq!("vx!()", Expression::Sensor(Sensor::Vx).source());
+	      assert_eq!("vx!()", Expression::Sensor(Box::new(Sensor::Vx)).source());
 	      assert_eq!("plus!(constant!(1.0000),vy!())",
-		               Expression::Plus(Box::new(Expression::Constant(1.0)),Box::new(Expression::Sensor(Sensor::Vy))).source());
+		               Expression::Plus(Box::new(Expression::Constant(1.0)),Box::new(Expression::Sensor(Box::new(Sensor::Vy)))).source());
 	      assert_eq!("minus!(constant!(1.0000),constant!(2.0000))",
 		               Expression::Minus(Box::new(Expression::Constant(1.0)),Box::new(Expression::Constant(2.0))).source());
 	      assert_eq!("multiply!(constant!(1.0000),constant!(2.0000))",
