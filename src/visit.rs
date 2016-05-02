@@ -72,11 +72,11 @@ impl <'a> Visitable<'a> for Sensor {
 
 /// A simple visitor that collects references to all node types in a list of references
 pub struct BucketCollector<'a> {
-    programs: Vec<&'a Program>,
-    conditions: Vec<&'a Condition>,
-    commands: Vec<&'a Command>,
-    expressions: Vec<&'a Expression>,
-    sensors: Vec<&'a Sensor>,
+    pub programs: Vec<&'a Program>,
+    pub conditions: Vec<&'a Condition>,
+    pub commands: Vec<&'a Command>,
+    pub expressions: Vec<&'a Expression>,
+    pub sensors: Vec<&'a Sensor>,
 }
 
 impl <'a> BucketCollector<'a> {

@@ -11,6 +11,7 @@
 //! intervention. A nice interactive game that gives a feel for the problem can be
 //! found [here](http://moonlander.seb.ly/).
 
+extern crate rand;
 extern crate rustc_serialize;
 
 #[macro_use]
@@ -19,6 +20,7 @@ pub mod pick;
 #[macro_use]
 pub mod macros;
 
+pub mod copy;
 pub mod darwin;
 pub mod data;
 pub mod random;
