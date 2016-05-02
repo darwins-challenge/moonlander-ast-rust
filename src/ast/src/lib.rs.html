@@ -71,6 +71,8 @@
 <span id="27">27</span>
 <span id="28">28</span>
 <span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! This crate explores [genetic</span>
 <span class='doccomment'>//! programming](https://en.wikipedia.org/wiki/Genetic_programming). Genetic</span>
@@ -85,6 +87,7 @@
 <span class='doccomment'>//! intervention. A nice interactive game that gives a feel for the problem can be</span>
 <span class='doccomment'>//! found [here](http://moonlander.seb.ly/).</span>
 
+<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>rand</span>;
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>rustc_serialize</span>;
 
 <span class='attribute'>#[<span class='ident'>macro_use</span>]</span>
@@ -93,6 +96,7 @@
 <span class='attribute'>#[<span class='ident'>macro_use</span>]</span>
 <span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>macros</span>;
 
+<span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>copy</span>;
 <span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>darwin</span>;
 <span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>data</span>;
 <span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>random</span>;
