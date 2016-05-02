@@ -11,7 +11,6 @@
 
     <link rel="stylesheet" type="text/css" href="../../../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../../../main.css">
-    
 
     
     
@@ -126,10 +125,10 @@
 
 <span class='kw'>use</span> <span class='ident'>rand</span>;
 
-<span class='kw'>use</span> <span class='kw'>super</span>::<span class='kw'>super</span>::<span class='ident'>visit</span>::{<span class='ident'>Visitable</span>, <span class='ident'>BucketCollector</span>};
-<span class='kw'>use</span> <span class='kw'>super</span>::<span class='kw'>super</span>::<span class='ident'>structure</span>::{<span class='ident'>Program</span>, <span class='ident'>Sensor</span>, <span class='ident'>Command</span>, <span class='ident'>Expression</span>, <span class='ident'>Condition</span>};
-<span class='kw'>use</span> <span class='kw'>super</span>::<span class='kw'>super</span>::<span class='ident'>copy</span>;
-<span class='kw'>use</span> <span class='kw'>super</span>::<span class='kw'>super</span>::<span class='ident'>copy</span>::<span class='ident'>Copyable</span>;
+<span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>super</span>::<span class='ident'>visit</span>::{<span class='ident'>Visitable</span>, <span class='ident'>BucketCollector</span>};
+<span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>super</span>::<span class='ident'>structure</span>::{<span class='ident'>Program</span>, <span class='ident'>Sensor</span>, <span class='ident'>Command</span>, <span class='ident'>Expression</span>, <span class='ident'>Condition</span>};
+<span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>super</span>::<span class='ident'>copy</span>;
+<span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>super</span>::<span class='ident'>copy</span>::<span class='ident'>Copyable</span>;
 
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Copy</span>, <span class='ident'>Clone</span>)]</span>
 <span class='kw'>enum</span> <span class='ident'>NodeType</span> {
