@@ -11,7 +11,6 @@
 
     <link rel="stylesheet" type="text/css" href="../../../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../../../main.css">
-    
 
     
     
@@ -313,9 +312,9 @@
 
                     <span class='kw'>let</span> (<span class='ident'>child1</span>, <span class='ident'>child2</span>) <span class='op'>=</span> <span class='ident'>crossover</span>::<span class='ident'>cross_over</span>(<span class='ident'>one</span>, <span class='ident'>two</span>, <span class='ident'>rng</span>);
                     <span class='comment'>// We try to insert both children, but only if there&#39;s room in the population</span>
-                    <span class='ident'>ret</span>.<span class='ident'>add</span>(<span class='op'>*</span><span class='ident'>child1</span>);
+                    <span class='ident'>ret</span>.<span class='ident'>add</span>(<span class='ident'>child1</span>);
                     <span class='kw'>if</span> <span class='ident'>ret</span>.<span class='ident'>n</span>() <span class='op'>&lt;</span> <span class='self'>self</span>.<span class='ident'>n</span>() {
-                        <span class='ident'>ret</span>.<span class='ident'>add</span>(<span class='op'>*</span><span class='ident'>child2</span>);
+                        <span class='ident'>ret</span>.<span class='ident'>add</span>(<span class='ident'>child2</span>);
                     }
                 }
             ];
