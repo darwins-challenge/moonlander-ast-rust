@@ -30,39 +30,43 @@ pub use self::rand::Rng;
 use super::structure::{Program,Condition,Command,Expression,Sensor};
 
 impl rand::Rand for Program {
-	  fn rand<R: rand::Rng>(rng: &mut R) -> Self {
+    fn rand<R: rand::Rng>(rng: &mut R) -> Self {
         pick![
-            1, Program::If(Box::new(Condition::rand(rng)), Box::new(Program::rand(rng)), Box::new(Program::rand(rng))),
-            1, Program::Command(Box::new(Command::rand(rng)))
+            3, Program::If(Box::new(Condition::rand(rng)), Box::new(Program::rand(rng)), Box::new(Program::rand(rng))),
+            // This weight needs to be SLIGHTLY higher than the previous one, to increase the
+            // chances of termination during random generation. Otherwise there's a too high chance
+            // we're going to be generating Programs that contain Programs that contain Programs,
+            // etc.
+            4, Program::Command(Box::new(Command::rand(rng)))
         ]
-	  }
+    }
 }
 
 impl rand::Rand for Condition {
-	  fn rand<R: rand::Rng>(rng: &mut R) -> Self {
+    fn rand<R: rand::Rng>(rng: &mut R) -> Self {
         pick![
             8, Condition::True,
-			      8, Condition::False,
-			      2, Condition::Not(Box::new(Condition::rand(rng))),
-			      1, Condition::Or(Box::new(Condition::rand(rng)), Box::new(Condition::rand(rng))),
-			      1, Condition::And(Box::new(Condition::rand(rng)), Box::new(Condition::rand(rng))),
-			      1, Condition::Less(Box::new(Expression::rand(rng)), Box::new(Expression::rand(rng))),
-			      1, Condition::LessEqual(Box::new(Expression::rand(rng)), Box::new(Expression::rand(rng))),
-			      1, Condition::Equal(Box::new(Expression::rand(rng)), Box::new(Expression::rand(rng))),
-			      1, Condition::GreaterEqual(Box::new(Expression::rand(rng)), Box::new(Expression::rand(rng))),
-			      1, Condition::Greater(Box::new(Expression::rand(rng)), Box::new(Expression::rand(rng)))
-		    ]
-	  }
+            8, Condition::False,
+            2, Condition::Not(Box::new(Condition::rand(rng))),
+            1, Condition::Or(Box::new(Condition::rand(rng)), Box::new(Condition::rand(rng))),
+            1, Condition::And(Box::new(Condition::rand(rng)), Box::new(Condition::rand(rng))),
+            1, Condition::Less(Box::new(Expression::rand(rng)), Box::new(Expression::rand(rng))),
+            1, Condition::LessEqual(Box::new(Expression::rand(rng)), Box::new(Expression::rand(rng))),
+            1, Condition::Equal(Box::new(Expression::rand(rng)), Box::new(Expression::rand(rng))),
+            1, Condition::GreaterEqual(Box::new(Expression::rand(rng)), Box::new(Expression::rand(rng))),
+            1, Condition::Greater(Box::new(Expression::rand(rng)), Box::new(Expression::rand(rng)))
+        ]
+    }
 }
 
 impl rand::Rand for Command {
-	fn rand<R: rand::Rng>(_: &mut R) -> Self {
-		  pick![1, Command::Skip, 1, Command::Left, 1, Command::Right, 1, Command::Thrust]
-  }
+    fn rand<R: rand::Rng>(_: &mut R) -> Self {
+        pick![1, Command::Skip, 1, Command::Left, 1, Command::Right, 1, Command::Thrust]
+    }
 }
 
 impl rand::Rand for Expression {
-	  fn rand<R: rand::Rng>(rng: &mut R) -> Self {
+    fn rand<R: rand::Rng>(rng: &mut R) -> Self {
         pick![
             5, Expression::Constant(rng.next_f32()),
             5, Expression::Sensor(Box::new(Sensor::rand(rng))),
@@ -71,11 +75,11 @@ impl rand::Rand for Expression {
             1, Expression::Multiply(Box::new(Expression::rand(rng)), Box::new(Expression::rand(rng))),
             1, Expression::Divide(Box::new(Expression::rand(rng)), Box::new(Expression::rand(rng)))
         ]
-	  }
+    }
 }
 
 impl rand::Rand for Sensor {
-	  fn rand<R: rand::Rng>(_: &mut R) -> Self {
+    fn rand<R: rand::Rng>(_: &mut R) -> Self {
         pick![1, Sensor::X, 1, Sensor::Y, 1, Sensor::Vx, 1, Sensor::Vy, 1, Sensor::O, 1, Sensor::W]
 	}
 }

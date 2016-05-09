@@ -20,6 +20,8 @@ pub fn cross_over<H: rand::Rng + Sized>(a: &Program, b: &Program, rng: &mut H) -
     let mut a_nodes = BucketCollector::new();
     let mut b_nodes = BucketCollector::new();
 
+    debug_assert!(!copy::ref_eq(a, b));
+
     a.visit(&mut a_nodes);
     b.visit(&mut b_nodes);
 
@@ -76,4 +78,26 @@ fn get_counts(coll: &BucketCollector) -> Vec<(NodeType, usize)> {
 fn choose<T: Copy, H: rand::Rng + Sized>(vec: Vec<T>, rng: &mut H) -> T {
     let i = rng.gen_range(0, vec.len());
     vec[i]
+}
+
+#[cfg(test)]
+mod tests {
+    // This makes the macros work (which expect stuff to be in ast::structure::...etc...)
+    mod ast { pub use super::super::super::*; }
+
+    use super::super::super::structure::Program;
+    use super::*;
+    use rand;
+    use rand::Rng;
+
+    #[test]
+    fn crossover_random_trees() {
+        // Cross over some random trees to see we don't stackoverflow
+        let mut program1 = Box::new(rand::thread_rng().gen::<Program>());
+        for _ in 0..100 {
+            let program2 = rand::thread_rng().gen::<Program>();
+            let (a, _) = cross_over(&program1, &program2, &mut rand::thread_rng());
+            program1 = a;
+        }
+    }
 }
