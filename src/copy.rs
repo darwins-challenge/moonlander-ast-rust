@@ -5,43 +5,43 @@
 use super::structure::{Program,Condition,Command,Expression,Sensor};
 
 pub trait Copier {
-    fn copy_program(&self, program: &Program) -> Box<Program>;
-    fn copy_condition(&self, condition: &Condition) -> Box<Condition>;
-    fn copy_command(&self, command: &Command) -> Box<Command>;
-    fn copy_expression(&self, expression: &Expression) -> Box<Expression>;
-    fn copy_sensor(&self, sensor: &Sensor) -> Box<Sensor>;
+    fn copy_program(&self, program: &Program) -> Program;
+    fn copy_condition(&self, condition: &Condition) -> Condition;
+    fn copy_command(&self, command: &Command) -> Command;
+    fn copy_expression(&self, expression: &Expression) -> Expression;
+    fn copy_sensor(&self, sensor: &Sensor) -> Sensor;
 }
 
 pub trait Copyable {
-    fn copy(&self, copier: &Copier) -> Box<Self>;
+    fn copy(&self, copier: &Copier) -> Self;
 }
 
 impl Copyable for Program {
-    fn copy(&self, copier: &Copier) -> Box<Self> {
+    fn copy(&self, copier: &Copier) -> Self {
         copier.copy_program(self)
     }
 }
 
 impl Copyable for Condition {
-    fn copy(&self, copier: &Copier) -> Box<Self> {
+    fn copy(&self, copier: &Copier) -> Self {
         copier.copy_condition(self)
     }
 }
 
 impl Copyable for Expression {
-    fn copy(&self, copier: &Copier) -> Box<Self> {
+    fn copy(&self, copier: &Copier) -> Self {
         copier.copy_expression(self)
     }
 }
 
 impl Copyable for Command {
-    fn copy(&self, copier: &Copier) -> Box<Self> {
+    fn copy(&self, copier: &Copier) -> Self {
         copier.copy_command(self)
     }
 }
 
 impl Copyable for Sensor {
-    fn copy(&self, copier: &Copier) -> Box<Self> {
+    fn copy(&self, copier: &Copier) -> Self {
         copier.copy_sensor(self)
     }
 }
@@ -55,13 +55,13 @@ pub fn ref_eq<T>(a: &T, b: &T) -> bool {
 }
 
 impl <'a> Copier for CopyReplaceProgram<'a> {
-    fn copy_program(&self, program: &Program) -> Box<Program> { 
+    fn copy_program(&self, program: &Program) -> Program { 
         copy_program(self, if ref_eq(program, self.to_replace) { self.replace_with } else { program })
     }
-    fn copy_condition(&self, condition: &Condition) -> Box<Condition> { copy_condition(self, condition) }
-    fn copy_command(&self, command: &Command) -> Box<Command> { copy_command(self, command) }
-    fn copy_expression(&self, expression: &Expression) -> Box<Expression> { copy_expression(self, expression) }
-    fn copy_sensor(&self, sensor: &Sensor) -> Box<Sensor> { copy_sensor(self, sensor) }
+    fn copy_condition(&self, condition: &Condition) -> Condition { copy_condition(self, condition) }
+    fn copy_command(&self, command: &Command) -> Command { copy_command(self, command) }
+    fn copy_expression(&self, expression: &Expression) -> Expression { copy_expression(self, expression) }
+    fn copy_sensor(&self, sensor: &Sensor) -> Sensor { copy_sensor(self, sensor) }
 }
 
 pub struct CopyReplaceCondition<'a> {
@@ -69,13 +69,13 @@ pub struct CopyReplaceCondition<'a> {
 }
 
 impl <'a> Copier for CopyReplaceCondition<'a> {
-    fn copy_program(&self, program: &Program) -> Box<Program> { copy_program(self, program) }
-    fn copy_condition(&self, condition: &Condition) -> Box<Condition> {
+    fn copy_program(&self, program: &Program) -> Program { copy_program(self, program) }
+    fn copy_condition(&self, condition: &Condition) -> Condition {
         copy_condition(self, if ref_eq(condition, self.to_replace) { self.replace_with } else { condition })
     }
-    fn copy_command(&self, command: &Command) -> Box<Command> { copy_command(self, command) }
-    fn copy_expression(&self, expression: &Expression) -> Box<Expression> { copy_expression(self, expression) }
-    fn copy_sensor(&self, sensor: &Sensor) -> Box<Sensor> { copy_sensor(self, sensor) }
+    fn copy_command(&self, command: &Command) -> Command { copy_command(self, command) }
+    fn copy_expression(&self, expression: &Expression) -> Expression { copy_expression(self, expression) }
+    fn copy_sensor(&self, sensor: &Sensor) -> Sensor { copy_sensor(self, sensor) }
 }
 
 pub struct CopyReplaceCommand<'a> {
@@ -83,13 +83,13 @@ pub struct CopyReplaceCommand<'a> {
 }
 
 impl <'a> Copier for CopyReplaceCommand<'a> {
-    fn copy_program(&self, program: &Program) -> Box<Program> { copy_program(self, program) }
-    fn copy_condition(&self, condition: &Condition) -> Box<Condition> { copy_condition(self, condition) }
-    fn copy_command(&self, command: &Command) -> Box<Command> {
+    fn copy_program(&self, program: &Program) -> Program { copy_program(self, program) }
+    fn copy_condition(&self, condition: &Condition) -> Condition { copy_condition(self, condition) }
+    fn copy_command(&self, command: &Command) -> Command {
         copy_command(self, if ref_eq(command, self.to_replace) { self.replace_with } else { command })
     }
-    fn copy_expression(&self, expression: &Expression) -> Box<Expression> { copy_expression(self, expression) }
-    fn copy_sensor(&self, sensor: &Sensor) -> Box<Sensor> { copy_sensor(self, sensor) }
+    fn copy_expression(&self, expression: &Expression) -> Expression { copy_expression(self, expression) }
+    fn copy_sensor(&self, sensor: &Sensor) -> Sensor { copy_sensor(self, sensor) }
 }
 
 pub struct CopyReplaceExpression<'a> {
@@ -97,13 +97,13 @@ pub struct CopyReplaceExpression<'a> {
 }
 
 impl <'a> Copier for CopyReplaceExpression<'a> {
-    fn copy_program(&self, program: &Program) -> Box<Program> { copy_program(self, program) }
-    fn copy_condition(&self, condition: &Condition) -> Box<Condition> { copy_condition(self, condition) }
-    fn copy_command(&self, command: &Command) -> Box<Command> { copy_command(self, command) }
-    fn copy_expression(&self, expression: &Expression) -> Box<Expression> {
+    fn copy_program(&self, program: &Program) -> Program { copy_program(self, program) }
+    fn copy_condition(&self, condition: &Condition) -> Condition { copy_condition(self, condition) }
+    fn copy_command(&self, command: &Command) -> Command { copy_command(self, command) }
+    fn copy_expression(&self, expression: &Expression) -> Expression {
         copy_expression(self, if ref_eq(expression, self.to_replace) { self.replace_with } else { expression })
     }
-    fn copy_sensor(&self, sensor: &Sensor) -> Box<Sensor> { copy_sensor(self, sensor) }
+    fn copy_sensor(&self, sensor: &Sensor) -> Sensor { copy_sensor(self, sensor) }
 }
 
 pub struct CopyReplaceSensor<'a> {
@@ -111,53 +111,53 @@ pub struct CopyReplaceSensor<'a> {
 }
 
 impl <'a> Copier for CopyReplaceSensor<'a> {
-    fn copy_program(&self, program: &Program) -> Box<Program> { copy_program(self, program) }
-    fn copy_condition(&self, condition: &Condition) -> Box<Condition> { copy_condition(self, condition) }
-    fn copy_command(&self, command: &Command) -> Box<Command> { copy_command(self, command) }
-    fn copy_expression(&self, expression: &Expression) -> Box<Expression> { copy_expression(self, expression) }
-    fn copy_sensor(&self, sensor: &Sensor) -> Box<Sensor> {
+    fn copy_program(&self, program: &Program) -> Program { copy_program(self, program) }
+    fn copy_condition(&self, condition: &Condition) -> Condition { copy_condition(self, condition) }
+    fn copy_command(&self, command: &Command) -> Command { copy_command(self, command) }
+    fn copy_expression(&self, expression: &Expression) -> Expression { copy_expression(self, expression) }
+    fn copy_sensor(&self, sensor: &Sensor) -> Sensor {
         copy_sensor(self, if ref_eq(sensor, self.to_replace) { self.replace_with } else { sensor })
     }
 }
 
-fn copy_program(copier: &Copier, program: &Program) -> Box<Program> {
-    Box::new(match *program {
-        Program::If(ref condition, ref left, ref right) => Program::If(condition.copy(copier), left.copy(copier), right.copy(copier)),
-        Program::Command(ref command) => Program::Command(command.copy(copier))
-    })
+fn copy_program(copier: &Copier, program: &Program) -> Program {
+    match *program {
+        Program::If(ref condition, ref left, ref right) => Program::If(Box::new(condition.copy(copier)), Box::new(left.copy(copier)), Box::new(right.copy(copier))),
+        Program::Command(ref command) => Program::Command(Box::new(command.copy(copier)))
+    }
 }
 
-fn copy_expression(copier: &Copier, expression: &Expression) -> Box<Expression> {
-    Box::new(match *expression {
-        Expression::Sensor(ref sensor)            => Expression::Sensor(sensor.copy(copier)),
-        Expression::Plus(ref left, ref right)     => Expression::Plus(left.copy(copier), right.copy(copier)),
-        Expression::Minus(ref left, ref right)    => Expression::Minus(left.copy(copier), right.copy(copier)),
-        Expression::Multiply(ref left, ref right) => Expression::Multiply(left.copy(copier), right.copy(copier)),
-        Expression::Divide(ref left, ref right)   => Expression::Divide(left.copy(copier), right.copy(copier)),
+fn copy_expression(copier: &Copier, expression: &Expression) -> Expression {
+    match *expression {
+        Expression::Sensor(ref sensor)            => Expression::Sensor(Box::new(sensor.copy(copier))),
+        Expression::Plus(ref left, ref right)     => Expression::Plus(Box::new(left.copy(copier)), Box::new(right.copy(copier))),
+        Expression::Minus(ref left, ref right)    => Expression::Minus(Box::new(left.copy(copier)), Box::new(right.copy(copier))),
+        Expression::Multiply(ref left, ref right) => Expression::Multiply(Box::new(left.copy(copier)), Box::new(right.copy(copier))),
+        Expression::Divide(ref left, ref right)   => Expression::Divide(Box::new(left.copy(copier)), Box::new(right.copy(copier))),
         _ => expression.clone()
-    })
+    }
 }
 
-fn copy_condition(copier: &Copier, condition: &Condition) -> Box<Condition> {
-    Box::new(match *condition {
-        Condition::Not(ref condition)                => Condition::Not(condition.copy(copier)),
-        Condition::Or(ref left, ref right)           => Condition::Or(left.copy(copier), right.copy(copier)),
-        Condition::And(ref left, ref right)          => Condition::And(left.copy(copier), right.copy(copier)),
-        Condition::Less(ref left, ref right)         => Condition::Less(left.copy(copier), right.copy(copier)),
-        Condition::LessEqual(ref left, ref right)    => Condition::LessEqual(left.copy(copier), right.copy(copier)),
-        Condition::Equal(ref left, ref right)        => Condition::Equal(left.copy(copier), right.copy(copier)),
-        Condition::GreaterEqual(ref left, ref right) => Condition::GreaterEqual(left.copy(copier), right.copy(copier)),
-        Condition::Greater(ref left, ref right)      => Condition::Greater(left.copy(copier), right.copy(copier)),
+fn copy_condition(copier: &Copier, condition: &Condition) -> Condition {
+    match *condition {
+        Condition::Not(ref condition)                => Condition::Not(Box::new(condition.copy(copier))),
+        Condition::Or(ref left, ref right)           => Condition::Or(Box::new(left.copy(copier)), Box::new(right.copy(copier))),
+        Condition::And(ref left, ref right)          => Condition::And(Box::new(left.copy(copier)), Box::new(right.copy(copier))),
+        Condition::Less(ref left, ref right)         => Condition::Less(Box::new(left.copy(copier)), Box::new(right.copy(copier))),
+        Condition::LessEqual(ref left, ref right)    => Condition::LessEqual(Box::new(left.copy(copier)), Box::new(right.copy(copier))),
+        Condition::Equal(ref left, ref right)        => Condition::Equal(Box::new(left.copy(copier)), Box::new(right.copy(copier))),
+        Condition::GreaterEqual(ref left, ref right) => Condition::GreaterEqual(Box::new(left.copy(copier)), Box::new(right.copy(copier))),
+        Condition::Greater(ref left, ref right)      => Condition::Greater(Box::new(left.copy(copier)), Box::new(right.copy(copier))),
         _                                            => condition.clone()
-    })
+    }
 }
 
-fn copy_sensor(_: &Copier, sensor: &Sensor) -> Box<Sensor> {
-    Box::new(sensor.clone())
+fn copy_sensor(_: &Copier, sensor: &Sensor) -> Sensor {
+    sensor.clone()
 }
 
-fn copy_command(_: &Copier, command: &Command) -> Box<Command> {
-    Box::new(command.clone())
+fn copy_command(_: &Copier, command: &Command) -> Command {
+    command.clone()
 }
 
 #[cfg(test)]

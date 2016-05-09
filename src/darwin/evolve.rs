@@ -73,9 +73,9 @@ impl Population {
 
                     let (child1, child2) = crossover::cross_over(one, two, rng);
                     // We try to insert both children, but only if there's room in the population
-                    ret.add(*child1);
+                    ret.add(child1);
                     if ret.n() < self.n() {
-                        ret.add(*child2);
+                        ret.add(child2);
                     }
                 }
             ];

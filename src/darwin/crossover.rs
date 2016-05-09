@@ -16,7 +16,7 @@ enum NodeType {
     Command
 }
 
-pub fn cross_over<H: rand::Rng + Sized>(a: &Program, b: &Program, rng: &mut H) -> (Box<Program>, Box<Program>) {
+pub fn cross_over<H: rand::Rng + Sized>(a: &Program, b: &Program, rng: &mut H) -> (Program, Program) {
     let mut a_nodes = BucketCollector::new();
     let mut b_nodes = BucketCollector::new();
 
@@ -42,27 +42,27 @@ pub fn cross_over<H: rand::Rng + Sized>(a: &Program, b: &Program, rng: &mut H) -
     }
 }
 
-fn cross_over_program(a: &Program, b: &Program, an: &Program, bn: &Program) -> (Box<Program>, Box<Program>) {
+fn cross_over_program(a: &Program, b: &Program, an: &Program, bn: &Program) -> (Program, Program) {
     (a.copy(&copy::CopyReplaceProgram { to_replace: an, replace_with: bn }),
      b.copy(&copy::CopyReplaceProgram { to_replace: bn, replace_with: an }))
 }
 
-fn cross_over_expression(a: &Program, b: &Program, an: &Expression, bn: &Expression) -> (Box<Program>, Box<Program>) {
+fn cross_over_expression(a: &Program, b: &Program, an: &Expression, bn: &Expression) -> (Program, Program) {
     (a.copy(&copy::CopyReplaceExpression { to_replace: an, replace_with: bn }),
      b.copy(&copy::CopyReplaceExpression { to_replace: bn, replace_with: an }))
 }
 
-fn cross_over_condition(a: &Program, b: &Program, an: &Condition, bn: &Condition) -> (Box<Program>, Box<Program>) {
+fn cross_over_condition(a: &Program, b: &Program, an: &Condition, bn: &Condition) -> (Program, Program) {
     (a.copy(&copy::CopyReplaceCondition { to_replace: an, replace_with: bn }),
      b.copy(&copy::CopyReplaceCondition { to_replace: bn, replace_with: an }))
 }
 
-fn cross_over_sensor(a: &Program, b: &Program, an: &Sensor, bn: &Sensor) -> (Box<Program>, Box<Program>) {
+fn cross_over_sensor(a: &Program, b: &Program, an: &Sensor, bn: &Sensor) -> (Program, Program) {
     (a.copy(&copy::CopyReplaceSensor { to_replace: an, replace_with: bn }),
      b.copy(&copy::CopyReplaceSensor { to_replace: bn, replace_with: an }))
 }
 
-fn cross_over_command(a: &Program, b: &Program, an: &Command, bn: &Command) -> (Box<Program>, Box<Program>) {
+fn cross_over_command(a: &Program, b: &Program, an: &Command, bn: &Command) -> (Program, Program) {
     (a.copy(&copy::CopyReplaceCommand { to_replace: an, replace_with: bn }),
      b.copy(&copy::CopyReplaceCommand { to_replace: bn, replace_with: an }))
 }
@@ -93,7 +93,7 @@ mod tests {
     #[test]
     fn crossover_random_trees() {
         // Cross over some random trees to see we don't stackoverflow
-        let mut program1 = Box::new(rand::thread_rng().gen::<Program>());
+        let mut program1 = rand::thread_rng().gen::<Program>();
         for _ in 0..100 {
             let program2 = rand::thread_rng().gen::<Program>();
             let (a, _) = cross_over(&program1, &program2, &mut rand::thread_rng());
