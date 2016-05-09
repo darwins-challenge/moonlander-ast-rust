@@ -9,6 +9,7 @@ pub use rand::Rng;
 use ast::structure::Program;
 use ast::simulation;
 use ast::serialize;
+use ast::simplify::Simplify;
 use ast::data::SensorData;
 use ast::darwin::evolve;
 use std::f32::consts::PI;
@@ -74,7 +75,7 @@ fn save_trace(generation: u32, program: &Program) {
     trace.save(Path::new(&tracefile)).expect("Error saving file");
 
     let progfile = format!("program_{}.txt", generation);
-    let _ = serialize::save_source(Path::new(&progfile), program);
+    let _ = serialize::save_source(Path::new(&progfile), &program.simplify());
 }
 
 fn main() {
