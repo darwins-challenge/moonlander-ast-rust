@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["CopyReplaceCommand",""],["CopyReplaceCondition",""],["CopyReplaceExpression",""],["CopyReplaceProgram",""],["CopyReplaceSensor",""]],"trait":[["Copier",""],["Copyable",""]]});
+initSidebarItems({"fn":[["ref_eq",""]],"struct":[["CopyReplaceCommand",""],["CopyReplaceCondition",""],["CopyReplaceExpression",""],["CopyReplaceProgram",""],["CopyReplaceSensor",""]],"trait":[["Copier",""],["Copyable",""]]});

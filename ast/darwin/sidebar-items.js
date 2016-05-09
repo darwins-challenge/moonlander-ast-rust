@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["crossover",""],["mutation",""]]});
+initSidebarItems({"mod":[["crossover",""],["evolve",""],["mutation",""]]});
