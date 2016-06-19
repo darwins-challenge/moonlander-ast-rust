@@ -183,7 +183,7 @@
 </pre><pre class='rust '>
 <span class='doccomment'>//! Tree visitor routines</span>
 
-<span class='kw'>use</span> <span class='kw'>super</span>::<span class='ident'>structure</span>::{<span class='ident'>Program</span>,<span class='ident'>Condition</span>,<span class='ident'>Command</span>,<span class='ident'>Expression</span>,<span class='ident'>Sensor</span>};
+<span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>structure</span>::{<span class='ident'>Program</span>,<span class='ident'>Condition</span>,<span class='ident'>Command</span>,<span class='ident'>Expression</span>,<span class='ident'>Sensor</span>};
 
 <span class='kw'>pub</span> <span class='kw'>trait</span> <span class='ident'>Visitor</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
 	<span class='kw'>fn</span> <span class='ident'>visit_program</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>program</span>: <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='ident'>Program</span>);
@@ -299,11 +299,11 @@
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>test</span>)]</span>
 <span class='kw'>mod</span> <span class='ident'>tests</span> {
     <span class='comment'>// This makes the macros work (which expect stuff to be in ast::structure::...etc...)</span>
-    <span class='kw'>mod</span> <span class='ident'>ast</span> { <span class='kw'>pub</span> <span class='kw'>use</span> <span class='kw'>super</span>::<span class='kw'>super</span>::<span class='kw'>super</span>::<span class='op'>*</span>; }
+    <span class='kw'>mod</span> <span class='ident'>ast</span> { <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>super</span>::<span class='ident'>super</span>::<span class='op'>*</span>; }
 
-    <span class='kw'>use</span> <span class='kw'>super</span>::<span class='op'>*</span>;
+    <span class='kw'>use</span> <span class='ident'>super</span>::<span class='op'>*</span>;
 
-    <span class='kw'>use</span> <span class='kw'>super</span>::<span class='kw'>super</span>::<span class='ident'>structure</span>::<span class='ident'>Program</span>;
+    <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>super</span>::<span class='ident'>structure</span>::<span class='ident'>Program</span>;
 
     <span class='attribute'>#[<span class='ident'>test</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>collect_all_nodes</span>() {
@@ -343,8 +343,6 @@
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
-                    <dt>+</dt>
-                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
