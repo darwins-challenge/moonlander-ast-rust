@@ -26,9 +26,12 @@ impl Simplify for Condition {
 	fn simplify(&self) -> Self {
 		match *self {
             Condition::Not(ref inner) => {
-                match **inner {
-                    Condition::Not(ref x) => x.simplify(),
-                    _ => self.clone()
+                let i = inner.simplify();
+                match i {
+                    Condition::True => Condition::False,
+                    Condition::False => Condition::True,
+                    Condition::Not(x) => *x,
+                    _ => Condition::Not(Box::new(i))
                 }
             },
             Condition::Or(ref left, ref right) => {
