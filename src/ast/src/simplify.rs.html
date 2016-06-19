@@ -119,6 +119,9 @@
 <span id="75">75</span>
 <span id="76">76</span>
 <span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! Module to simplify expression trees</span>
 <span class='kw'>use</span> <span class='kw'>super</span>::<span class='ident'>structure</span>::{<span class='ident'>Program</span>,<span class='ident'>Condition</span>,<span class='ident'>Command</span>,<span class='ident'>Expression</span>,<span class='ident'>Sensor</span>};
@@ -148,9 +151,12 @@
 	<span class='kw'>fn</span> <span class='ident'>simplify</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='self'>Self</span> {
 		<span class='kw'>match</span> <span class='op'>*</span><span class='self'>self</span> {
             <span class='ident'>Condition</span>::<span class='ident'>Not</span>(<span class='kw-2'>ref</span> <span class='ident'>inner</span>) <span class='op'>=&gt;</span> {
-                <span class='kw'>match</span> <span class='op'>*</span><span class='op'>*</span><span class='ident'>inner</span> {
-                    <span class='ident'>Condition</span>::<span class='ident'>Not</span>(<span class='kw-2'>ref</span> <span class='ident'>x</span>) <span class='op'>=&gt;</span> <span class='ident'>x</span>.<span class='ident'>simplify</span>(),
-                    _ <span class='op'>=&gt;</span> <span class='self'>self</span>.<span class='ident'>clone</span>()
+                <span class='kw'>let</span> <span class='ident'>i</span> <span class='op'>=</span> <span class='ident'>inner</span>.<span class='ident'>simplify</span>();
+                <span class='kw'>match</span> <span class='ident'>i</span> {
+                    <span class='ident'>Condition</span>::<span class='ident'>True</span> <span class='op'>=&gt;</span> <span class='ident'>Condition</span>::<span class='ident'>False</span>,
+                    <span class='ident'>Condition</span>::<span class='ident'>False</span> <span class='op'>=&gt;</span> <span class='ident'>Condition</span>::<span class='ident'>True</span>,
+                    <span class='ident'>Condition</span>::<span class='ident'>Not</span>(<span class='ident'>x</span>) <span class='op'>=&gt;</span> <span class='op'>*</span><span class='ident'>x</span>,
+                    _ <span class='op'>=&gt;</span> <span class='ident'>Condition</span>::<span class='ident'>Not</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>i</span>))
                 }
             },
             <span class='ident'>Condition</span>::<span class='ident'>Or</span>(<span class='kw-2'>ref</span> <span class='ident'>left</span>, <span class='kw-2'>ref</span> <span class='ident'>right</span>) <span class='op'>=&gt;</span> {
@@ -221,6 +227,8 @@
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
