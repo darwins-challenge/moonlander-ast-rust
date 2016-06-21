@@ -1,24 +1,25 @@
-use super::super::structure::Program;
 use super::super::copy;
+use super::super::visit::Visitable;
 use super::mutation::Mutate;
 use super::crossover;
 use rand;
-use rand::Rng;
+use rand::{Rng, Rand};
 use std::iter::Iterator;
 
-pub struct Population {
+/// A population with the root of the indicated type
+pub struct Population<P: Mutate+Rand+Clone> {
     /// Collection of algorithms
-    population: Vec<Program>,
+    population: Vec<P>,
 
     /// Collection of fitness scores
     pub scores: Vec<f64>
 }
 
-impl Population {
+impl <P: Mutate+Rand+Clone> Population<P> {
     /// Create a new population with an estimated size
     ///
     /// This does not create programs yet but simply allocates memory.
-    pub fn new(n: usize) -> Population {
+    pub fn new(n: usize) -> Population<P> {
         Population {
             population: Vec::with_capacity(n),
             scores: vec![0.0; n]
@@ -26,7 +27,7 @@ impl Population {
     }
 
     /// Add a single program to the population
-    pub fn add(&mut self, program: Program) {
+    pub fn add(&mut self, program: P) {
         self.population.push(program);
     }
 
@@ -36,13 +37,13 @@ impl Population {
 
     /// Apply a scoring function to the entire population
     pub fn score<F>(&mut self, scoring_fn: F)
-        where F: Fn(&Program) -> f64 {
+        where F: Fn(&P) -> f64 {
         // FIXME: Parallelize?
         self.scores = self.population.iter().map(scoring_fn).collect();
     }
 
     /// Select a tournament winner from a tournament round of size n
-    pub fn select_tournament_winner<R: rand::Rng>(&self, n: usize, rng: &mut R) -> &Program {
+    pub fn select_tournament_winner<R: rand::Rng>(&self, n: usize, rng: &mut R) -> &P {
         self.population.get(self.select_tournament_winner_i(n, rng)).unwrap()
     }
 
@@ -53,15 +54,17 @@ impl Population {
     }
 
     /// Return the best program from the population
-    pub fn best(&self) -> (&Program, f64) {
+    pub fn best(&self) -> (&P, f64) {
         let indexes = 0..self.n();
         let (score, winner) = partial_max(indexes.into_iter().map(|i| (self.scores[i], i))).unwrap();
         (self.population.get(winner).unwrap(), score)
     }
 
     /// Produce a new population of the same size based off the current one
-    pub fn evolve<R: rand::Rng>(&self, tournament_size: usize, reproduce_weight: u32, mutate_weight: u32, crossover_weight: u32, rng: &mut R) -> Population {
-        let mut ret = Population::new(self.n());
+    pub fn evolve<'a, R: rand::Rng>(&'a self, tournament_size: usize, reproduce_weight: u32, mutate_weight: u32, crossover_weight: u32, rng: &mut R) -> Population<P> 
+        where P: Visitable<'a>+copy::Copyable // Additional bounds for crossover
+    {
+        let mut ret = Self::new(self.n());
         while ret.n() < self.n() {
             pick![
                 reproduce_weight, ret.add(self.select_tournament_winner(tournament_size, rng).clone()),
@@ -83,7 +86,7 @@ impl Population {
         ret
     }
 
-    pub fn pick_two<R: rand::Rng>(&self, tournament_size: usize, rng: &mut R) -> (&Program, &Program) {
+    pub fn pick_two<R: rand::Rng>(&self, tournament_size: usize, rng: &mut R) -> (&P, &P) {
         loop {
             let one = self.select_tournament_winner(tournament_size, rng);
             let two = self.select_tournament_winner(tournament_size, rng);
@@ -110,7 +113,7 @@ fn partial_max<I: Iterator>(iter: I) -> Option<I::Item>
 }
 
 /// Generate a random population of size n
-pub fn random_population(n: usize) -> Population {
+pub fn random_population<P: Mutate+Rand+Clone>(n: usize) -> Population<P> {
     let mut ret = Population::new(n);
     for _ in 0..n {
         ret.add(rand::random());

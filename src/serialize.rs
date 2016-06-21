@@ -5,7 +5,6 @@
 
 use rustc_serialize::json;
 use super::data::SensorData;
-use super::structure::Program;
 use super::source::Source;
 use std::fs::File;
 use std::io::Write;
@@ -37,7 +36,7 @@ impl GameTrace {
     }
 }
 
-pub fn save_source(path: &Path, program: &Program) -> Result<(), Box<Error>> {
+pub fn save_source<P: Source>(path: &Path, program: &P) -> Result<(), Box<Error>> {
     // Also save source
     let mut f = try!(File::create(path));
     try!(f.write_all(&program.source().as_bytes()));

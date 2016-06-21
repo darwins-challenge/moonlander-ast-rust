@@ -2,6 +2,9 @@
 
 use super::structure::{Program,Condition,Command,Expression,Sensor};
 
+/// Interface for node visitor
+///
+/// Lifetime parameter is the lifetime of the visitable objects.
 pub trait Visitor<'a> {
 	fn visit_program(&mut self, program: &'a Program);
 	fn visit_condition(&mut self, condition: &'a Condition);
@@ -10,6 +13,9 @@ pub trait Visitor<'a> {
 	fn visit_sensor(&mut self, sensor: &'a Sensor);
 }
 
+/// Interface for visitable nodes
+///
+/// Lifetime parameter is the lifetime of the visitable objects.
 pub trait Visitable<'a> {
     fn visit(&'a self, visitor: &mut Visitor<'a>);
 }

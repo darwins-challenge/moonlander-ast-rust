@@ -1,5 +1,5 @@
-use super::structure::{Program, Command};
-use super::data::{SensorData, Evaluate};
+use super::structure::{Program, Command, Condition};
+use super::data::{SensorData, Evaluate, BooleanValue};
 
 fn abs(x: f32) -> f32 {
     if x < 0.0 {
@@ -64,11 +64,10 @@ impl World {
     }
 }
 
-pub fn next(sensor_data: &mut SensorData, program: &Program, world: &World) {
+pub fn update_data(sensor_data: &mut SensorData, command: Command, world: &World) {
     if sensor_data.crashed || sensor_data.landed { return; }
-    let command = program.evaluate(*sensor_data);
 
-    let angular_multiplier: f32 = match **command {
+    let angular_multiplier: f32 = match command {
         Command::Left  =>  1.0,
         Command::Right => -1.0,
         _              =>  0.0
@@ -76,7 +75,7 @@ pub fn next(sensor_data: &mut SensorData, program: &Program, world: &World) {
     sensor_data.w += angular_multiplier * world.angular_increment;
     sensor_data.o += sensor_data.w;
 
-    let thrust_multiplier: f32 = match **command {
+    let thrust_multiplier: f32 = match command {
         Command::Thrust => { if sensor_data.fuel > 0.0 { 1.0 } else { 0.0 } },
         _               => 0.0
     };
@@ -88,7 +87,7 @@ pub fn next(sensor_data: &mut SensorData, program: &Program, world: &World) {
     sensor_data.x += sensor_data.vx;
     sensor_data.y += sensor_data.vy;
 
-    sensor_data.fuel -= match **command {
+    sensor_data.fuel -= match command {
         Command::Thrust => world.fuel_consumption,
         _               => 0.0
     };
@@ -108,10 +107,20 @@ pub fn next(sensor_data: &mut SensorData, program: &Program, world: &World) {
         abs(sensor_data.o) < world.tolerance &&
         abs(sensor_data.w) < world.tolerance;
 
-    sensor_data.thrusting = match **command {
+    sensor_data.thrusting = match command {
         Command::Thrust => true,
         _               => false
     }
+}
+
+pub fn next_program(sensor_data: &mut SensorData, program: &Program, world: &World) {
+    let command = program.evaluate(*sensor_data);
+    update_data(sensor_data, (*command).clone(), world);
+}
+
+pub fn next_condition(sensor_data: &mut SensorData, cond: &Condition, world: &World) {
+    let result = cond.value(*sensor_data);
+    update_data(sensor_data, if result { Command::Thrust } else { Command::Skip }, world);
 }
 
 #[cfg(test)]

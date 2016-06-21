@@ -51,10 +51,7 @@ impl rand::Rand for Condition {
             1, Condition::Or(Box::new(Condition::rand(rng)), Box::new(Condition::rand(rng))),
             1, Condition::And(Box::new(Condition::rand(rng)), Box::new(Condition::rand(rng))),
             1, Condition::Less(Box::new(Expression::rand(rng)), Box::new(Expression::rand(rng))),
-            1, Condition::LessEqual(Box::new(Expression::rand(rng)), Box::new(Expression::rand(rng))),
-            1, Condition::Equal(Box::new(Expression::rand(rng)), Box::new(Expression::rand(rng))),
-            1, Condition::GreaterEqual(Box::new(Expression::rand(rng)), Box::new(Expression::rand(rng))),
-            1, Condition::Greater(Box::new(Expression::rand(rng)), Box::new(Expression::rand(rng)))
+            1, Condition::Equal(Box::new(Expression::rand(rng)), Box::new(Expression::rand(rng)))
         ]
     }
 }

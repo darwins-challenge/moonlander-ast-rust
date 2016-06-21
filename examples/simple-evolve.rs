@@ -7,7 +7,7 @@ extern crate rustc_serialize;
 pub use rand::Rng;
 
 use std::ops::Mul;
-use ast::structure::Program;
+use ast::structure::{Condition};
 use ast::simulation;
 use ast::serialize;
 use ast::simplify::Simplify;
@@ -25,7 +25,7 @@ fn random_start_position<R: rand::Rng>(rng: &mut R) -> SensorData {
     SensorData::new()
         .with_x(0.0)
         .with_y(rng.next_f32() * 100.0 + 50.0)
-        .with_o(rng.next_f32() * PI * 2.0)
+        .with_o(0.0)
         .build()
 }
 
@@ -44,7 +44,7 @@ fn angle_dist(o: f32) -> f32 {
 /// - How many frames we survived (higher is better)
 /// - What our maximum height was (lower is better)
 /// - If we landed (if so then FUCK YEAH)
-fn score_single_run(program: &Program) -> f64 {
+fn score_single_run(program: &Condition) -> f64 {
     let mut rng = rand::thread_rng();
     let mut sensor_data = random_start_position(&mut rng);
     let world = simulation::World::new().build();
@@ -59,7 +59,7 @@ fn score_single_run(program: &Program) -> f64 {
         total_fuel += square(sensor_data.fuel);
         total_angle += square(angle_dist(sensor_data.o));
 
-        simulation::next(&mut sensor_data, &program, &world);
+        simulation::next_condition(&mut sensor_data, &program, &world);
 
         frames += 1;
     };
@@ -75,7 +75,7 @@ fn score_single_run(program: &Program) -> f64 {
 }
 
 /// Score a program by averaging the score of multiple random runs
-fn score_program(program: &Program) -> f64 {
+fn score_program(program: &Condition) -> f64 {
     let mut total = 0.0;
     for _ in 0..TRIALS_PER_PROGRAM {
         let score = score_single_run(program);
@@ -86,14 +86,14 @@ fn score_program(program: &Program) -> f64 {
     total
 }
 
-fn save_trace(generation: u32, program: &Program) {
+fn save_trace(generation: u32, program: &Condition) {
     let mut sensor_data = random_start_position(&mut rand::thread_rng());
     let world = simulation::World::new().build();
     let mut trace = serialize::GameTrace::new();
 
     trace.add(&sensor_data);
     while !sensor_data.crashed && !sensor_data.landed {
-        simulation::next(&mut sensor_data, &program, &world);
+        simulation::next_condition(&mut sensor_data, &program, &world);
         trace.add(&sensor_data);
     }
 
@@ -107,7 +107,7 @@ fn save_trace(generation: u32, program: &Program) {
 fn main() {
     // Generate initial random population
     println!("Generating initial population");
-    let mut population = evolve::random_population(POPULATION_SIZE);
+    let mut population = evolve::random_population::<Condition>(POPULATION_SIZE);
     let mut rng = rand::thread_rng();
 
     let mut gen = 0;
@@ -119,7 +119,7 @@ fn main() {
             let (best_program, best_score) = population.best();
             println!("[{}] Best score: {}", gen, best_score);
 
-            if gen % SAVE_EVERY == 0 {
+            if gen % SAVE_EVERY == 1 {
                 println!("[{}] Saving", gen);
                 save_trace(gen, best_program);
             }

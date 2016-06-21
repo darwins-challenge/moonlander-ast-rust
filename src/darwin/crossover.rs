@@ -16,7 +16,10 @@ enum NodeType {
     Command
 }
 
-pub fn cross_over<H: rand::Rng + Sized>(a: &Program, b: &Program, rng: &mut H) -> (Program, Program) {
+pub fn cross_over<'a, P, H>(a: &'a P, b: &'a P, rng: &mut H) -> (P, P) where 
+    P: Visitable<'a>+Copyable,
+    H: rand::Rng+Sized
+{
     let mut a_nodes = BucketCollector::new();
     let mut b_nodes = BucketCollector::new();
 
@@ -42,27 +45,27 @@ pub fn cross_over<H: rand::Rng + Sized>(a: &Program, b: &Program, rng: &mut H) -
     }
 }
 
-fn cross_over_program(a: &Program, b: &Program, an: &Program, bn: &Program) -> (Program, Program) {
+fn cross_over_program<P: Copyable>(a: &P, b: &P, an: &Program, bn: &Program) -> (P, P) {
     (a.copy(&copy::CopyReplaceProgram { to_replace: an, replace_with: bn }),
      b.copy(&copy::CopyReplaceProgram { to_replace: bn, replace_with: an }))
 }
 
-fn cross_over_expression(a: &Program, b: &Program, an: &Expression, bn: &Expression) -> (Program, Program) {
+fn cross_over_expression<P: Copyable>(a: &P, b: &P, an: &Expression, bn: &Expression) -> (P, P) {
     (a.copy(&copy::CopyReplaceExpression { to_replace: an, replace_with: bn }),
      b.copy(&copy::CopyReplaceExpression { to_replace: bn, replace_with: an }))
 }
 
-fn cross_over_condition(a: &Program, b: &Program, an: &Condition, bn: &Condition) -> (Program, Program) {
+fn cross_over_condition<P: Copyable>(a: &P, b: &P, an: &Condition, bn: &Condition) -> (P, P) {
     (a.copy(&copy::CopyReplaceCondition { to_replace: an, replace_with: bn }),
      b.copy(&copy::CopyReplaceCondition { to_replace: bn, replace_with: an }))
 }
 
-fn cross_over_sensor(a: &Program, b: &Program, an: &Sensor, bn: &Sensor) -> (Program, Program) {
+fn cross_over_sensor<P: Copyable>(a: &P, b: &P, an: &Sensor, bn: &Sensor) -> (P, P) {
     (a.copy(&copy::CopyReplaceSensor { to_replace: an, replace_with: bn }),
      b.copy(&copy::CopyReplaceSensor { to_replace: bn, replace_with: an }))
 }
 
-fn cross_over_command(a: &Program, b: &Program, an: &Command, bn: &Command) -> (Program, Program) {
+fn cross_over_command<P: Copyable>(a: &P, b: &P, an: &Command, bn: &Command) -> (P, P) {
     (a.copy(&copy::CopyReplaceCommand { to_replace: an, replace_with: bn }),
      b.copy(&copy::CopyReplaceCommand { to_replace: bn, replace_with: an }))
 }
