@@ -108,20 +108,20 @@ impl SensorData {
 
 /// `Evaluate` returns a specific `ast::structure::Command` to execute, depending on `ast::data::SensorData`
 pub trait Evaluate {
-	fn evaluate(&self, sensor_data: SensorData) -> Box<&Command>;
+	fn evaluate(&self, sensor_data: SensorData) -> Command;
 }
 
 impl Evaluate for Program {
-	fn evaluate(&self, sensor_data: SensorData) -> Box<&Command> {
+	fn evaluate(&self, sensor_data: SensorData) -> Command {
 		match *self {
 			Program::If(ref condition, ref true_program, ref false_program) => {
 				if (*condition).value(sensor_data) {
-					Box::new(*true_program.evaluate(sensor_data))
+					true_program.evaluate(sensor_data)
 				} else {
-					Box::new(*false_program.evaluate(sensor_data))
+					false_program.evaluate(sensor_data)
 				}
 			},
-			Program::Command(ref command) => Box::new(command),
+			Program::Command(ref command) => **command
 		}
 	}
 }

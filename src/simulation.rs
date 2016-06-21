@@ -115,7 +115,7 @@ pub fn update_data(sensor_data: &mut SensorData, command: Command, world: &World
 
 pub fn next_program(sensor_data: &mut SensorData, program: &Program, world: &World) {
     let command = program.evaluate(*sensor_data);
-    update_data(sensor_data, (*command).clone(), world);
+    update_data(sensor_data, command, world);
 }
 
 pub fn next_condition(sensor_data: &mut SensorData, cond: &Condition, world: &World) {

@@ -107,7 +107,7 @@ pub enum Expression {
 ///
 /// let sensor: ast::structure::Sensor = ast::structure::Sensor::Vy;
 /// ```
-#[derive(Debug,RustcDecodable,RustcEncodable,Clone,PartialEq)]
+#[derive(Debug,RustcDecodable,RustcEncodable,Clone,PartialEq,Copy)]
 pub enum Sensor {
 	  X,
 	  Y,
@@ -129,7 +129,7 @@ pub enum Sensor {
 ///
 /// let command: ast::structure::Command = ast::structure::Command::Skip;
 /// ```
-#[derive(Debug,RustcDecodable,RustcEncodable,Clone,PartialEq)]
+#[derive(Debug,RustcDecodable,RustcEncodable,Clone,PartialEq,Copy)]
 pub enum Command {
 	Skip,
 	Left,
