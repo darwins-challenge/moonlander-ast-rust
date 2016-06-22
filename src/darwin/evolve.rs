@@ -37,7 +37,8 @@ impl <P: Mutate+Rand+Clone> Population<P> {
 
     /// Apply a scoring function to the entire population
     pub fn score<F>(&mut self, scoring_fn: F)
-        where F: Fn(&P) -> f64 {
+        where F: FnMut(&P) -> f64
+    {
         // FIXME: Parallelize?
         self.scores = self.population.iter().map(scoring_fn).collect();
     }

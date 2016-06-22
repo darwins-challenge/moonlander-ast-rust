@@ -44,9 +44,8 @@ fn angle_dist(o: f32) -> f32 {
 /// - How many frames we survived (higher is better)
 /// - What our maximum height was (lower is better)
 /// - If we landed (if so then FUCK YEAH)
-fn score_single_run(program: &Condition) -> f64 {
-    let mut rng = rand::thread_rng();
-    let mut sensor_data = random_start_position(&mut rng);
+fn score_single_run<R: rand::Rng>(program: &Condition, rng: &mut R) -> f64 {
+    let mut sensor_data = random_start_position(rng);
     let world = simulation::World::new().build();
 
     let mut frames: u32 = 0;
@@ -75,10 +74,10 @@ fn score_single_run(program: &Condition) -> f64 {
 }
 
 /// Score a program by averaging the score of multiple random runs
-fn score_program(program: &Condition) -> f64 {
+fn score_program<R: rand::Rng>(program: &Condition, rng: &mut R) -> f64 {
     let mut total = 0.0;
     for _ in 0..TRIALS_PER_PROGRAM {
-        let score = score_single_run(program);
+        let score = score_single_run(program, rng);
         if score > total { 
             total = score;
         }
@@ -86,8 +85,8 @@ fn score_program(program: &Condition) -> f64 {
     total
 }
 
-fn save_trace(generation: u32, program: &Condition) {
-    let mut sensor_data = random_start_position(&mut rand::thread_rng());
+fn save_trace<R: rand::Rng>(generation: u32, program: &Condition, rng: &mut R) {
+    let mut sensor_data = random_start_position(rng);
     let world = simulation::World::new().build();
     let mut trace = serialize::GameTrace::new();
 
@@ -108,20 +107,20 @@ fn main() {
     // Generate initial random population
     println!("Generating initial population");
     let mut population = evolve::random_population::<Condition>(POPULATION_SIZE);
-    let mut rng = rand::thread_rng();
+    let mut rng = rand::StdRng::new().unwrap();
 
     let mut gen = 0;
     loop {
         println!("[{}] Scoring", gen);
         gen += 1;
-        population.score(score_program);
+        population.score(|p| score_program(p, &mut rng));
         {
             let (best_program, best_score) = population.best();
             println!("[{}] Best score: {}", gen, best_score);
 
             if gen % SAVE_EVERY == 1 {
                 println!("[{}] Saving", gen);
-                save_trace(gen, best_program);
+                save_trace(gen, best_program, &mut rng);
             }
         }
 

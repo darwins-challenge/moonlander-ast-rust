@@ -59,7 +59,7 @@ fn score_single_run(program: &Program) -> f64 {
         total_fuel += square(sensor_data.fuel);
         total_angle += square(angle_dist(sensor_data.o));
 
-        simulation::next(&mut sensor_data, &program, &world);
+        simulation::next_program(&mut sensor_data, &program, &world);
 
         frames += 1;
     };
@@ -93,7 +93,7 @@ fn save_trace(generation: u32, program: &Program) {
 
     trace.add(&sensor_data);
     while !sensor_data.crashed && !sensor_data.landed {
-        simulation::next(&mut sensor_data, &program, &world);
+        simulation::next_program(&mut sensor_data, &program, &world);
         trace.add(&sensor_data);
     }
 
