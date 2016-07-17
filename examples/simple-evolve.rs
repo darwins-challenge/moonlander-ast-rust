@@ -3,23 +3,28 @@
 extern crate ast;
 extern crate rand;
 extern crate rustc_serialize;
+extern crate env_logger;
 
 pub use rand::Rng;
+use std::io::stdout;
 
-use std::ops::Mul;
-use ast::structure::{Condition};
+use ast::structure::{Condition, Number};
 use ast::simulation;
 use ast::serialize;
 use ast::simplify::Simplify;
 use ast::data::SensorData;
+use ast::num::{square, partial_max};
 use ast::darwin::evolve;
-use std::f32::consts::PI;
-use std::path::Path;
+use ast::darwin::evolve::ScoreCard;
+
 
 const POPULATION_SIZE : usize = 2000;
-const TRIALS_PER_PROGRAM : u32 = 10;
+const TRIALS_PER_PROGRAM : usize = 3;
 const TOURNAMENT_SIZE : usize = 20;
-const SAVE_EVERY : u32 = 100;
+
+const REPRODUCE_WEIGHT : u32 = 10;
+const MUTATE_WEIGHT : u32 = 10;
+const CROSSOVER_WEIGHT : u32 = 10;
 
 fn random_start_position<R: rand::Rng>(rng: &mut R) -> SensorData {
     SensorData::new()
@@ -29,104 +34,69 @@ fn random_start_position<R: rand::Rng>(rng: &mut R) -> SensorData {
         .build()
 }
 
-fn square<T: Mul+Copy>(x: T) -> T::Output {
-    x * x
-}
-
-fn angle_dist(o: f32) -> f32 {
-    let r = o % 2. * PI;
-    if r > PI { 2. * PI - r } else { r }
-}
-
 /// Score a program by scoring a single run
 ///
 /// Ultimate score is composed of:
 /// - How many frames we survived (higher is better)
 /// - What our maximum height was (lower is better)
 /// - If we landed (if so then FUCK YEAH)
-fn score_single_run<R: rand::Rng>(program: &Condition, rng: &mut R) -> f64 {
-    let mut sensor_data = random_start_position(rng);
-    let world = simulation::World::new().build();
-
-    let mut frames: u32 = 0;
-    let mut total_height: f32 = 0.;
-    let mut total_fuel: f32 = 0.;
-    let mut total_angle: f32 = 0.;
-
-    while !sensor_data.crashed && !sensor_data.landed {
-        total_height += square(sensor_data.y);
-        total_fuel += square(sensor_data.fuel);
-        total_angle += square(angle_dist(sensor_data.o));
-
-        simulation::next_condition(&mut sensor_data, &program, &world);
-
-        frames += 1;
-    };
-
-    let score =
-        3.0 * frames as f32
-        + -(0.001 * total_height / frames as f32) // Average height is penalty
-        + -(10. * total_angle / frames as f32) // Penalty for angle distance
-        + (100.0 * total_fuel / frames as f32) // Average fuel is too
-        + if sensor_data.landed { 500.0 } else { 0.0 } 
-        ;
-    score as f64
-}
-
-/// Score a program by averaging the score of multiple random runs
-fn score_program<R: rand::Rng>(program: &Condition, rng: &mut R) -> f64 {
-    let mut total = 0.0;
-    for _ in 0..TRIALS_PER_PROGRAM {
-        let score = score_single_run(program, rng);
-        if score > total { 
-            total = score;
-        }
-    };
-    total
-}
-
-fn save_trace<R: rand::Rng>(generation: u32, program: &Condition, rng: &mut R) {
+fn score_single_run<R: rand::Rng>(program: &Condition, rng: &mut R) -> ScoreCard {
     let mut sensor_data = random_start_position(rng);
     let world = simulation::World::new().build();
     let mut trace = serialize::GameTrace::new();
 
+    let mut total_height: Number = 0.;
+    let mut total_fuel: Number = 0.;
+
     trace.add(&sensor_data);
     while !sensor_data.crashed && !sensor_data.landed {
+        total_height += square(sensor_data.y);
+        total_fuel += square(sensor_data.fuel);
+
         simulation::next_condition(&mut sensor_data, &program, &world);
         trace.add(&sensor_data);
-    }
+    };
 
-    let tracefile = format!("trace_{}.json", generation);
-    trace.save(Path::new(&tracefile)).expect("Error saving file");
+    let frames = trace.frames() as Number;
+    ScoreCard::new(vec![
+        ("survival_bonus", 3.0 * frames),
+        ("height_penalty", -(0.001 * total_height / frames)),
+        ("fuel_bonus",     (100.0 * total_fuel / frames)),
+        ("success_bonus",  if sensor_data.landed { 10000.0 } else { 0.0 })
+    ], trace)
+}
 
-    let progfile = format!("program_{}.txt", generation);
-    let _ = serialize::save_source(Path::new(&progfile), &program.simplify());
+/// Score a program by averaging the score of multiple random runs
+fn score_program<R: rand::Rng>(program: &Condition, rng: &mut R) -> ScoreCard {
+    partial_max((0..TRIALS_PER_PROGRAM).map(|_| score_single_run(program, rng))).unwrap()
 }
 
 fn main() {
+    env_logger::init().expect("Error initializing logger");
+
     // Generate initial random population
-    println!("Generating initial population");
+    println_err!("Generating initial population");
     let mut population = evolve::random_population::<Condition>(POPULATION_SIZE);
     let mut rng = rand::StdRng::new().unwrap();
+    let mut stdout = std::io::stdout();
 
-    let mut gen = 0;
     loop {
-        println!("[{}] Scoring", gen);
-        gen += 1;
+        println_err!("[{}] Scoring", population.generation);
         population.score(|p| score_program(p, &mut rng));
         {
-            let (best_program, best_score) = population.best();
-            println!("[{}] Best score: {}", gen, best_score);
+            let winner = population.winner();
+            println_err!("[{}] Best score: {}", population.generation, winner.score.total_score());
 
-            if gen % SAVE_EVERY == 1 {
-                println!("[{}] Saving", gen);
-                save_trace(gen, best_program, &mut rng);
-            }
+            let _ = serialize::writeln(&winner.program.simplify(), &mut stdout);
+            let _ = serialize::writeln(&winner.score.trace().trace(), &mut stdout);
+            let _ = serialize::writeln(&winner.score.scores(), &mut stdout);
         }
 
-        println!("[{}] Evolving", gen);
+        println_err!("[{}] Evolving", population.generation);
         population = population.evolve(TOURNAMENT_SIZE,
-                                       10, 10, 5,
+                                       REPRODUCE_WEIGHT, 
+                                       MUTATE_WEIGHT, 
+                                       CROSSOVER_WEIGHT,
                                        &mut rng);
     }
 }

@@ -2,19 +2,10 @@
 
 use rand;
 
-use super::super::visit::{Visitable, BucketCollector};
+use super::super::visit::{NodeType, Visitable, BucketCollector};
 use super::super::structure::{Program, Sensor, Command, Expression, Condition};
 use super::super::copy;
 use super::super::copy::Copyable;
-
-#[derive(Copy, Clone)]
-enum NodeType {
-    Program,
-    Expression,
-    Condition,
-    Sensor,
-    Command
-}
 
 pub fn cross_over<'a, P, H>(a: &'a P, b: &'a P, rng: &mut H) -> (P, P) where 
     P: Visitable<'a>+Copyable,
@@ -28,20 +19,20 @@ pub fn cross_over<'a, P, H>(a: &'a P, b: &'a P, rng: &mut H) -> (P, P) where
     a.visit(&mut a_nodes);
     b.visit(&mut b_nodes);
 
-    let nodes = get_counts(&a_nodes).into_iter()
-        .zip(get_counts(&b_nodes).into_iter())
+    let nodes = a_nodes.get_counts().into_iter()
+        .zip(b_nodes.get_counts().into_iter())
         .filter(|&((_, ac), (_, bc))| ac > 0 && bc > 0)
         .map(|((t, _), (_, _))| t)
         .collect::<Vec<NodeType>>();
 
-    let picked_type = choose(nodes, rng);
+    let picked_type = rng.choose(&nodes).unwrap();
 
-    match picked_type {
-        NodeType::Program    => cross_over_program(a, b, choose(a_nodes.programs, rng), choose(b_nodes.programs, rng)),
-        NodeType::Expression => cross_over_expression(a, b, choose(a_nodes.expressions, rng), choose(b_nodes.expressions, rng)),
-        NodeType::Condition  => cross_over_condition(a, b, choose(a_nodes.conditions, rng), choose(b_nodes.conditions, rng)),
-        NodeType::Sensor     => cross_over_sensor(a, b, choose(a_nodes.sensors, rng), choose(b_nodes.sensors, rng)),
-        NodeType::Command    => cross_over_command(a, b, choose(a_nodes.commands, rng), choose(b_nodes.commands, rng))
+    match *picked_type {
+        NodeType::Program    => cross_over_program(a, b, rng.choose(&a_nodes.programs).unwrap(), rng.choose(&b_nodes.programs).unwrap()),
+        NodeType::Expression => cross_over_expression(a, b, rng.choose(&a_nodes.expressions).unwrap(), rng.choose(&b_nodes.expressions).unwrap()),
+        NodeType::Condition  => cross_over_condition(a, b, rng.choose(&a_nodes.conditions).unwrap(), rng.choose(&b_nodes.conditions).unwrap()),
+        NodeType::Sensor     => cross_over_sensor(a, b, rng.choose(&a_nodes.sensors).unwrap(), rng.choose(&b_nodes.sensors).unwrap()),
+        NodeType::Command    => cross_over_command(a, b, rng.choose(&a_nodes.commands).unwrap(), rng.choose(&b_nodes.commands).unwrap())
     }
 }
 
@@ -68,19 +59,6 @@ fn cross_over_sensor<P: Copyable>(a: &P, b: &P, an: &Sensor, bn: &Sensor) -> (P,
 fn cross_over_command<P: Copyable>(a: &P, b: &P, an: &Command, bn: &Command) -> (P, P) {
     (a.copy(&copy::CopyReplaceCommand { to_replace: an, replace_with: bn }),
      b.copy(&copy::CopyReplaceCommand { to_replace: bn, replace_with: an }))
-}
-
-fn get_counts(coll: &BucketCollector) -> Vec<(NodeType, usize)> {
-    vec![(NodeType::Program,    coll.programs.len()),
-         (NodeType::Expression, coll.expressions.len()),
-         (NodeType::Condition,  coll.conditions.len()),
-         (NodeType::Sensor,     coll.sensors.len()),
-         (NodeType::Command,    coll.commands.len())]
-}
-
-fn choose<T: Copy, H: rand::Rng + Sized>(vec: Vec<T>, rng: &mut H) -> T {
-    let i = rng.gen_range(0, vec.len());
-    vec[i]
 }
 
 #[cfg(test)]

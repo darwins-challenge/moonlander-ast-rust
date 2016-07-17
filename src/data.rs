@@ -6,7 +6,7 @@
 //! [`ast::structure::Program`](../structure/enum.Program.html) to produce a
 //! [`ast::structure::Command`](../structure/enum.Command.html).
 
-use super::structure::{Program,Condition,Command,Expression,Sensor};
+use super::structure::{Program,Condition,Command,Expression,Sensor,Number};
 
 /// `SensorData` represents the information that is available for programs to decide what `ast::structure::Command`
 /// to execute when it is evaluated.
@@ -18,13 +18,13 @@ use super::structure::{Program,Condition,Command,Expression,Sensor};
 /// ```
 #[derive(Copy,Clone,RustcEncodable)]
 pub struct SensorData {
-    pub x:  f32,
-    pub y:  f32,
-    pub vx: f32,
-    pub vy: f32,
-    pub o:  f32,
-    pub w:  f32,
-    pub fuel: f32,
+    pub x:  Number,
+    pub y:  Number,
+    pub vx: Number,
+    pub vy: Number,
+    pub o:  Number,
+    pub w:  Number,
+    pub fuel: Number,
     pub crashed: bool,
     pub landed: bool,
     pub thrusting: bool,
@@ -51,37 +51,37 @@ impl SensorData {
         }
     }
 
-    pub fn with_x<'a>(&'a mut self, x: f32) -> &'a mut SensorData {
+    pub fn with_x<'a>(&'a mut self, x: Number) -> &'a mut SensorData {
         self.x = x;
         self
     }
 
-    pub fn with_y<'a>(&'a mut self, y: f32) -> &'a mut SensorData {
+    pub fn with_y<'a>(&'a mut self, y: Number) -> &'a mut SensorData {
         self.y = y;
         self
     }
 
-    pub fn with_vx<'a>(&'a mut self, vx: f32) -> &'a mut SensorData {
+    pub fn with_vx<'a>(&'a mut self, vx: Number) -> &'a mut SensorData {
         self.vx = vx;
         self
     }
 
-    pub fn with_vy<'a>(&'a mut self, vy: f32) -> &'a mut SensorData {
+    pub fn with_vy<'a>(&'a mut self, vy: Number) -> &'a mut SensorData {
         self.vy = vy;
         self
     }
 
-    pub fn with_o<'a>(&'a mut self, o: f32) -> &'a mut SensorData {
+    pub fn with_o<'a>(&'a mut self, o: Number) -> &'a mut SensorData {
         self.o = o;
         self
     }
 
-    pub fn with_w<'a>(&'a mut self, w: f32) -> &'a mut SensorData {
+    pub fn with_w<'a>(&'a mut self, w: Number) -> &'a mut SensorData {
         self.w = w;
         self
     }
 
-    pub fn with_fuel<'a>(&'a mut self, fuel: f32) -> &'a mut SensorData {
+    pub fn with_fuel<'a>(&'a mut self, fuel: Number) -> &'a mut SensorData {
         self.fuel = fuel;
         self
     }
@@ -128,11 +128,11 @@ impl Evaluate for Program {
 
 /// The numeric value of an `ast::structure::Expression`
 pub trait NumericValue {
-	fn value(&self, sensor_data: SensorData) -> f32;
+	fn value(&self, sensor_data: SensorData) -> Number;
 }
 
 impl NumericValue for Expression {
-	fn value(&self, sensor_data: SensorData) -> f32 {
+	fn value(&self, sensor_data: SensorData) -> Number {
 		match *self {
 			Expression::Constant(value)               => value,
 			Expression::Sensor(ref sensor)            => sensor.value(sensor_data), 
@@ -145,17 +145,17 @@ impl NumericValue for Expression {
 }
 
 impl NumericValue for Sensor {
-	  fn value(&self, sensor_data: SensorData) -> f32 {
-		    match *self {
-			      Sensor::X    => sensor_data.x,
-			      Sensor::Y    => sensor_data.y,
-			      Sensor::Vx   => sensor_data.vx,
-			      Sensor::Vy   => sensor_data.vy,
-			      Sensor::O    => sensor_data.o,
-			      Sensor::W    => sensor_data.w,
+    fn value(&self, sensor_data: SensorData) -> Number {
+        match *self {
+            Sensor::X    => sensor_data.x,
+            Sensor::Y    => sensor_data.y,
+            Sensor::Vx   => sensor_data.vx,
+            Sensor::Vy   => sensor_data.vy,
+            Sensor::O    => sensor_data.o,
+            Sensor::W    => sensor_data.w,
             Sensor::Fuel => sensor_data.fuel,
-		    }
-	  }
+        }
+    }
 }
 
 /// The truth value of an `ast::structure::Condition`
@@ -168,14 +168,14 @@ impl BooleanValue for Condition {
 		match *self {
 			Condition::True                              => true,
 			Condition::False                             => false,
-			Condition::Not(ref condition)                => !(*condition).value(sensor_data),
-			Condition::Or(ref left, ref right)           => (*left).value(sensor_data) || (*right).value(sensor_data),
-			Condition::And(ref left, ref right)          => (*left).value(sensor_data) && (*right).value(sensor_data),
-			Condition::Less(ref left, ref right)         => (*left).value(sensor_data) <  (*right).value(sensor_data),
-			Condition::LessEqual(ref left, ref right)    => (*left).value(sensor_data) <= (*right).value(sensor_data),
-			Condition::Equal(ref left, ref right)        => (*left).value(sensor_data) == (*right).value(sensor_data),
-			Condition::GreaterEqual(ref left, ref right) => (*left).value(sensor_data) >= (*right).value(sensor_data),
-			Condition::Greater(ref left, ref right)      => (*left).value(sensor_data) >  (*right).value(sensor_data),
+			Condition::Not(ref condition)                => !condition.value(sensor_data),
+			Condition::Or(ref left, ref right)           => left.value(sensor_data) || right.value(sensor_data),
+			Condition::And(ref left, ref right)          => left.value(sensor_data) && right.value(sensor_data),
+			Condition::Less(ref left, ref right)         => left.value(sensor_data) <  right.value(sensor_data),
+			Condition::LessEqual(ref left, ref right)    => left.value(sensor_data) <= right.value(sensor_data),
+			Condition::Equal(ref left, ref right)        => left.value(sensor_data) == right.value(sensor_data),
+			Condition::GreaterEqual(ref left, ref right) => left.value(sensor_data) >= right.value(sensor_data),
+			Condition::Greater(ref left, ref right)      => left.value(sensor_data) >  right.value(sensor_data),
 		}
 	}
 }

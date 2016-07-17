@@ -1,28 +1,37 @@
+use std::cmp::{Ordering};
 use super::super::copy;
+use super::super::num::partial_max;
 use super::super::visit::Visitable;
-use super::mutation::Mutate;
+use super::super::structure::Number;
+use super::super::serialize::GameTrace;
+use super::mutation;
 use super::crossover;
 use rand;
 use rand::{Rng, Rand};
 use std::iter::Iterator;
+use std::ops::Add;
 
 /// A population with the root of the indicated type
-pub struct Population<P: Mutate+Rand+Clone> {
+pub struct Population<P: Rand+Clone> {
     /// Collection of algorithms
     population: Vec<P>,
 
+    /// Generation index of this population
+    pub generation: u32,
+
     /// Collection of fitness scores
-    pub scores: Vec<f64>
+    pub scores: Vec<ScoreCard>
 }
 
-impl <P: Mutate+Rand+Clone> Population<P> {
+impl <P: Rand+Clone> Population<P> {
     /// Create a new population with an estimated size
     ///
     /// This does not create programs yet but simply allocates memory.
-    pub fn new(n: usize) -> Population<P> {
+    pub fn new(n: usize, generation: u32) -> Population<P> {
         Population {
             population: Vec::with_capacity(n),
-            scores: vec![0.0; n]
+            scores: Vec::with_capacity(n),
+            generation: generation
         }
     }
 
@@ -37,7 +46,7 @@ impl <P: Mutate+Rand+Clone> Population<P> {
 
     /// Apply a scoring function to the entire population
     pub fn score<F>(&mut self, scoring_fn: F)
-        where F: FnMut(&P) -> f64
+        where F: FnMut(&P) -> ScoreCard
     {
         // FIXME: Parallelize?
         self.scores = self.population.iter().map(scoring_fn).collect();
@@ -46,30 +55,36 @@ impl <P: Mutate+Rand+Clone> Population<P> {
     /// Select a tournament winner from a tournament round of size n
     pub fn select_tournament_winner<R: rand::Rng>(&self, n: usize, rng: &mut R) -> &P {
         self.population.get(self.select_tournament_winner_i(n, rng)).unwrap()
+        //unsafe { self.population.get_unchecked(self.select_tournament_winner_i(n, rng)) }
     }
 
     pub fn select_tournament_winner_i<R: rand::Rng>(&self, n: usize, rng: &mut R) -> usize {
-        let candidate_indexes = rand::sample(rng, 0..self.n(), n);
-        let (_, winner) = partial_max(candidate_indexes.into_iter().map(|i| (self.scores[i], i))).unwrap();
+        // Generate N random indexes. Slightly faster than rand::sample(), don't care about
+        // the inaccuracy introduced by sampling with replacement.
+        let count = self.n();
+        let candidate_indexes = (0..n).map(|_| rng.next_u64() as usize % count);
+
+        //let candidate_indexes = rand::sample(rng, 0..self.n(), n);
+        let (_, winner) = partial_max(candidate_indexes.map(|i| (&self.scores[i], i))).unwrap();
         winner
     }
 
     /// Return the best program from the population
-    pub fn best(&self) -> (&P, f64) {
+    pub fn winner(&self) -> CreatureScore<P> {
         let indexes = 0..self.n();
-        let (score, winner) = partial_max(indexes.into_iter().map(|i| (self.scores[i], i))).unwrap();
-        (self.population.get(winner).unwrap(), score)
+        let (score, winner_i) = partial_max(indexes.into_iter().map(|i| (&self.scores[i], i))).unwrap();
+        CreatureScore::new(self.population.get(winner_i).unwrap().clone(), score.clone())
     }
 
     /// Produce a new population of the same size based off the current one
     pub fn evolve<'a, R: rand::Rng>(&'a self, tournament_size: usize, reproduce_weight: u32, mutate_weight: u32, crossover_weight: u32, rng: &mut R) -> Population<P> 
         where P: Visitable<'a>+copy::Copyable // Additional bounds for crossover
     {
-        let mut ret = Self::new(self.n());
+        let mut ret = Self::new(self.n(), self.generation + 1);
         while ret.n() < self.n() {
             pick![
                 reproduce_weight, ret.add(self.select_tournament_winner(tournament_size, rng).clone()),
-                mutate_weight, ret.add(self.select_tournament_winner(tournament_size, rng).mutate(rng)),
+                mutate_weight, ret.add(mutation::mutate(self.select_tournament_winner(tournament_size, rng), rng)),
                 crossover_weight, {
                     if self.n() < 2 { continue; }
 
@@ -98,30 +113,65 @@ impl <P: Mutate+Rand+Clone> Population<P> {
     }
 }
 
-/// A max() function that only requires a partial ordering.
-///
-/// Necessary for floats because they don't implement a total ordering, something that the regular
-/// Iterator::max() function needs.
-fn partial_max<I: Iterator>(iter: I) -> Option<I::Item>
-    where I::Item : PartialOrd {
-    iter.fold(None, |ret, x| {
-        match ret {
-            None => Some(x),
-            Some(ref y) if x > *y => Some(x),
-            _ => ret
-        }
-    })
+pub type Scores = Vec<(&'static str, Number)>;
+
+/// Immutable tagged list of scores
+#[derive(Clone)]
+pub struct ScoreCard(Scores, Number, GameTrace);
+
+impl ScoreCard {
+    pub fn new(scores: Scores, trace: GameTrace) -> ScoreCard {
+        let sum = scores.iter().map(|&(_, x)| x).fold(0.0, Add::add);
+        ScoreCard(scores, sum, trace)
+    }
+
+    pub fn scores(&self) -> &Scores {
+        &self.0
+    }
+
+    pub fn total_score(&self) -> Number {
+        self.1
+    }
+
+    pub fn trace(&self) -> &GameTrace {
+        &self.2
+    }
+}
+
+impl PartialEq for ScoreCard {
+    fn eq(&self, other: &Self) -> bool {
+        return self.1.eq(&other.1);
+    }
+}
+
+impl Eq for ScoreCard {
+}
+
+impl PartialOrd for ScoreCard {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        return self.1.partial_cmp(&other.1);
+    }
+}
+
+pub struct CreatureScore<P> {
+    pub program: P,
+    pub score: ScoreCard
+}
+
+impl <P> CreatureScore<P> {
+    pub fn new(program: P, score: ScoreCard) -> CreatureScore<P> {
+        CreatureScore { program: program, score: score }
+    }
 }
 
 /// Generate a random population of size n
-pub fn random_population<P: Mutate+Rand+Clone>(n: usize) -> Population<P> {
-    let mut ret = Population::new(n);
+pub fn random_population<P: Rand+Clone>(n: usize) -> Population<P> {
+    let mut ret = Population::new(n, 0);
     for _ in 0..n {
         ret.add(rand::random());
     }
     ret
 }
-
 
 #[cfg(test)]
 mod tests {
@@ -135,7 +185,7 @@ mod tests {
 
     #[test]
     fn population_scoring() {
-        let mut p = Population::new(10);
+        let mut p = Population::new(10, 1);
         p.add(skip!());
         p.add(left!());
         p.add(right!());
@@ -148,7 +198,7 @@ mod tests {
 
     #[test]
     fn population_tournament() {
-        let mut p = Population::new(10);
+        let mut p = Population::new(10, 1);
         p.add(skip!());
         p.add(left!());
         p.add(right!());
@@ -168,7 +218,7 @@ mod tests {
         p.score(|x| { 
             let mut c = CommandCounter::new();
             x.visit(&mut c);
-            c.value as f64
+            c.value as Number
         });
     }
 

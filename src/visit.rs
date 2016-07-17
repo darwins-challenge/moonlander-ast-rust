@@ -95,6 +95,23 @@ impl <'a> BucketCollector<'a> {
             sensors: Vec::new()
         }
     }
+
+    pub fn get_counts(&self) -> Vec<(NodeType, usize)> {
+        vec![(NodeType::Program,   self.programs.len()),
+             (NodeType::Expression, self.expressions.len()),
+             (NodeType::Condition,  self.conditions.len()),
+             (NodeType::Sensor,     self.sensors.len()),
+             (NodeType::Command,    self.commands.len())]
+    }
+}
+
+#[derive(Copy, Clone)]
+pub enum NodeType {
+    Program,
+    Expression,
+    Condition,
+    Sensor,
+    Command
 }
 
 impl <'a> Visitor<'a> for BucketCollector<'a> {

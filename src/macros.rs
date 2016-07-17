@@ -132,3 +132,12 @@ macro_rules! right {
 macro_rules! thrust {
 	() => (ast::structure::Program::Command(Box::new(ast::structure::Command::Thrust)))
 }
+
+#[macro_export]
+macro_rules! println_err(
+    ($($arg:tt)*) => { {
+        use std::io::Write;
+        writeln!(&mut ::std::io::stderr(), $($arg)*).expect("failed printing to stderr");
+    } }
+);
+

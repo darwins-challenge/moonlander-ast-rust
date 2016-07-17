@@ -30,6 +30,9 @@ pub enum Program {
 	Command(Box<Command>),
 }
 
+/// The general number type used by all simulations
+pub type Number = f32;
+
 /// The `Condition` enum is used as the condition in a `ast::Program::If`
 ///
 /// The following groups are present in `Condition`:
@@ -86,7 +89,7 @@ pub enum Condition {
 /// ```
 #[derive(Debug,RustcDecodable,RustcEncodable,Clone,PartialEq)]
 pub enum Expression {
-	  Constant(f32),
+	  Constant(Number),
 	  Sensor(Box<Sensor>),
 	  Plus(Box<Expression>, Box<Expression>),
 	  Minus(Box<Expression>, Box<Expression>),
