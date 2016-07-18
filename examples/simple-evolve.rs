@@ -26,6 +26,29 @@ const REPRODUCE_WEIGHT : u32 = 10;
 const MUTATE_WEIGHT : u32 = 10;
 const CROSSOVER_WEIGHT : u32 = 10;
 
+struct OptimumKeeper {
+    best_program: Option<Condition>,
+    best_score: Option<ScoreCard>,
+    best_generation: u32
+}
+
+impl OptimumKeeper {
+    pub fn new() -> OptimumKeeper {
+        OptimumKeeper { best_program: None, best_score: None, best_generation: 0 }
+    }
+
+    pub fn improved(&mut self, program: &Condition, score: &ScoreCard, generation: u32) -> bool {
+        if self.best_score.is_none() || score > self.best_score.as_ref().unwrap() {
+            self.best_program = Some(program.simplify());
+            self.best_score = Some(score.clone());
+            self.best_generation = generation;
+            true
+        } else {
+            false
+        }
+    }
+}
+
 fn random_start_position<R: rand::Rng>(rng: &mut R) -> SensorData {
     SensorData::new()
         .with_x(0.0)
@@ -79,6 +102,7 @@ fn main() {
     let mut population = evolve::random_population::<Condition>(POPULATION_SIZE);
     let mut rng = rand::StdRng::new().unwrap();
     let mut stdout = std::io::stdout();
+    let mut keeper = OptimumKeeper::new();
 
     loop {
         println_err!("[{}] Scoring", population.generation);
@@ -86,10 +110,13 @@ fn main() {
         {
             let winner = population.winner();
             println_err!("[{}] Best score: {}", population.generation, winner.score.total_score());
-
-            let _ = serialize::writeln(&winner.program.simplify(), &mut stdout);
-            let _ = serialize::writeln(&winner.score.trace().trace(), &mut stdout);
-            let _ = serialize::writeln(&winner.score.scores(), &mut stdout);
+            
+            if keeper.improved(&winner.program, &winner.score, population.generation) {
+                let _ = serialize::writeln(&population.generation, &mut stdout);
+                let _ = serialize::writeln(&winner.program.simplify(), &mut stdout);
+                let _ = serialize::writeln(&winner.score.trace().trace(), &mut stdout);
+                let _ = serialize::writeln(&winner.score.scores(), &mut stdout);
+            }
         }
 
         println_err!("[{}] Evolving", population.generation);

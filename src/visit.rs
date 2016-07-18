@@ -105,15 +105,6 @@ impl <'a> BucketCollector<'a> {
     }
 }
 
-#[derive(Copy, Clone)]
-pub enum NodeType {
-    Program,
-    Expression,
-    Condition,
-    Sensor,
-    Command
-}
-
 impl <'a> Visitor<'a> for BucketCollector<'a> {
 	fn visit_program(&mut self, program: &'a Program) {
         self.programs.push(program);
@@ -134,6 +125,15 @@ impl <'a> Visitor<'a> for BucketCollector<'a> {
 	fn visit_sensor(&mut self, sensor: &'a Sensor) {
         self.sensors.push(sensor);
     }
+}
+
+#[derive(Copy, Clone)]
+pub enum NodeType {
+    Program,
+    Expression,
+    Condition,
+    Sensor,
+    Command
 }
 
 #[cfg(test)]
