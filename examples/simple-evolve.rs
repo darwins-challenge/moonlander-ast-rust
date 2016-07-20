@@ -11,6 +11,7 @@ use std::io::stdout;
 use ast::structure::{Condition, Number};
 use ast::simulation;
 use ast::serialize;
+use ast::depth::Depth;
 use ast::simplify::Simplify;
 use ast::data::SensorData;
 use ast::num::{square, partial_max};
@@ -91,7 +92,13 @@ fn score_single_run<R: rand::Rng>(program: &Condition, rng: &mut R) -> ScoreCard
 
 /// Score a program by averaging the score of multiple random runs
 fn score_program<R: rand::Rng>(program: &Condition, rng: &mut R) -> ScoreCard {
-    partial_max((0..TRIALS_PER_PROGRAM).map(|_| score_single_run(program, rng))).unwrap()
+    let best_run = partial_max((0..TRIALS_PER_PROGRAM).map(|_| score_single_run(program, rng))).unwrap();
+
+    // Give a penalty for program depth. Since this is the same for all
+    // runs, we only do it here (for mucho saved speed!)
+    best_run.add(vec![
+        ("complexity_pentalty", program.depth() as f32 * -30.0)
+    ])
 }
 
 fn main() {
@@ -105,6 +112,7 @@ fn main() {
     let mut keeper = OptimumKeeper::new();
 
     loop {
+        serialize::writeln(&population.population, &mut stdout);
         println_err!("[{}] Scoring", population.generation);
         population.score(|p| score_program(p, &mut rng));
         {

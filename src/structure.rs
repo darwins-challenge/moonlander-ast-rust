@@ -112,13 +112,13 @@ pub enum Expression {
 /// ```
 #[derive(Debug,RustcDecodable,RustcEncodable,Clone,PartialEq,Copy)]
 pub enum Sensor {
-	  X,
+//	  X,
 	  Y,
-	  Vx,
+//	  Vx,
 	  Vy,
-	  O,
-	  W,
-    Fuel,
+//	  O,
+//	  W,
+      Fuel,
 }
 
 /// The `Command` enum is used as an argument to `ast::structure::Program::Command`

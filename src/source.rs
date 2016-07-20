@@ -52,13 +52,13 @@ impl Source for Expression {
 impl Source for Sensor {
 	  fn source(&self) -> String {
 		    match *self {
-			      Sensor::X  => format!("x!()"),
+//			      Sensor::X  => format!("x!()"),
 			      Sensor::Y  => format!("y!()"),
-			      Sensor::Vx => format!("vx!()"),
+//			      Sensor::Vx => format!("vx!()"),
 			      Sensor::Vy => format!("vy!()"),
-			      Sensor::O  => format!("o!()"),
-			      Sensor::W  => format!("w!()"),
-            Sensor::Fuel => format!("fuel!()"),
+//			      Sensor::O  => format!("o!()"),
+//			      Sensor::W  => format!("w!()"),
+                  Sensor::Fuel => format!("fuel!()"),
 		    }
 	  }
 }

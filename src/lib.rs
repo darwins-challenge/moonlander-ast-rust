@@ -26,6 +26,7 @@ pub mod macros;
 pub mod copy;
 pub mod darwin;
 pub mod data;
+pub mod depth;
 pub mod random;
 pub mod serialize;
 pub mod simplify;

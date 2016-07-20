@@ -147,12 +147,12 @@ impl NumericValue for Expression {
 impl NumericValue for Sensor {
     fn value(&self, sensor_data: SensorData) -> Number {
         match *self {
-            Sensor::X    => sensor_data.x,
+//            Sensor::X    => sensor_data.x,
             Sensor::Y    => sensor_data.y,
-            Sensor::Vx   => sensor_data.vx,
+//            Sensor::Vx   => sensor_data.vx,
             Sensor::Vy   => sensor_data.vy,
-            Sensor::O    => sensor_data.o,
-            Sensor::W    => sensor_data.w,
+//            Sensor::O    => sensor_data.o,
+//            Sensor::W    => sensor_data.w,
             Sensor::Fuel => sensor_data.fuel,
         }
     }

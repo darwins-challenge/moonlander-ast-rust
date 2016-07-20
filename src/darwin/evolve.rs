@@ -1,5 +1,6 @@
 use std::cmp::{Ordering};
 use super::super::copy;
+use super::super::source::Source;
 use super::super::num::partial_max;
 use super::super::visit::Visitable;
 use super::super::structure::Number;
@@ -12,9 +13,9 @@ use std::iter::Iterator;
 use std::ops::Add;
 
 /// A population with the root of the indicated type
-pub struct Population<P: Rand+Clone> {
+pub struct Population<P: Rand+Clone+Source> {
     /// Collection of algorithms
-    population: Vec<P>,
+    pub population: Vec<P>,
 
     /// Generation index of this population
     pub generation: u32,
@@ -23,7 +24,7 @@ pub struct Population<P: Rand+Clone> {
     pub scores: Vec<ScoreCard>
 }
 
-impl <P: Rand+Clone> Population<P> {
+impl <P: Rand+Clone+Source> Population<P> {
     /// Create a new population with an estimated size
     ///
     /// This does not create programs yet but simply allocates memory.
@@ -83,7 +84,11 @@ impl <P: Rand+Clone> Population<P> {
         let mut ret = Self::new(self.n(), self.generation + 1);
         while ret.n() < self.n() {
             pick![
-                reproduce_weight, ret.add(self.select_tournament_winner(tournament_size, rng).clone()),
+                reproduce_weight, {
+                    let winner = self.select_tournament_winner(tournament_size, rng);
+                    info!("Reproduce: {}", winner.source());
+                    ret.add(winner.clone());
+                },
                 mutate_weight, ret.add(mutation::mutate(self.select_tournament_winner(tournament_size, rng), rng)),
                 crossover_weight, {
                     if self.n() < 2 { continue; }
@@ -123,6 +128,17 @@ impl ScoreCard {
     pub fn new(scores: Scores, trace: GameTrace) -> ScoreCard {
         let sum = scores.iter().map(|&(_, x)| x).fold(0.0, Add::add);
         ScoreCard(scores, sum, trace)
+    }
+
+    pub fn add(self, scores: Scores) -> ScoreCard {
+        let mut xs = self.0;
+        xs.extend(scores);
+        ScoreCard::new(xs, self.2)
+        // Which one is faster? 
+        /*
+        let all_scores = self.0.into_iter().chain(scores.into_iter()).collect();
+        ScoreCard::new(all_scores, self.2)
+        */
     }
 
     pub fn scores(&self) -> &Scores {
@@ -165,7 +181,7 @@ impl <P> CreatureScore<P> {
 }
 
 /// Generate a random population of size n
-pub fn random_population<P: Rand+Clone>(n: usize) -> Population<P> {
+pub fn random_population<P: Rand+Clone+Source>(n: usize) -> Population<P> {
     let mut ret = Population::new(n, 0);
     for _ in 0..n {
         ret.add(rand::random());
