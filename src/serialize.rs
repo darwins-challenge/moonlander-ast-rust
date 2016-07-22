@@ -57,6 +57,12 @@ pub fn writeln<T: Encodable>(x: &T, w: &mut Write) -> Result<(), Box<Error>> {
     Ok(())
 }
 
+pub fn log<T: Encodable>(x: &T) {
+    if let Ok(encoded) = json::encode(&x) {
+        debug!("{}", encoded);
+    }
+}
+
 pub fn save_source<P: Source>(program: &P, w: &mut Write) -> Result<(), Box<Error>> {
     // Also save source
     try!(w.write_all(&program.source().as_bytes()));

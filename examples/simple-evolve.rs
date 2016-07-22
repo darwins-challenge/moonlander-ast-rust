@@ -49,7 +49,7 @@ fn score_single_run<R: rand::Rng>(program: &Condition, rng: &mut R) -> ScoreCard
     let mut total_fuel: Number = 0.;
 
     trace.add(&sensor_data);
-    while !sensor_data.crashed && !sensor_data.landed {
+    while !sensor_data.hit_ground {
         total_height += square(sensor_data.y);
         total_fuel += square(sensor_data.fuel);
 
@@ -59,10 +59,12 @@ fn score_single_run<R: rand::Rng>(program: &Condition, rng: &mut R) -> ScoreCard
 
     let frames = trace.frames() as Number;
     ScoreCard::new(vec![
-        ("survival_bonus", 3.0 * frames),
-        ("height_penalty", -(0.01 * total_height / frames)),
-        ("fuel_bonus",     (100.0 * total_fuel / frames)),
-        ("success_bonus",  if sensor_data.landed { 10000.0 } else { 0.0 })
+        ("survival_bonus",   3.0 * frames),
+        ("height_penalty",   -(0.01 * total_height / frames)),
+        ("fuel_bonus",        (100.0 * total_fuel / frames)),
+        ("hit_ground_bonus", if sensor_data.hit_ground { 10.0 } else { 0.0 }),
+        ("crash_penalty",    sensor_data.crash_speed),
+        ("success_bonus",    if sensor_data.landed { 10000.0 } else { 0.0 }),
     ], trace)
 }
 
@@ -88,7 +90,7 @@ fn main() {
     let mut keeper = OptimumKeeper::<Condition>::new();
 
     loop {
-        let _ = serialize::writeln(&population.population, &mut stdout);
+        serialize::log(&population.population);
         println_err!("[{}] Scoring", population.generation);
         population.score(|p| score_program(p, &mut rng));
         {
@@ -97,7 +99,8 @@ fn main() {
             
             if keeper.improved(&winner.program, &winner.score, population.generation) {
                 let _ = serialize::writeln(&population.generation, &mut stdout);
-                let _ = serialize::writeln(&winner.program.simplify(), &mut stdout);
+                println!("{}", winner.program.simplify());
+//                let _ = serialize::writeln(&winner.program.simplify(), &mut stdout);
                 let _ = serialize::writeln(&winner.score.trace().trace(), &mut stdout);
                 let _ = serialize::writeln(&winner.score.scores(), &mut stdout);
             }

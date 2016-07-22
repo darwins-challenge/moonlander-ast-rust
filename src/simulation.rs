@@ -32,7 +32,7 @@ impl World {
             thrust_constant: 0.6,
             tolerance: 0.01,
             fuel_consumption: 0.01,
-            max_landing_speed: 10.0
+            max_landing_speed: 1.0
         }
     }
 
@@ -62,7 +62,7 @@ impl World {
 }
 
 pub fn update_data(sensor_data: &mut SensorData, command: Command, world: &World) {
-    if sensor_data.crashed || sensor_data.landed { return; }
+    if sensor_data.hit_ground { return; }
 
     let angular_multiplier: Number = match command {
         Command::Left  =>  1.0,
@@ -92,11 +92,13 @@ pub fn update_data(sensor_data: &mut SensorData, command: Command, world: &World
 
     let down = sensor_data.y < world.tolerance;
     let upright = abs(sensor_data.o) < world.tolerance;
-    sensor_data.crash_speed = abs(sensor_data.vy);
-    let crashed = sensor_data.crash_speed > world.max_landing_speed;
+    let crashed = abs(sensor_data.vy) > world.max_landing_speed;
+    if down && crashed {
+        sensor_data.crash_speed = abs(sensor_data.vy);
+    }
 
-    sensor_data.crashed = down && (!upright || crashed);
-    sensor_data.landed = down && upright && !crashed;
+    sensor_data.hit_ground = down;
+    sensor_data.landed     = down && upright && !crashed;
 
     sensor_data.thrusting = match command {
         Command::Thrust => true,

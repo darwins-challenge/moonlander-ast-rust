@@ -16,7 +16,7 @@ fn main() {
     loop {
         next_program(&mut sensor_data, &program, &world);
         count += 1;
-        if sensor_data.crashed || sensor_data.landed { break; }
+        if sensor_data.hit_ground { break; }
     }
 
     println!("Program lasted {} iterations", count);

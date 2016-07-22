@@ -28,7 +28,7 @@ fn main() {
         next_program(&mut sensor_data, &program, &world);
         trace.add(&sensor_data);
         count += 1;
-        if sensor_data.crashed || sensor_data.landed { break; }
+        if sensor_data.hit_ground { break; }
     }
 
     trace.save_file(Path::new(&filename)).expect("Error saving file");

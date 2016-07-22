@@ -25,7 +25,7 @@ fn main() {
     };
 
     let program: Program = json::decode(&content).unwrap();
-	  let data: SensorData = SensorData { x: 37.0, y: 51.0, vx: 1.0, vy: 0.0, o: 0.0, w: 0.0, fuel: 1.0, crashed: false, landed: false, thrusting: false, crash_speed: 0.0 };
+	  let data: SensorData = SensorData { x: 37.0, y: 51.0, vx: 1.0, vy: 0.0, o: 0.0, w: 0.0, fuel: 1.0, hit_ground: false, landed: false, thrusting: false, crash_speed: 0.0 };
 
 	  let command = program.evaluate(data);
 

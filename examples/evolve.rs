@@ -43,7 +43,7 @@ fn score_single_run<R: rand::Rng>(program: &Program, rng: &mut R) -> ScoreCard {
     let mut total_fuel: Number = 0.;
 
     trace.add(&sensor_data);
-    while !sensor_data.crashed && !sensor_data.landed {
+    while !sensor_data.hit_ground {
         total_height += square(sensor_data.y);
         total_fuel += square(sensor_data.fuel);
 

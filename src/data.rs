@@ -19,7 +19,7 @@ pub struct SensorData {
     pub o:  Number,
     pub w:  Number,
     pub fuel: Number,
-    pub crashed: bool,
+    pub hit_ground: bool,
     pub landed: bool,
     pub thrusting: bool,
     pub crash_speed: Number
@@ -33,16 +33,16 @@ impl SensorData {
     /// ```
     pub fn new () -> SensorData {
         SensorData {
-            x:         0.0,
-            y:         0.0,
-            vx:        0.0,
-            vy:        0.0,
-            o:         0.0,
-            w:         0.0,
-            fuel:      1.0,
-            crashed:   false,
-            landed:    false,
-            thrusting: false,
+            x:          0.0,
+            y:          0.0,
+            vx:         0.0,
+            vy:         0.0,
+            o:          0.0,
+            w:          0.0,
+            fuel:       1.0,
+            hit_ground: false,
+            landed:     false,
+            thrusting:  false,
             crash_speed: 0.0,
         }
     }
@@ -75,8 +75,8 @@ impl SensorData {
         SensorData { fuel: fuel, ..self }
     }
 
-    pub fn crashed(self) -> SensorData {
-        SensorData { crashed: true, ..self }
+    pub fn hit_ground(self) -> SensorData {
+        SensorData { hit_ground: true, ..self }
     }
 
     pub fn landed(self) -> SensorData {
