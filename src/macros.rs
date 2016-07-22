@@ -59,23 +59,29 @@ macro_rules! constant {
 }
 
 #[macro_export]
-macro_rules! x {
-	() => (ast::structure::Expression::Sensor(Box::new(ast::structure::Sensor::X)))
-}
-
-#[macro_export]
 macro_rules! y {
 	() => (ast::structure::Expression::Sensor(Box::new(ast::structure::Sensor::Y)))
 }
 
 #[macro_export]
-macro_rules! vx {
-	() => (ast::structure::Expression::Sensor(Box::new(ast::structure::Sensor::Vx)))
+macro_rules! vy {
+	() => (ast::structure::Expression::Sensor(Box::new(ast::structure::Sensor::Vy)))
 }
 
 #[macro_export]
-macro_rules! vy {
-	() => (ast::structure::Expression::Sensor(Box::new(ast::structure::Sensor::Vy)))
+macro_rules! fuel {
+    () => (ast::structure::Expression::Sensor(Box::new(ast::structure::Sensor::Fuel)))
+}
+
+/*
+#[macro_export]
+macro_rules! x {
+	() => (ast::structure::Expression::Sensor(Box::new(ast::structure::Sensor::X)))
+}
+
+#[macro_export]
+macro_rules! vx {
+	() => (ast::structure::Expression::Sensor(Box::new(ast::structure::Sensor::Vx)))
 }
 
 #[macro_export]
@@ -88,10 +94,7 @@ macro_rules! w {
 	() => (ast::structure::Expression::Sensor(Box::new(ast::structure::Sensor::W)))
 }
 
-#[macro_export]
-macro_rules! fuel {
-    () => (ast::structure::Expression::Sensor(Box::new(ast::structure::Sensor::Fuel)))
-}
+*/
 
 #[macro_export]
 macro_rules! plus {

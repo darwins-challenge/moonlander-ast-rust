@@ -64,23 +64,25 @@ fn constant_macro_should_work(){
 }
 
 #[test]
-fn x_macro_should_work(){
-    assert_eq!("x!()", x!().source());
-}
-
-#[test]
 fn y_macro_should_work(){
     assert_eq!("y!()", y!().source());
 }
 
 #[test]
-fn vx_macro_should_work(){
-    assert_eq!("vx!()", vx!().source());
+fn vy_macro_should_work(){
+    assert_eq!("vy!()", vy!().source());
+}
+
+/*
+
+#[test]
+fn x_macro_should_work(){
+    assert_eq!("x!()", x!().source());
 }
 
 #[test]
-fn vy_macro_should_work(){
-    assert_eq!("vy!()", vy!().source());
+fn vx_macro_should_work(){
+    assert_eq!("vx!()", vx!().source());
 }
 
 #[test]
@@ -92,6 +94,8 @@ fn o_macro_should_work(){
 fn w_macro_should_work(){
     assert_eq!("w!()", w!().source());
 }
+
+*/
 
 #[test]
 fn plus_macro_should_work(){

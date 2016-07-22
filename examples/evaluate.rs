@@ -9,13 +9,13 @@ use ast::structure::{Program,Command};
 use ast::data::{SensorData,Evaluate};
 
 fn main() {
-	  let program: Program = iff!(less!(vx!(),multiply!(constant!(2.0000),constant!(3.0000))),left!(),right!());
+	  let program: Program = iff!(less!(vy!(),multiply!(constant!(2.0000),constant!(3.0000))),left!(),right!());
 
-	  let data: SensorData = SensorData { x: 37.0, y: 51.0, vx: 1.0, vy: 0.0, o: 0.0, w: 0.0, fuel: 1.0, crashed: false, landed: false, thrusting: false };
+	  let data: SensorData = SensorData { x: 37.0, y: 51.0, vx: 1.0, vy: 0.0, o: 0.0, w: 0.0, fuel: 1.0, crashed: false, landed: false, thrusting: false, crash_speed: 0.0 };
 
 	  let command = program.evaluate(data);
 
-	  let message = match **command {
+	  let message = match command {
 		    Command::Skip   => "skip",
 		    Command::Left   => "left",
 		    Command::Right  => "right",

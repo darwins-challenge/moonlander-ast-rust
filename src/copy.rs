@@ -170,8 +170,8 @@ mod tests {
 
     #[test]
     fn copy_and_replace() {
-        let program = iff!(less_equal!(constant!(0.9750),minus!(minus!(multiply!(minus!(y!(),minus!(divide!(constant!(0.9907),y!()),w!())),vy!()),o!()),constant!(0.7831))),skip!(),thrust!());
-        let replacement = iff!(less_equal!(constant!(0.9750),minus!(minus!(multiply!(minus!(y!(),minus!(divide!(constant!(0.9907),y!()),w!())),vy!()),o!()),constant!(0.7831))),skip!(),thrust!());
+        let program = iff!(less_equal!(constant!(0.9750),minus!(minus!(multiply!(minus!(y!(),minus!(divide!(constant!(0.9907),y!()),y!())),vy!()),y!()),constant!(0.7831))),skip!(),thrust!());
+        let replacement = iff!(less_equal!(constant!(0.9750),minus!(minus!(multiply!(minus!(y!(),minus!(divide!(constant!(0.9907),y!()),y!())),vy!()),y!()),constant!(0.7831))),skip!(),thrust!());
 
         let mut nodes = BucketCollector::new();
         program.visit(&mut nodes);

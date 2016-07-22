@@ -84,7 +84,7 @@ pub enum Condition {
 ///
 /// let expression: ast::structure::Expression = ast::structure::Expression::Plus(
 ///   Box::new(ast::structure::Expression::Constant(42.0)),
-///   Box::new(ast::structure::Expression::Sensor(Box::new(ast::structure::Sensor::Vx)))
+///   Box::new(ast::structure::Expression::Sensor(Box::new(ast::structure::Sensor::Vy)))
 /// );
 /// ```
 #[derive(Debug,RustcDecodable,RustcEncodable,Clone,PartialEq)]

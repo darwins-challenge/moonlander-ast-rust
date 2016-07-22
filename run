@@ -1,0 +1,12 @@
+#!/bin/bash
+set -euo pipefail
+cargo build --release --example simple-evolve
+export RUST_LOG=info
+
+arg=${1:-}
+
+if [ "$arg" == "debug" ]; then
+    target/release/examples/simple-evolve 2>&1 | less -S
+else
+    target/release/examples/simple-evolve | tee run.txt
+fi

@@ -16,46 +16,22 @@ use ast::simplify::Simplify;
 use ast::data::SensorData;
 use ast::num::{square, partial_max};
 use ast::darwin::evolve;
-use ast::darwin::evolve::ScoreCard;
+use ast::darwin::evolve::{ScoreCard,OptimumKeeper};
 
 
 const POPULATION_SIZE : usize = 2000;
 const TRIALS_PER_PROGRAM : usize = 3;
-const TOURNAMENT_SIZE : usize = 20;
+const TOURNAMENT_SIZE : usize = 100;
 
 const REPRODUCE_WEIGHT : u32 = 10;
 const MUTATE_WEIGHT : u32 = 10;
 const CROSSOVER_WEIGHT : u32 = 10;
-
-struct OptimumKeeper {
-    best_program: Option<Condition>,
-    best_score: Option<ScoreCard>,
-    best_generation: u32
-}
-
-impl OptimumKeeper {
-    pub fn new() -> OptimumKeeper {
-        OptimumKeeper { best_program: None, best_score: None, best_generation: 0 }
-    }
-
-    pub fn improved(&mut self, program: &Condition, score: &ScoreCard, generation: u32) -> bool {
-        if self.best_score.is_none() || score > self.best_score.as_ref().unwrap() {
-            self.best_program = Some(program.simplify());
-            self.best_score = Some(score.clone());
-            self.best_generation = generation;
-            true
-        } else {
-            false
-        }
-    }
-}
 
 fn random_start_position<R: rand::Rng>(rng: &mut R) -> SensorData {
     SensorData::new()
         .with_x(0.0)
         .with_y(rng.next_f32() * 100.0 + 50.0)
         .with_o(0.0)
-        .build()
 }
 
 /// Score a program by scoring a single run
@@ -66,7 +42,7 @@ fn random_start_position<R: rand::Rng>(rng: &mut R) -> SensorData {
 /// - If we landed (if so then FUCK YEAH)
 fn score_single_run<R: rand::Rng>(program: &Condition, rng: &mut R) -> ScoreCard {
     let mut sensor_data = random_start_position(rng);
-    let world = simulation::World::new().build();
+    let world = simulation::World::new();
     let mut trace = serialize::GameTrace::new();
 
     let mut total_height: Number = 0.;
@@ -84,7 +60,7 @@ fn score_single_run<R: rand::Rng>(program: &Condition, rng: &mut R) -> ScoreCard
     let frames = trace.frames() as Number;
     ScoreCard::new(vec![
         ("survival_bonus", 3.0 * frames),
-        ("height_penalty", -(0.001 * total_height / frames)),
+        ("height_penalty", -(0.01 * total_height / frames)),
         ("fuel_bonus",     (100.0 * total_fuel / frames)),
         ("success_bonus",  if sensor_data.landed { 10000.0 } else { 0.0 })
     ], trace)
@@ -97,7 +73,7 @@ fn score_program<R: rand::Rng>(program: &Condition, rng: &mut R) -> ScoreCard {
     // Give a penalty for program depth. Since this is the same for all
     // runs, we only do it here (for mucho saved speed!)
     best_run.add(vec![
-        ("complexity_pentalty", program.depth() as f32 * -30.0)
+        ("complexity_pentalty", program.depth() as f32 * -5.0)
     ])
 }
 
@@ -109,10 +85,10 @@ fn main() {
     let mut population = evolve::random_population::<Condition>(POPULATION_SIZE);
     let mut rng = rand::StdRng::new().unwrap();
     let mut stdout = std::io::stdout();
-    let mut keeper = OptimumKeeper::new();
+    let mut keeper = OptimumKeeper::<Condition>::new();
 
     loop {
-        serialize::writeln(&population.population, &mut stdout);
+        let _ = serialize::writeln(&population.population, &mut stdout);
         println_err!("[{}] Scoring", population.generation);
         population.score(|p| score_program(p, &mut rng));
         {

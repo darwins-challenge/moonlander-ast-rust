@@ -9,7 +9,7 @@ use rustc_serialize::json;
 use ast::structure::Program;
 
 fn main() {
-	  let program: Program = iff!(less!(vx!(),multiply!(constant!(2.0000),constant!(3.0000))),left!(),right!());
+	  let program: Program = iff!(less!(vy!(),multiply!(constant!(2.0000),constant!(3.0000))),left!(),right!());
 
 	  println!("{}", json::encode(&program).unwrap());
 }

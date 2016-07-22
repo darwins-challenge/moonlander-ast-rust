@@ -108,7 +108,6 @@ mod tests {
     #[test]
     fn should_correctly_source_expressions() {
 	      assert_eq!("constant!(1.0000)", Expression::Constant(1.0).source());
-	      assert_eq!("vx!()", Expression::Sensor(Box::new(Sensor::Vx)).source());
 	      assert_eq!("plus!(constant!(1.0000),vy!())",
 		               Expression::Plus(Box::new(Expression::Constant(1.0)),Box::new(Expression::Sensor(Box::new(Sensor::Vy)))).source());
 	      assert_eq!("minus!(constant!(1.0000),constant!(2.0000))",
@@ -117,17 +116,18 @@ mod tests {
 		               Expression::Multiply(Box::new(Expression::Constant(1.0)),Box::new(Expression::Constant(2.0))).source());
 	      assert_eq!("divide!(constant!(1.0000),constant!(2.0000))",
 		               Expression::Divide(Box::new(Expression::Constant(1.0)),Box::new(Expression::Constant(2.0))).source());
+	      //assert_eq!("vx!()", Expression::Sensor(Box::new(Sensor::Vx)).source());
     }
 
     #[test]
     fn should_correctly_source_sensors() {
-	      assert_eq!("x!()",  Sensor::X.source());
 	      assert_eq!("y!()",  Sensor::Y.source());
-	      assert_eq!("vx!()", Sensor::Vx.source());
 	      assert_eq!("vy!()", Sensor::Vy.source());
-	      assert_eq!("o!()",  Sensor::O.source());
-		    assert_eq!("w!()",  Sensor::W.source());
-        assert_eq!("fuel!()",  Sensor::Fuel.source());
+          assert_eq!("fuel!()",  Sensor::Fuel.source());
+		  //assert_eq!("x!()",  Sensor::X.source());
+		  //assert_eq!("vx!()", Sensor::Vx.source());
+		  //assert_eq!("o!()",  Sensor::O.source());
+          //assert_eq!("w!()",  Sensor::W.source());
     }
 
     #[test]

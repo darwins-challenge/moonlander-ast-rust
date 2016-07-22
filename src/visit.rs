@@ -147,7 +147,7 @@ mod tests {
 
     #[test]
     fn collect_all_nodes() {
-        let program: Program = iff!(less!(vx!(),multiply!(constant!(2.0000),constant!(3.0000))),left!(),right!());
+        let program: Program = iff!(less!(vy!(),multiply!(constant!(2.0000),constant!(3.0000))),left!(),right!());
 
         let mut coll = BucketCollector::new();
         program.visit(&mut coll);
@@ -155,7 +155,7 @@ mod tests {
         assert_eq!(3, coll.programs.len()); // iff, left, and right
         assert_eq!(1, coll.conditions.len()); // less
         assert_eq!(2, coll.commands.len());  // left, right
-        assert_eq!(4, coll.expressions.len()); // vx, multiply, constant, constant
-        assert_eq!(1, coll.sensors.len()); // vx
+        assert_eq!(4, coll.expressions.len()); // vy, multiply, constant, constant
+        assert_eq!(1, coll.sensors.len()); // vy
     }
 }

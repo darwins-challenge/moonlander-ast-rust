@@ -156,37 +156,13 @@ mod tests {
     use super::*;
     use structure::{Expression,Sensor};
 
-    #[derive(PartialEq,Debug)]
-    enum Dummy {
-        A, B,
-    }
-
-    impl super::Mutate for Dummy {
-        fn mutate<R: super::rand::Rng>(&self, _: &mut R) -> Dummy {
-            match *self {
-                Dummy::A => Dummy::B,
-                Dummy::B => Dummy::A
-            }
-        }
-    }
-
-    #[test]
-    fn should_mutate_mutate_dummy() {
-        let original = Dummy::A;
-        let mut rng = super::rand::thread_rng();
-
-        let mutation = original.mutate(&mut rng);
-
-        assert_eq!(mutation, Dummy::B);
-    }
-
     #[test]
     fn should_mutate_expression_without_panicing() {
         let mut rng = super::rand::thread_rng();
         let constant: Expression = Expression::Constant(0.0);
-        constant.mutate(&mut rng);
+        let _ = mutate(&constant, &mut rng);
 
-        let sensor: Expression = Expression::Sensor(Box::new(Sensor::Vx));
-        sensor.mutate(&mut rng);
+        let sensor: Expression = Expression::Sensor(Box::new(Sensor::Vy));
+        let _ = mutate(&sensor, &mut rng);
     }
 }

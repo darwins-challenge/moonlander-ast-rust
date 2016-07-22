@@ -3,6 +3,7 @@ use super::super::copy;
 use super::super::source::Source;
 use super::super::num::partial_max;
 use super::super::visit::Visitable;
+use super::super::simplify::Simplify;
 use super::super::structure::Number;
 use super::super::serialize::GameTrace;
 use super::mutation;
@@ -86,16 +87,24 @@ impl <P: Rand+Clone+Source> Population<P> {
             pick![
                 reproduce_weight, {
                     let winner = self.select_tournament_winner(tournament_size, rng);
-                    info!("Reproduce: {}", winner.source());
+                    debug!("Reproduce: {}", winner.source());
                     ret.add(winner.clone());
                 },
-                mutate_weight, ret.add(mutation::mutate(self.select_tournament_winner(tournament_size, rng), rng)),
+                mutate_weight, {
+                    let winner = self.select_tournament_winner(tournament_size, rng);
+                    let mutation = mutation::mutate(winner, rng);
+                    debug!("Mutation: {} into {}", winner.source(), mutation.source());
+                    ret.add(mutation);
+                },
                 crossover_weight, {
                     if self.n() < 2 { continue; }
 
                     let (one, two) = self.pick_two(tournament_size, rng);
 
                     let (child1, child2) = crossover::cross_over(one, two, rng);
+
+                    debug!("Crossover: {} & {} into {} & {}", one.source(), two.source(), child1.source(), child2.source());
+
                     // We try to insert both children, but only if there's room in the population
                     ret.add(child1);
                     if ret.n() < self.n() {
@@ -194,6 +203,7 @@ mod tests {
     use super::*;
     use super::super::super::visit::{Visitor, Visitable};
     use super::super::super::structure::*;
+    use super::super::super::serialize::*;
     use rand;
 
     // This makes the macros work (which expect stuff to be in ast::structure::...etc...)
@@ -209,7 +219,8 @@ mod tests {
 
         score_population(&mut p);
 
-        assert_eq!(vec![0.0, 1.0, 2.0, 3.0], p.scores);
+        assert_eq!(vec![0.0, 1.0, 2.0, 3.0],
+                   p.scores.iter().map(|s| s.total_score()).collect::<Vec<Number>>());
     }
 
     #[test]
@@ -230,11 +241,13 @@ mod tests {
         assert!(p.select_tournament_winner_i(3, &mut rng) >= 2);
     }
 
-    fn score_population(p: &mut Population) {
+    fn score_population(p: &mut Population<Program>) {
         p.score(|x| { 
             let mut c = CommandCounter::new();
             x.visit(&mut c);
-            c.value as Number
+            ScoreCard::new(vec![
+                           ("score", c.value as Number)
+                           ], GameTrace::new())
         });
     }
 
@@ -260,6 +273,29 @@ mod tests {
 
         fn visit_sensor(&mut self, sensor: &'a Sensor) {
             self.value += sensor.clone() as u32;
+        }
+    }
+}
+
+pub struct OptimumKeeper<P> {
+    best_program: Option<P>,
+    best_score: Option<ScoreCard>,
+    best_generation: u32
+}
+
+impl <P: Simplify+Clone> OptimumKeeper<P> {
+    pub fn new() -> OptimumKeeper<P> {
+        OptimumKeeper { best_program: None, best_score: None, best_generation: 0 }
+    }
+
+    pub fn improved(&mut self, program: &P, score: &ScoreCard, generation: u32) -> bool {
+        if self.best_score.is_none() || score > self.best_score.as_ref().unwrap() {
+            self.best_program = Some(program.simplify());
+            self.best_score = Some(score.clone());
+            self.best_generation = generation;
+            true
+        } else {
+            false
         }
     }
 }
