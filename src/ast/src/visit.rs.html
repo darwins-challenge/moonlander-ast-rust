@@ -180,11 +180,37 @@
 <span id="136">136</span>
 <span id="137">137</span>
 <span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! Tree visitor routines</span>
 
-<span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>structure</span>::{<span class='ident'>Program</span>,<span class='ident'>Condition</span>,<span class='ident'>Command</span>,<span class='ident'>Expression</span>,<span class='ident'>Sensor</span>};
+<span class='kw'>use</span> <span class='kw'>super</span>::<span class='ident'>structure</span>::{<span class='ident'>Program</span>,<span class='ident'>Condition</span>,<span class='ident'>Command</span>,<span class='ident'>Expression</span>,<span class='ident'>Sensor</span>};
 
+<span class='doccomment'>/// Interface for node visitor</span>
+<span class='doccomment'>///</span>
+<span class='doccomment'>/// Lifetime parameter is the lifetime of the visitable objects.</span>
 <span class='kw'>pub</span> <span class='kw'>trait</span> <span class='ident'>Visitor</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
 	<span class='kw'>fn</span> <span class='ident'>visit_program</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>program</span>: <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='ident'>Program</span>);
 	<span class='kw'>fn</span> <span class='ident'>visit_condition</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>condition</span>: <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='ident'>Condition</span>);
@@ -193,6 +219,9 @@
 	<span class='kw'>fn</span> <span class='ident'>visit_sensor</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>sensor</span>: <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='ident'>Sensor</span>);
 }
 
+<span class='doccomment'>/// Interface for visitable nodes</span>
+<span class='doccomment'>///</span>
+<span class='doccomment'>/// Lifetime parameter is the lifetime of the visitable objects.</span>
 <span class='kw'>pub</span> <span class='kw'>trait</span> <span class='ident'>Visitable</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
     <span class='kw'>fn</span> <span class='ident'>visit</span>(<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='self'>self</span>, <span class='ident'>visitor</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Visitor</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>);
 }
@@ -272,6 +301,14 @@
             <span class='ident'>sensors</span>: <span class='ident'>Vec</span>::<span class='ident'>new</span>()
         }
     }
+
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>get_counts</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>Vec</span><span class='op'>&lt;</span>(<span class='ident'>NodeType</span>, <span class='ident'>usize</span>)<span class='op'>&gt;</span> {
+        <span class='macro'>vec</span><span class='macro'>!</span>[(<span class='ident'>NodeType</span>::<span class='ident'>Program</span>,   <span class='self'>self</span>.<span class='ident'>programs</span>.<span class='ident'>len</span>()),
+             (<span class='ident'>NodeType</span>::<span class='ident'>Expression</span>, <span class='self'>self</span>.<span class='ident'>expressions</span>.<span class='ident'>len</span>()),
+             (<span class='ident'>NodeType</span>::<span class='ident'>Condition</span>,  <span class='self'>self</span>.<span class='ident'>conditions</span>.<span class='ident'>len</span>()),
+             (<span class='ident'>NodeType</span>::<span class='ident'>Sensor</span>,     <span class='self'>self</span>.<span class='ident'>sensors</span>.<span class='ident'>len</span>()),
+             (<span class='ident'>NodeType</span>::<span class='ident'>Command</span>,    <span class='self'>self</span>.<span class='ident'>commands</span>.<span class='ident'>len</span>())]
+    }
 }
 
 <span class='kw'>impl</span> <span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> <span class='ident'>Visitor</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>BucketCollector</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
@@ -296,18 +333,27 @@
     }
 }
 
+<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Copy</span>, <span class='ident'>Clone</span>)]</span>
+<span class='kw'>pub</span> <span class='kw'>enum</span> <span class='ident'>NodeType</span> {
+    <span class='ident'>Program</span>,
+    <span class='ident'>Expression</span>,
+    <span class='ident'>Condition</span>,
+    <span class='ident'>Sensor</span>,
+    <span class='ident'>Command</span>
+}
+
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>test</span>)]</span>
 <span class='kw'>mod</span> <span class='ident'>tests</span> {
     <span class='comment'>// This makes the macros work (which expect stuff to be in ast::structure::...etc...)</span>
-    <span class='kw'>mod</span> <span class='ident'>ast</span> { <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>super</span>::<span class='ident'>super</span>::<span class='op'>*</span>; }
+    <span class='kw'>mod</span> <span class='ident'>ast</span> { <span class='kw'>pub</span> <span class='kw'>use</span> <span class='kw'>super</span>::<span class='kw'>super</span>::<span class='kw'>super</span>::<span class='op'>*</span>; }
 
-    <span class='kw'>use</span> <span class='ident'>super</span>::<span class='op'>*</span>;
+    <span class='kw'>use</span> <span class='kw'>super</span>::<span class='op'>*</span>;
 
-    <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>super</span>::<span class='ident'>structure</span>::<span class='ident'>Program</span>;
+    <span class='kw'>use</span> <span class='kw'>super</span>::<span class='kw'>super</span>::<span class='ident'>structure</span>::<span class='ident'>Program</span>;
 
     <span class='attribute'>#[<span class='ident'>test</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>collect_all_nodes</span>() {
-        <span class='kw'>let</span> <span class='ident'>program</span>: <span class='ident'>Program</span> <span class='op'>=</span> <span class='macro'>iff</span><span class='macro'>!</span>(<span class='macro'>less</span><span class='macro'>!</span>(<span class='macro'>vx</span><span class='macro'>!</span>(),<span class='macro'>multiply</span><span class='macro'>!</span>(<span class='macro'>constant</span><span class='macro'>!</span>(<span class='number'>2.0000</span>),<span class='macro'>constant</span><span class='macro'>!</span>(<span class='number'>3.0000</span>))),<span class='macro'>left</span><span class='macro'>!</span>(),<span class='macro'>right</span><span class='macro'>!</span>());
+        <span class='kw'>let</span> <span class='ident'>program</span>: <span class='ident'>Program</span> <span class='op'>=</span> <span class='macro'>iff</span><span class='macro'>!</span>(<span class='macro'>less</span><span class='macro'>!</span>(<span class='macro'>vy</span><span class='macro'>!</span>(),<span class='macro'>multiply</span><span class='macro'>!</span>(<span class='macro'>constant</span><span class='macro'>!</span>(<span class='number'>2.0000</span>),<span class='macro'>constant</span><span class='macro'>!</span>(<span class='number'>3.0000</span>))),<span class='macro'>left</span><span class='macro'>!</span>(),<span class='macro'>right</span><span class='macro'>!</span>());
 
         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>coll</span> <span class='op'>=</span> <span class='ident'>BucketCollector</span>::<span class='ident'>new</span>();
         <span class='ident'>program</span>.<span class='ident'>visit</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>coll</span>);
@@ -315,8 +361,8 @@
         <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='number'>3</span>, <span class='ident'>coll</span>.<span class='ident'>programs</span>.<span class='ident'>len</span>()); <span class='comment'>// iff, left, and right</span>
         <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='number'>1</span>, <span class='ident'>coll</span>.<span class='ident'>conditions</span>.<span class='ident'>len</span>()); <span class='comment'>// less</span>
         <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='number'>2</span>, <span class='ident'>coll</span>.<span class='ident'>commands</span>.<span class='ident'>len</span>());  <span class='comment'>// left, right</span>
-        <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='number'>4</span>, <span class='ident'>coll</span>.<span class='ident'>expressions</span>.<span class='ident'>len</span>()); <span class='comment'>// vx, multiply, constant, constant</span>
-        <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='number'>1</span>, <span class='ident'>coll</span>.<span class='ident'>sensors</span>.<span class='ident'>len</span>()); <span class='comment'>// vx</span>
+        <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='number'>4</span>, <span class='ident'>coll</span>.<span class='ident'>expressions</span>.<span class='ident'>len</span>()); <span class='comment'>// vy, multiply, constant, constant</span>
+        <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='number'>1</span>, <span class='ident'>coll</span>.<span class='ident'>sensors</span>.<span class='ident'>len</span>()); <span class='comment'>// vy</span>
     }
 }
 </pre>
@@ -343,6 +389,8 @@
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 

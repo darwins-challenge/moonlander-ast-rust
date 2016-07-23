@@ -1,1 +1,1 @@
-initSidebarItems({"trait":[["Mutate",""]]});
+initSidebarItems({"fn":[["mutate",""]]});

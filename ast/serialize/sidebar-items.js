@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["save_source",""]],"struct":[["GameTrace","A collection of game states in a trace"]]});
+initSidebarItems({"fn":[["log",""],["save_score",""],["save_source",""],["save_source_file",""],["writeln",""]],"struct":[["GameTrace","A collection of game states in a trace"]]});
