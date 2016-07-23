@@ -71,11 +71,15 @@
 <span id="27">27</span>
 <span id="28">28</span>
 <span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! Numeric helpers</span>
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>ops</span>::<span class='ident'>Mul</span>;
 <span class='kw'>use</span> <span class='kw'>super</span>::<span class='ident'>structure</span>::<span class='ident'>Number</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>f32</span>::<span class='ident'>consts</span>::<span class='ident'>PI</span>;
+
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>TAU</span>: <span class='ident'>Number</span> <span class='op'>=</span> <span class='number'>2.0</span> <span class='op'>*</span> <span class='ident'>PI</span>;
 
 <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>square</span><span class='op'>&lt;</span><span class='ident'>T</span>: <span class='ident'>Mul</span><span class='op'>+</span><span class='ident'>Copy</span><span class='op'>&gt;</span>(<span class='ident'>x</span>: <span class='ident'>T</span>) <span class='op'>-&gt;</span> <span class='ident'>T</span>::<span class='ident'>Output</span> {
     <span class='ident'>x</span> <span class='op'>*</span> <span class='ident'>x</span>
