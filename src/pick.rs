@@ -1,3 +1,5 @@
+//! pick an expression according to weights
+
 extern crate rand;
 
 /// The `pick` macro allows to randomly select one expression from a sequence of
