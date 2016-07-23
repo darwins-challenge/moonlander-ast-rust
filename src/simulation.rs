@@ -100,7 +100,8 @@ pub fn update_data(sensor_data: &mut SensorData, command: Command, world: &World
     sensor_data.hit_ground = down;
     sensor_data.landed     = down && upright && !crashed;
 
-    sensor_data.thrusting = match command {
+    // No thrusting anymore if we touched down, it looks weird in the animation :)
+    sensor_data.thrusting = !down && match command {
         Command::Thrust => true,
         _               => false
     }

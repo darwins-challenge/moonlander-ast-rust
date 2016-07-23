@@ -30,7 +30,7 @@ const CROSSOVER_WEIGHT : u32 = 10;
 fn random_start_position<R: rand::Rng>(rng: &mut R) -> SensorData {
     SensorData::new()
         .with_x(0.0)
-        .with_y(rng.next_f32() * 100.0 + 50.0)
+        .with_y(rng.next_f32() * 600.0 + 50.0)
         .with_o(0.0)
 }
 
@@ -42,7 +42,7 @@ fn random_start_position<R: rand::Rng>(rng: &mut R) -> SensorData {
 /// - If we landed (if so then FUCK YEAH)
 fn score_single_run<R: rand::Rng>(program: &Condition, rng: &mut R) -> ScoreCard {
     let mut sensor_data = random_start_position(rng);
-    let world = simulation::World::new();
+    let world = simulation::World::new().with_max_landing_speed(0.5);
     let mut trace = serialize::GameTrace::new();
 
     let mut total_height: Number = 0.;

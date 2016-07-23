@@ -83,13 +83,13 @@ impl rand::Rand for Expression {
 impl rand::Rand for Sensor {
     fn rand<R: rand::Rng>(_: &mut R) -> Self {
         pick![
-//            1, Sensor::X,
             1, Sensor::Y,
-//            1, Sensor::Vx,
             1, Sensor::Vy,
-//            1, Sensor::O,
-//            1, Sensor::W,
-            1, Sensor::Fuel
+            1, Sensor::Fuel,
+            1, Sensor::X,
+            1, Sensor::Vx,
+            1, Sensor::O,
+            1, Sensor::W
             ]
 	}
 }

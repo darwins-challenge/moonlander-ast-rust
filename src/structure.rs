@@ -156,12 +156,12 @@ impl fmt::Display for Expression {
 /// ```
 #[derive(Debug,RustcDecodable,RustcEncodable,Clone,PartialEq,Copy)]
 pub enum Sensor {
-//	  X,
+      X,
 	  Y,
-//	  Vx,
+      Vx,
 	  Vy,
-//	  O,
-//	  W,
+      O,
+      W,
       Fuel,
 }
 
@@ -170,7 +170,11 @@ impl fmt::Display for Sensor {
         match *self {
             Sensor::Y    => write!(f, "Y"),
             Sensor::Vy   => write!(f, "Vy"),
-            Sensor::Fuel => write!(f, "Fuel")
+            Sensor::Fuel => write!(f, "Fuel"),
+            Sensor::X    => write!(f, "X"),
+            Sensor::Vx   => write!(f, "Vx"),
+            Sensor::O    => write!(f, "O"),
+            Sensor::W    => write!(f, "W")
         }
     }
 }
