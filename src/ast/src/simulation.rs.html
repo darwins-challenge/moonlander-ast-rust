@@ -409,8 +409,8 @@
 
     <span class='comment'>// No thrusting anymore if we touched down, it looks weird in the animation :)</span>
     <span class='ident'>sensor_data</span>.<span class='ident'>thrusting</span> <span class='op'>=</span> <span class='op'>!</span><span class='ident'>down</span> <span class='op'>&amp;&amp;</span> <span class='kw'>match</span> <span class='ident'>command</span> {
-        <span class='ident'>Command</span>::<span class='ident'>Thrust</span> <span class='op'>=&gt;</span> <span class='bool-val'>true</span>,
-        _               <span class='op'>=&gt;</span> <span class='bool-val'>false</span>
+        <span class='ident'>Command</span>::<span class='ident'>Thrust</span> <span class='op'>=&gt;</span> <span class='boolvalue'>true</span>,
+        _               <span class='op'>=&gt;</span> <span class='boolvalue'>false</span>
     }
 }
 
