@@ -13,19 +13,27 @@ use ast::serialize;
 use ast::simplify::Simplify;
 use ast::data::SensorData;
 use ast::darwin::evolve;
-use std::f32::consts::PI;
-use ast::num::{square, partial_max};
+use ast::num::{square, partial_max, TAU};
 use ast::darwin::evolve::{ScoreCard,OptimumKeeper};
 
 const POPULATION_SIZE : usize = 2000;
-const TRIALS_PER_PROGRAM : u32 = 10;
-const TOURNAMENT_SIZE : usize = 20;
+const TRIALS_PER_PROGRAM : u32 = 3;
+const TOURNAMENT_SIZE : usize = 100;
+
+const REPRODUCE_WEIGHT : u32 = 10;
+const MUTATE_WEIGHT : u32 = 10;
+const CROSSOVER_WEIGHT : u32 = 10;
 
 fn random_start_position<R: rand::Rng>(rng: &mut R) -> SensorData {
+    let mut angle = (90.0 + rng.gen_range(-45.0, 45.0)) * TAU / 360.0;
+    if rng.gen::<bool>() {
+        angle = TAU - angle;
+    }
     SensorData::new()
         .with_x(0.0)
-        .with_y(rng.next_f32() * 100.0 + 50.0)
-        .with_o(rng.next_f32() * PI * 2.0)
+        .with_y(rng.next_f32() * 60.0 + 50.0)
+        .with_o(angle)
+//        .with_o(rng.next_f32() * TAU)
 }
 
 /// Score a program by scoring a single run
@@ -36,7 +44,7 @@ fn random_start_position<R: rand::Rng>(rng: &mut R) -> SensorData {
 /// - If we landed (if so then FUCK YEAH)
 fn score_single_run<R: rand::Rng>(program: &Program, rng: &mut R) -> ScoreCard {
     let mut sensor_data = random_start_position(rng);
-    let world = simulation::World::new();
+    let world = simulation::World::new().with_max_landing_speed(0.5);
     let mut trace = serialize::GameTrace::new();
 
     let mut total_height: Number = 0.;
@@ -46,6 +54,7 @@ fn score_single_run<R: rand::Rng>(program: &Program, rng: &mut R) -> ScoreCard {
     while !sensor_data.hit_ground {
         total_height += square(sensor_data.y);
         total_fuel += square(sensor_data.fuel);
+        
 
         simulation::next_program(&mut sensor_data, &program, &world);
         trace.add(&sensor_data);
@@ -53,10 +62,13 @@ fn score_single_run<R: rand::Rng>(program: &Program, rng: &mut R) -> ScoreCard {
 
     let frames = trace.frames() as Number;
     ScoreCard::new(vec![
-        ("survival_bonus", 3.0 * frames),
-        ("height_penalty", -(0.01 * total_height / frames)),
-        ("fuel_bonus",     (100.0 * total_fuel / frames)),
-        ("success_bonus",  if sensor_data.landed { 10000.0 } else { 0.0 })
+        ("survival_bonus",   3.0 * frames),
+        ("height_penalty",   -(0.01 * total_height / frames)),
+        ("fuel_bonus",        (100.0 * total_fuel / frames)),
+        ("hit_ground_bonus", if sensor_data.hit_ground { 10.0 } else { 0.0 }),
+        ("crash_penalty",    sensor_data.crash_speed),
+        ("angle_penalty",    square(sensor_data.o) * -100.0),
+        ("success_bonus",    if sensor_data.landed { 10000.0 } else { 0.0 }),
     ], trace)
 }
 
@@ -73,14 +85,14 @@ fn score_program<R: rand::Rng>(program: &Program, rng: &mut R) -> ScoreCard {
 
 fn main() {
     // Generate initial random population
-    println!("Generating initial population");
-    let mut population = evolve::random_population(POPULATION_SIZE);
-    let mut rng = rand::thread_rng();
+    println_err!("Generating initial population");
+    let mut population = evolve::random_population::<Program>(POPULATION_SIZE);
+    let mut rng = rand::StdRng::new().unwrap();
     let mut stdout = std::io::stdout();
     let mut keeper = OptimumKeeper::<Program>::new();
 
     loop {
-        println!("[{}] Scoring", population.generation);
+        println_err!("[{}] Scoring", population.generation);
         population.score(|p| score_program(p, &mut rng));
         {
             let winner = population.winner();
@@ -88,16 +100,19 @@ fn main() {
             
             if keeper.improved(&winner.program, &winner.score, population.generation) {
                 let _ = serialize::writeln(&population.generation, &mut stdout);
-                let _ = serialize::writeln(&winner.program.simplify(), &mut stdout);
+                println!("{}", winner.program.simplify());
+                //let _ = serialize::writeln(&winner.program.simplify(), &mut stdout);
                 let _ = serialize::writeln(&winner.score.trace().trace(), &mut stdout);
                 let _ = serialize::writeln(&winner.score.scores(), &mut stdout);
             }
         }
 
 
-        println!("[{}] Evolving", population.generation);
+        println_err!("[{}] Evolving", population.generation);
         population = population.evolve(TOURNAMENT_SIZE,
-                                       10, 10, 5,
+                                       REPRODUCE_WEIGHT, 
+                                       MUTATE_WEIGHT, 
+                                       CROSSOVER_WEIGHT,
                                        &mut rng);
     }
 }

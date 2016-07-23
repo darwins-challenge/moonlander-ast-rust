@@ -36,7 +36,7 @@ pub enum Program {
 impl fmt::Display for Program {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
-            Program::If(ref cond, ref one, ref two) => write!(f, "({} -> {} | {})", cond, one, two),
+            Program::If(ref cond, ref one, ref two) => write!(f, "({} then {} else {})", cond, one, two),
             Program::Command(ref command) => write!(f, "{}", command)
         }
     }

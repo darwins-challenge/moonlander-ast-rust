@@ -16,6 +16,7 @@ pub struct World {
     pub thrust_constant: Number,
     pub tolerance: Number,
     pub fuel_consumption: Number,
+    pub max_landing_angle_rads: Number,
     pub max_landing_speed: Number
 }
 
@@ -32,7 +33,8 @@ impl World {
             thrust_constant: 0.6,
             tolerance: 0.01,
             fuel_consumption: 0.01,
-            max_landing_speed: 1.0
+            max_landing_angle_rads: 0.1,
+            max_landing_speed: 0.5
         }
     }
 
@@ -46,6 +48,10 @@ impl World {
 
     pub fn with_max_landing_speed(self, max_landing_speed: Number) -> World {
         World { max_landing_speed: max_landing_speed, ..self}
+    }
+
+    pub fn with_max_landing_angle_rads(self, max_landing_angle_rads: Number) -> World {
+        World { max_landing_angle_rads: max_landing_angle_rads, ..self}
     }
 
     pub fn with_thrust_constant(self, thrust_constant: Number) -> World {
@@ -91,7 +97,7 @@ pub fn update_data(sensor_data: &mut SensorData, command: Command, world: &World
     sensor_data.fuel = if sensor_data.fuel > 0.0 { sensor_data.fuel } else { 0.0 };
 
     let down = sensor_data.y < world.tolerance;
-    let upright = abs(sensor_data.o) < world.tolerance;
+    let upright = abs(sensor_data.o) < world.max_landing_angle_rads;
     let crashed = abs(sensor_data.vy) > world.max_landing_speed;
     if down && crashed {
         sensor_data.crash_speed = abs(sensor_data.vy);

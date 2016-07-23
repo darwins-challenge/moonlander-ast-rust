@@ -63,7 +63,57 @@ impl Simplify for Condition {
 
 impl Simplify for Expression {
 	fn simplify(&self) -> Self {
-        self.clone()
+		match *self {
+            Expression::Plus(ref l, ref r)     => {
+                let ls = l.simplify();
+                let rs = r.simplify();
+
+                if let Expression::Constant(lc) = ls {
+                    if let Expression::Constant(rc) = rs {
+                        return Expression::Constant(lc + rc);
+                    }
+                }
+
+                return Expression::Plus(Box::new(ls), Box::new(rs));
+            },
+            Expression::Minus(ref l, ref r)    => {
+                let ls = l.simplify();
+                let rs = r.simplify();
+
+                if let Expression::Constant(lc) = ls {
+                    if let Expression::Constant(rc) = rs {
+                        return Expression::Constant(lc - rc);
+                    }
+                }
+
+                return Expression::Minus(Box::new(ls), Box::new(rs));
+            },
+            Expression::Multiply(ref l, ref r) => {
+                let ls = l.simplify();
+                let rs = r.simplify();
+
+                if let Expression::Constant(lc) = ls {
+                    if let Expression::Constant(rc) = rs {
+                        return Expression::Constant(lc * rc);
+                    }
+                }
+
+                return Expression::Multiply(Box::new(ls), Box::new(rs));
+            },
+            Expression::Divide(ref l, ref r)   => {
+                let ls = l.simplify();
+                let rs = r.simplify();
+
+                if let Expression::Constant(lc) = ls {
+                    if let Expression::Constant(rc) = rs {
+                        return Expression::Constant(lc / rc);
+                    }
+                }
+
+                return Expression::Divide(Box::new(ls), Box::new(rs));
+            },
+            _ => self.clone()
+        }
 	}
 }
 

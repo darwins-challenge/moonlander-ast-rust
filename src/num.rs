@@ -3,6 +3,8 @@ use std::ops::Mul;
 use super::structure::Number;
 use std::f32::consts::PI;
 
+pub const TAU: Number = 2.0 * PI;
+
 pub fn square<T: Mul+Copy>(x: T) -> T::Output {
     x * x
 }

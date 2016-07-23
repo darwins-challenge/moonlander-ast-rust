@@ -1,13 +1,14 @@
 #!/bin/bash
 set -euo pipefail
-cargo build --release --example simple-evolve
+program=evolve
+cargo build --release --example $program
 
 arg=${1:-}
 
 if [ "$arg" == "debug" ]; then
     export RUST_LOG=debug
-    target/release/examples/simple-evolve 2>&1 | less -S
+    target/release/examples/$program 2>&1 | less -S
 else
     export RUST_LOG=info
-    target/release/examples/simple-evolve | tee run.txt
+    target/release/examples/$program | tee run.txt
 fi
