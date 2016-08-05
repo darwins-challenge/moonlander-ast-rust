@@ -248,9 +248,9 @@
             <span class='ident'>o</span>:          <span class='number'>0.0</span>,
             <span class='ident'>w</span>:          <span class='number'>0.0</span>,
             <span class='ident'>fuel</span>:       <span class='number'>1.0</span>,
-            <span class='ident'>hit_ground</span>: <span class='boolvalue'>false</span>,
-            <span class='ident'>landed</span>:     <span class='boolvalue'>false</span>,
-            <span class='ident'>thrusting</span>:  <span class='boolvalue'>false</span>,
+            <span class='ident'>hit_ground</span>: <span class='bool-val'>false</span>,
+            <span class='ident'>landed</span>:     <span class='bool-val'>false</span>,
+            <span class='ident'>thrusting</span>:  <span class='bool-val'>false</span>,
             <span class='ident'>crash_speed</span>: <span class='number'>0.0</span>,
         }
     }
@@ -284,15 +284,15 @@
     }
 
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>hit_ground</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>SensorData</span> {
-        <span class='ident'>SensorData</span> { <span class='ident'>hit_ground</span>: <span class='boolvalue'>true</span>, ..<span class='self'>self</span> }
+        <span class='ident'>SensorData</span> { <span class='ident'>hit_ground</span>: <span class='bool-val'>true</span>, ..<span class='self'>self</span> }
     }
 
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>landed</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>SensorData</span> {
-        <span class='ident'>SensorData</span> { <span class='ident'>landed</span>: <span class='boolvalue'>true</span>, ..<span class='self'>self</span> }
+        <span class='ident'>SensorData</span> { <span class='ident'>landed</span>: <span class='bool-val'>true</span>, ..<span class='self'>self</span> }
     }
 
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>thrusting</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>SensorData</span> {
-        <span class='ident'>SensorData</span> { <span class='ident'>thrusting</span>: <span class='boolvalue'>true</span>, ..<span class='self'>self</span> }
+        <span class='ident'>SensorData</span> { <span class='ident'>thrusting</span>: <span class='bool-val'>true</span>, ..<span class='self'>self</span> }
     }
 }
 
@@ -356,8 +356,8 @@
 <span class='kw'>impl</span> <span class='ident'>BooleanValue</span> <span class='kw'>for</span> <span class='ident'>Condition</span> {
 	<span class='kw'>fn</span> <span class='ident'>value</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>sensor_data</span>: <span class='ident'>SensorData</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span> {
 		<span class='kw'>match</span> <span class='op'>*</span><span class='self'>self</span> {
-			<span class='ident'>Condition</span>::<span class='ident'>True</span>                              <span class='op'>=&gt;</span> <span class='boolvalue'>true</span>,
-			<span class='ident'>Condition</span>::<span class='ident'>False</span>                             <span class='op'>=&gt;</span> <span class='boolvalue'>false</span>,
+			<span class='ident'>Condition</span>::<span class='ident'>True</span>                              <span class='op'>=&gt;</span> <span class='bool-val'>true</span>,
+			<span class='ident'>Condition</span>::<span class='ident'>False</span>                             <span class='op'>=&gt;</span> <span class='bool-val'>false</span>,
 			<span class='ident'>Condition</span>::<span class='ident'>Not</span>(<span class='kw-2'>ref</span> <span class='ident'>condition</span>)                <span class='op'>=&gt;</span> <span class='op'>!</span><span class='ident'>condition</span>.<span class='ident'>value</span>(<span class='ident'>sensor_data</span>),
 			<span class='ident'>Condition</span>::<span class='ident'>Or</span>(<span class='kw-2'>ref</span> <span class='ident'>left</span>, <span class='kw-2'>ref</span> <span class='ident'>right</span>)           <span class='op'>=&gt;</span> <span class='ident'>left</span>.<span class='ident'>value</span>(<span class='ident'>sensor_data</span>) <span class='op'>||</span> <span class='ident'>right</span>.<span class='ident'>value</span>(<span class='ident'>sensor_data</span>),
 			<span class='ident'>Condition</span>::<span class='ident'>And</span>(<span class='kw-2'>ref</span> <span class='ident'>left</span>, <span class='kw-2'>ref</span> <span class='ident'>right</span>)          <span class='op'>=&gt;</span> <span class='ident'>left</span>.<span class='ident'>value</span>(<span class='ident'>sensor_data</span>) <span class='op'>&amp;&amp;</span> <span class='ident'>right</span>.<span class='ident'>value</span>(<span class='ident'>sensor_data</span>),
