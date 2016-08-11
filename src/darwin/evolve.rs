@@ -130,7 +130,7 @@ impl <P: Rand+Clone+Source> Population<P> {
 pub type Scores = Vec<(&'static str, Number)>;
 
 /// Immutable tagged list of scores
-#[derive(Clone)]
+#[derive(Clone,RustcEncodable)]
 pub struct ScoreCard(Scores, Number, GameTrace);
 
 impl ScoreCard {

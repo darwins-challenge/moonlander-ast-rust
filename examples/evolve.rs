@@ -99,14 +99,13 @@ fn main() {
             println_err!("[{}] Best score: {}", population.generation, winner.score.total_score());
             
             if keeper.improved(&winner.program, &winner.score, population.generation) {
-                let _ = serialize::writeln(&population.generation, &mut stdout);
-                println!("{}", winner.program.simplify());
-                //let _ = serialize::writeln(&winner.program.simplify(), &mut stdout);
-                let _ = serialize::writeln(&winner.score.trace().trace(), &mut stdout);
-                let _ = serialize::writeln(&winner.score.scores(), &mut stdout);
+                let _ = serialize::writeln(&serialize::TraceOutput {
+                    generation: population.generation,
+                    program: &winner.program.simplify(),
+                    score_card: &winner.score
+                }, &mut stdout);
             }
         }
-
 
         println_err!("[{}] Evolving", population.generation);
         population = population.evolve(TOURNAMENT_SIZE,

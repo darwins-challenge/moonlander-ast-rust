@@ -5,7 +5,7 @@
 
 use rustc_serialize::{json,Encodable};
 use super::data::SensorData;
-use super::darwin::evolve::Scores;
+use super::darwin::evolve::{Scores, ScoreCard};
 use super::source::Source;
 use std::fs::File;
 use std::io::Write;
@@ -13,7 +13,7 @@ use std::path::Path;
 use std::error::Error;
 
 /// A collection of game states in a trace
-#[derive(Clone)]
+#[derive(Clone,RustcEncodable)]
 pub struct GameTrace {
     states: Vec<SensorData>
 }
@@ -78,4 +78,13 @@ pub fn save_score(score: &Scores, w: &mut Write) -> Result<(), Box<Error>> {
     let encoded = try!(json::encode(&score));
     try!(w.write_all(&encoded.as_bytes()));
     Ok(())
+}
+
+#[derive(RustcEncodable)]
+pub struct TraceOutput<'a, P: Encodable+'a> {
+    pub generation: u32,
+
+    pub program: &'a P,
+
+    pub score_card: &'a ScoreCard
 }
