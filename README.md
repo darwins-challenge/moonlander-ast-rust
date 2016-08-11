@@ -3,6 +3,8 @@ Code to create, manipulate and evaluate abstract syntax trees for the moonlander
 
 Learn more about this crate via the [documentation][].
 
+You can build your own at the [Rust Belt Rust Conference][conference]
+
 ## Usage
 
 ```rust
@@ -30,3 +32,4 @@ fn main() {
 ```
 
 [documentation]: http://darwins-challenge.github.io/moonlander-ast-rust/
+[conference]: http://www.rust-belt-rust.com/
