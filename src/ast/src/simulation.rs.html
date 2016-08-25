@@ -372,8 +372,8 @@
     <span class='kw'>if</span> <span class='ident'>sensor_data</span>.<span class='ident'>hit_ground</span> { <span class='kw'>return</span>; }
 
     <span class='kw'>let</span> <span class='ident'>angular_multiplier</span>: <span class='ident'>Number</span> <span class='op'>=</span> <span class='kw'>match</span> <span class='ident'>command</span> {
-        <span class='ident'>Command</span>::<span class='ident'>Left</span>  <span class='op'>=&gt;</span>  <span class='number'>1.0</span>,
-        <span class='ident'>Command</span>::<span class='ident'>Right</span> <span class='op'>=&gt;</span> <span class='op'>-</span><span class='number'>1.0</span>,
+        <span class='ident'>Command</span>::<span class='ident'>Left</span>  <span class='op'>=&gt;</span>  <span class='number'>0.2</span>,
+        <span class='ident'>Command</span>::<span class='ident'>Right</span> <span class='op'>=&gt;</span> <span class='op'>-</span><span class='number'>0.2</span>,
         _              <span class='op'>=&gt;</span>  <span class='number'>0.0</span>
     };
     <span class='ident'>sensor_data</span>.<span class='ident'>w</span> <span class='op'>+=</span> <span class='ident'>angular_multiplier</span> <span class='op'>*</span> <span class='ident'>world</span>.<span class='ident'>angular_increment</span>;
@@ -409,8 +409,8 @@
 
     <span class='comment'>// No thrusting anymore if we touched down, it looks weird in the animation :)</span>
     <span class='ident'>sensor_data</span>.<span class='ident'>thrusting</span> <span class='op'>=</span> <span class='op'>!</span><span class='ident'>down</span> <span class='op'>&amp;&amp;</span> <span class='kw'>match</span> <span class='ident'>command</span> {
-        <span class='ident'>Command</span>::<span class='ident'>Thrust</span> <span class='op'>=&gt;</span> <span class='boolvalue'>true</span>,
-        _               <span class='op'>=&gt;</span> <span class='boolvalue'>false</span>
+        <span class='ident'>Command</span>::<span class='ident'>Thrust</span> <span class='op'>=&gt;</span> <span class='bool-val'>true</span>,
+        _               <span class='op'>=&gt;</span> <span class='bool-val'>false</span>
     }
 }
 
