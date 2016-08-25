@@ -25,13 +25,12 @@ const MUTATE_WEIGHT : u32 = 10;
 const CROSSOVER_WEIGHT : u32 = 10;
 
 fn random_start_position<R: rand::Rng>(rng: &mut R) -> SensorData {
-    let mut angle = (90.0 + rng.gen_range(-45.0, 45.0)) * TAU / 360.0;
-    if rng.gen::<bool>() {
-        angle = TAU - angle;
-    }
+    let k = if rng.gen::<bool>() { 1.0 } else { -1.0 };
+    let angle = (90.0 + k * rng.gen_range(90.0, 135.0)) * TAU / 360.0;
+
     SensorData::new()
         .with_x(0.0)
-        .with_y(rng.next_f32() * 60.0 + 50.0)
+        .with_y(rng.next_f32() * 600.0 + 50.0)
         .with_o(angle)
 //        .with_o(rng.next_f32() * TAU)
 }
