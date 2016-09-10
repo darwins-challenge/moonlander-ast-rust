@@ -17,7 +17,7 @@ use ast::num::{square, partial_max, TAU};
 use ast::darwin::evolve::{ScoreCard,OptimumKeeper};
 
 const POPULATION_SIZE : usize = 2000;
-const TRIALS_PER_PROGRAM : u32 = 3;
+const TRIALS_PER_PROGRAM : u32 = 10;
 const TOURNAMENT_SIZE : usize = 100;
 
 const REPRODUCE_WEIGHT : u32 = 10;
@@ -30,7 +30,7 @@ fn random_start_position<R: rand::Rng>(rng: &mut R) -> SensorData {
 
     SensorData::new()
         .with_x(0.0)
-        .with_y(rng.next_f32() * 600.0 + 50.0)
+        .with_y(rng.next_f32() * 400.0 + 50.0)
         .with_o(angle)
 //        .with_o(rng.next_f32() * TAU)
 }
@@ -98,10 +98,12 @@ fn main() {
             println_err!("[{}] Best score: {}", population.generation, winner.score.total_score());
             
             if keeper.improved(&winner.program, &winner.score, population.generation) {
+                let random_score = score_single_run(&winner.program, &mut rng);
+
                 let _ = serialize::writeln(&serialize::TraceOutput {
                     generation: population.generation,
                     program: &winner.program.simplify(),
-                    score_card: &winner.score
+                    score_card: &random_score
                 }, &mut stdout);
             }
         }

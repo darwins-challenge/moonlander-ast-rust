@@ -139,6 +139,10 @@ impl ScoreCard {
         ScoreCard(scores, sum, trace)
     }
 
+    pub fn into_trace(self) -> GameTrace {
+        self.2
+    }
+
     pub fn add(self, scores: Scores) -> ScoreCard {
         let mut xs = self.0;
         xs.extend(scores);

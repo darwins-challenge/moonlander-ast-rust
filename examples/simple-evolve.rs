@@ -7,6 +7,7 @@ extern crate env_logger;
 
 pub use rand::Rng;
 use std::io::stdout;
+use std::iter::Iterator;
 
 use ast::structure::{Condition, Number};
 use ast::simulation;
@@ -14,13 +15,14 @@ use ast::serialize;
 use ast::depth::Depth;
 use ast::simplify::Simplify;
 use ast::data::SensorData;
-use ast::num::{square, partial_max};
+use ast::num::{square, partial_max, partial_min};
 use ast::darwin::evolve;
 use ast::darwin::evolve::{ScoreCard,OptimumKeeper};
+use ast::serialize::GameTrace;
 
 
 const POPULATION_SIZE : usize = 2000;
-const TRIALS_PER_PROGRAM : usize = 3;
+const TRIALS_PER_PROGRAM : usize = 10;
 const TOURNAMENT_SIZE : usize = 100;
 
 const REPRODUCE_WEIGHT : u32 = 10;
@@ -30,7 +32,7 @@ const CROSSOVER_WEIGHT : u32 = 10;
 fn random_start_position<R: rand::Rng>(rng: &mut R) -> SensorData {
     SensorData::new()
         .with_x(0.0)
-        .with_y(rng.next_f32() * 600.0 + 50.0)
+        .with_y(rng.next_f32() * 400.0 + 50.0)
         .with_o(0.0)
 }
 
@@ -65,18 +67,29 @@ fn score_single_run<R: rand::Rng>(program: &Condition, rng: &mut R) -> ScoreCard
         ("hit_ground_bonus", if sensor_data.hit_ground { 10.0 } else { 0.0 }),
         ("crash_penalty",    sensor_data.crash_speed),
         ("success_bonus",    if sensor_data.landed { 10000.0 } else { 0.0 }),
+        ("complexity_pentalty", program.depth() as f32 * -5.0)
     ], trace)
+}
+
+fn scorecards_avg<XS: Iterator<Item=ScoreCard>>(xs: XS) -> ScoreCard {
+    let mut total = 0.0;
+    let mut count = 0.0;
+    let mut last_trace = GameTrace::new();
+    for x in xs {
+        total += x.total_score();
+        count += 1.0;
+        last_trace = x.into_trace();
+    }
+
+    // Just create a fake trace with this avg score, we'll create a new trace
+    // later to display.
+    let scores = vec![("fake_avg", total)];
+    ScoreCard::new(scores, last_trace)
 }
 
 /// Score a program by averaging the score of multiple random runs
 fn score_program<R: rand::Rng>(program: &Condition, rng: &mut R) -> ScoreCard {
-    let best_run = partial_max((0..TRIALS_PER_PROGRAM).map(|_| score_single_run(program, rng))).unwrap();
-
-    // Give a penalty for program depth. Since this is the same for all
-    // runs, we only do it here (for mucho saved speed!)
-    best_run.add(vec![
-        ("complexity_pentalty", program.depth() as f32 * -5.0)
-    ])
+    scorecards_avg((0..TRIALS_PER_PROGRAM).map(|_| score_single_run(program, rng)))
 }
 
 fn main() {
@@ -98,10 +111,12 @@ fn main() {
             println_err!("[{}] Best score: {}", population.generation, winner.score.total_score());
             
             if keeper.improved(&winner.program, &winner.score, population.generation) {
+                let random_score = score_single_run(&winner.program, &mut rng);
+
                 let _ = serialize::writeln(&serialize::TraceOutput {
                     generation: population.generation,
                     program: &winner.program.simplify(),
-                    score_card: &winner.score
+                    score_card: &random_score,
                 }, &mut stdout);
             }
         }

@@ -29,3 +29,14 @@ pub fn partial_max<I: Iterator>(iter: I) -> Option<I::Item>
     })
 }
 
+pub fn partial_min<I: Iterator>(iter: I) -> Option<I::Item>
+    where I::Item : PartialOrd {
+    iter.fold(None, |ret, x| {
+        match ret {
+            None => Some(x),
+            Some(ref y) if x < *y => Some(x),
+            _ => ret
+        }
+    })
+}
+
