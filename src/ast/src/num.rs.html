@@ -73,6 +73,17 @@
 <span id="29">29</span>
 <span id="30">30</span>
 <span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! Numeric helpers</span>
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>ops</span>::<span class='ident'>Mul</span>;
@@ -100,6 +111,17 @@
         <span class='kw'>match</span> <span class='ident'>ret</span> {
             <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> <span class='prelude-val'>Some</span>(<span class='ident'>x</span>),
             <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='ident'>y</span>) <span class='kw'>if</span> <span class='ident'>x</span> <span class='op'>&gt;</span> <span class='op'>*</span><span class='ident'>y</span> <span class='op'>=&gt;</span> <span class='prelude-val'>Some</span>(<span class='ident'>x</span>),
+            _ <span class='op'>=&gt;</span> <span class='ident'>ret</span>
+        }
+    })
+}
+
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>partial_min</span><span class='op'>&lt;</span><span class='ident'>I</span>: <span class='ident'>Iterator</span><span class='op'>&gt;</span>(<span class='ident'>iter</span>: <span class='ident'>I</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>I</span>::<span class='ident'>Item</span><span class='op'>&gt;</span>
+    <span class='kw'>where</span> <span class='ident'>I</span>::<span class='ident'>Item</span> : <span class='ident'>PartialOrd</span> {
+    <span class='ident'>iter</span>.<span class='ident'>fold</span>(<span class='prelude-val'>None</span>, <span class='op'>|</span><span class='ident'>ret</span>, <span class='ident'>x</span><span class='op'>|</span> {
+        <span class='kw'>match</span> <span class='ident'>ret</span> {
+            <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> <span class='prelude-val'>Some</span>(<span class='ident'>x</span>),
+            <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='ident'>y</span>) <span class='kw'>if</span> <span class='ident'>x</span> <span class='op'>&lt;</span> <span class='op'>*</span><span class='ident'>y</span> <span class='op'>=&gt;</span> <span class='prelude-val'>Some</span>(<span class='ident'>x</span>),
             _ <span class='op'>=&gt;</span> <span class='ident'>ret</span>
         }
     })

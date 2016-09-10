@@ -343,6 +343,10 @@
 <span id="299">299</span>
 <span id="300">300</span>
 <span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
 </pre><pre class='rust '>
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>cmp</span>::{<span class='ident'>Ordering</span>};
 <span class='kw'>use</span> <span class='kw'>super</span>::<span class='kw'>super</span>::<span class='ident'>copy</span>;
@@ -483,6 +487,10 @@
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>scores</span>: <span class='ident'>Scores</span>, <span class='ident'>trace</span>: <span class='ident'>GameTrace</span>) <span class='op'>-&gt;</span> <span class='ident'>ScoreCard</span> {
         <span class='kw'>let</span> <span class='ident'>sum</span> <span class='op'>=</span> <span class='ident'>scores</span>.<span class='ident'>iter</span>().<span class='ident'>map</span>(<span class='op'>|</span><span class='kw-2'>&amp;</span>(_, <span class='ident'>x</span>)<span class='op'>|</span> <span class='ident'>x</span>).<span class='ident'>fold</span>(<span class='number'>0.0</span>, <span class='ident'>Add</span>::<span class='ident'>add</span>);
         <span class='ident'>ScoreCard</span>(<span class='ident'>scores</span>, <span class='ident'>sum</span>, <span class='ident'>trace</span>)
+    }
+
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>into_trace</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>GameTrace</span> {
+        <span class='self'>self</span>.<span class='number'>2</span>
     }
 
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>add</span>(<span class='self'>self</span>, <span class='ident'>scores</span>: <span class='ident'>Scores</span>) <span class='op'>-&gt;</span> <span class='ident'>ScoreCard</span> {
