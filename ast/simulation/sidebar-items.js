@@ -1,1 +1,0 @@
-initSidebarItems({"fn":[["next_condition",""],["next_program",""],["update_data",""]],"struct":[["World",""]]});

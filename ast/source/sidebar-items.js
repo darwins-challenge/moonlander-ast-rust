@@ -1,1 +1,0 @@
-initSidebarItems({"trait":[["Source","Representation of an `ast::structure::Program`"]]});

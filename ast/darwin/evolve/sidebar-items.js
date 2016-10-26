@@ -1,1 +1,0 @@
-initSidebarItems({"fn":[["random_population","Generate a random population of size n"]],"struct":[["CreatureScore",""],["OptimumKeeper",""],["Population","A population with the root of the indicated type"],["ScoreCard","Immutable tagged list of scores"]],"type":[["Scores",""]]});
